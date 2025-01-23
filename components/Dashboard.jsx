@@ -29,7 +29,7 @@ export default function Dashboard() {
 
   const statuses = {
     ...countValues(),
-    time_remaining: `${23 - now.getHours()}H ${60 - now.getMinutes()}M`,
+    time_remaining_in_day: `${23 - now.getHours()}H ${60 - now.getMinutes()}M`,
   }
 
   async function handleSetMood(mood) {

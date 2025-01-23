@@ -1,15 +1,16 @@
+import ContactUs from "@/components/ContactUs";
 import Dashboard from "@/components/Dashboard";
 import Main from "@/components/Main";
 
 export const metadata = {
-    title: "Moodl · Dashboard",
+    title: "Moodl · Contact Us",
 };
 
-export default function DashboardPage() {
-
+export default function ContactPage() {
+    
     return (
         <Main>
-            <Dashboard />
+            <ContactUs />
         </Main>
     )
 }
