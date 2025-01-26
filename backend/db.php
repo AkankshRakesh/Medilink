@@ -1,8 +1,8 @@
 <?php
-$host = 'localhost';
-$dbname = 'moodl'; // Change to your database name
-$username = 'root'; // Default XAMPP username
-$password = ''; // Default XAMPP password is empty
+$host = 'sql111.infinityfree.com';
+$dbname = 'if0_38181120_moodl'; // Change to your database name
+$username = 'if0_38181120'; // Default XAMPP username
+$password = 'POv09AmE6Hv2ewt'; // Default XAMPP password is empty
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

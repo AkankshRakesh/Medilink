@@ -28,7 +28,7 @@ export default function Dashboard() {
         }
 
         // Send userId in the request body to check the session
-        const response = await fetch('http://localhost/backend/checkSession.php', {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/checkSession.php`, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

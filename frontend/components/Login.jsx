@@ -25,7 +25,7 @@ export default function Login() {
         
         setAuthenticating(true);
         try {
-            const endpoint = isRegister ? 'http://localhost/backend/signup.php' : 'http://localhost/backend/login.php';
+            const endpoint = isRegister ? `${process.env.NEXT_PUBLIC_BACKEND}/signup.php` : `${process.env.NEXT_PUBLIC_BACKEND}/login.php`;
             const response = await axios.post(endpoint, { username, email, password }, {
                 headers: {
                     'Content-Type': 'application/json',
