@@ -4,6 +4,7 @@ import React, { useState } from 'react';
 import Button from './Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
@@ -14,7 +15,10 @@ export default function Login() {
     const [isRegister, setIsRegister] = useState(false);
     const [authenticating, setAuthenticating] = useState(false);
 
-    async function handleSubmit() {
+    const router = useRouter();
+
+    async function handleSubmit(event) {
+        event.preventDefault();
         if (isRegister && (!username || !email || !password || password.length < 6)) {
             alert('Please fill in all fields (password must be at least 6 characters).');
             return;
@@ -36,6 +40,8 @@ export default function Login() {
             if (!isRegister && response.data.message === "Login successful") {
                 console.log('User logged in successfully.');
                 localStorage.setItem('userId', response.data.user_id);
+                router.push('/');
+                window.location.reload();
             }
         } catch (error) {
             console.error('Error:', error.response?.data || error.message);
