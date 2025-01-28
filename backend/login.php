@@ -1,12 +1,9 @@
 <?php
 include 'db.php';
-session_start();
-
-header("Access-Control-Allow-Origin: *"); // Use specific domain in production
-header("Access-Control-Allow-Methods: POST, OPTIONS"); // Allow POST and OPTIONS methods
-header("Access-Control-Allow-Headers: Content-Type"); // Allow Content-Type header
-header("Access-Control-Allow-Credentials: true"); // Allow credentials if needed
-
+header('Access-Control-Allow-Origin: *'); // Allow requests from any origin (replace * with your frontend URL in production)
+header('Access-Control-Allow-Methods: POST, GET, OPTIONS'); // Allow POST, GET, and OPTIONS requests
+header('Access-Control-Allow-Headers: Content-Type, Authorization'); // Allow these headers
+header('Content-Type: application/json');
 // Handle OPTIONS request (preflight request)
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200); // Respond with a successful status
