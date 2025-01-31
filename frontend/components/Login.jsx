@@ -43,6 +43,12 @@ export default function Login() {
                 router.push('/');
                 window.location.reload();
             }
+            else if(isRegister) {
+                router.push('/');
+                window.location.reload();
+                console.log('User registered successfully.');
+                setIsRegister(false);
+            }
         } catch (error) {
             console.error('Error:', error.response?.data || error.message);
             alert('Authentication failed. Please try again.');

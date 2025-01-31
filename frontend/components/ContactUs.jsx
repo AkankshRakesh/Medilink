@@ -20,13 +20,29 @@ export default function ContactUs() {
         });
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
-        toast.success('Your message has been sent successfully!');
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/contactForm.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
 
-        // console.log('Form submitted:', formData);
-        setFormData({ name: '', email: '', message: '' });
+            if (response.ok) {
+                toast.success('Your message has been sent successfully!');
+                console.log('Form submitted:', formData);
+                setFormData({ name: '', email: '', message: '' });
+            } else {
+                toast.error('Failed to send message. Please try again.');
+            }
+        } catch (error) {
+            toast.error('An error occurred. Please try again.');
+            console.error('Error submitting form:', error);
+        }
     };
 
     return (
