@@ -5,6 +5,7 @@ import Button from './Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
@@ -13,11 +14,30 @@ export default function Login() {
     const [email, setEmail] = useState('');
     const [isDoctor, setIsDoctor] = useState(false);
     const [password, setPassword] = useState('');
+    const [otp, setOtp] = useState('');
     const [isRegister, setIsRegister] = useState(false);
     const [authenticating, setAuthenticating] = useState(false);
 
     const router = useRouter();
+    const googleLogin = useGoogleLogin({
+        onError: error => console.error(error),
+        onSuccess: tokenResponse => console.log(tokenResponse),
+      });
 
+      async function sendOtp() {
+        if (!email) {
+            toast.error('Please enter your email first.');
+            return;
+        }
+        try {
+            await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/send-otp.php`, { email });
+            toast.success('OTP sent successfully!');
+            setOtpSent(true);
+        } catch (error) {
+            console.error('OTP Error:', error.response?.data || error.message);
+            toast.error('Failed to send OTP.');
+        }
+    }
     async function handleSubmit(event) {
         event.preventDefault();
         if (isRegister && (!username || !email || !password || password.length < 6)) {
@@ -67,10 +87,10 @@ export default function Login() {
             <p className='text-center'>
                 {isRegister ? 'Join us as a ' : "You're one step away!"}
                 <button onClick={() => setIsDoctor(!isDoctor)} className='text-indigo-600'>
-                    {isRegister ? 'Healer' : ''}
+                    {isRegister ? 'Counsellor' : ''}
                 </button> {isRegister ? 'or as a ' : ''}
                 <button onClick={() => setIsRegister(!isRegister)} className='text-indigo-600'>
-                    {isRegister ? 'Patient' : ''}
+                    {isRegister ? 'Customer' : ''}
                 </button>
             </p>
             <form onSubmit={handleSubmit} className="w-full max-w-[400px] mx-auto">
@@ -84,15 +104,24 @@ export default function Login() {
                         autoComplete="username"
                     />
                 )}
-                <input
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    className={`w-full ${isRegister ? 'mt-4' : ''} px-3 duration-200 hover:border-indigo-600 focus:border-indigo-600 py-2 sm:py-3 border border-solid border-indigo-400 rounded-full outline-none`}
-                    placeholder="Email"
-                    type="email"
-                    required
-                    autoComplete="email"
-                />
+                <div className="relative w-full mt-4">
+                    <input
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        className="w-full px-3 pr-16 duration-200 hover:border-indigo-600 focus:border-indigo-600 py-2 sm:py-3 border border-solid border-indigo-400 rounded-full outline-none"
+                        placeholder="Email"
+                        type="email"
+                        required
+                        autoComplete="email"
+                    />
+                    <button
+                        type="button"
+                        onClick={sendOtp}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-600 text-white px-3 md:py-2 py-1 rounded-full text-sm"
+                    >
+                        Send OTP
+                    </button>
+                </div>
                 <input
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
@@ -119,12 +148,12 @@ export default function Login() {
 
             <div className='flex flex-col flex-1 justify-center items-center gap-4'>
             <h3 className={'text-4xl sm:text-5xl md:text-6xl ' + fugaz.className}>
-                {isRegister ? 'Register as a Healer' : 'Log In'}
+                {isRegister ? 'Register as a Counsellor' : 'Log In'}
             </h3>
             <p className='text-center'>
                 {isRegister ? 'Or join us as a ' : "You're one step away!"}
                 <button onClick={() => setIsDoctor(!isDoctor)} className='text-indigo-600'>
-                    {isRegister ? 'Patient' : ''}
+                    {isRegister ? 'Customer' : ''}
                 </button>
             </p>
             <form onSubmit={handleSubmit} className="w-full max-w-[400px] mx-auto">

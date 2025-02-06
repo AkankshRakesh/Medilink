@@ -4,6 +4,7 @@ import Link from "next/link";
 import Head from "./head";
 import { ToastContainer } from "react-toastify";
 import Logout from "@/components/Logout";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 
 const opensans = Open_Sans({ subsets: ["latin"] });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
@@ -29,7 +30,9 @@ export default function RootLayout({ children }) {
         <body className={'w-full max-w-[1000px] mx-auto text-sm sm:text-base min-h-screen flex flex-col text-slate-800  ' + opensans.className}>
           {header}
           <ToastContainer />
+          <GoogleOAuthProvider clientId="236783902486-2n0e2j7c18t8ar3cgvo2rndi93jno75h.apps.googleusercontent.com" >
           {children}
+          </GoogleOAuthProvider>
         </body>
     </html>
   );
