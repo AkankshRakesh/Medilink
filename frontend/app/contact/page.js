@@ -3,7 +3,7 @@ import Dashboard from "@/components/Dashboard";
 import Main from "@/components/Main";
 
 export const metadata = {
-    title: "Moodl · Contact Us",
+    title: "CosmoCounsel · Contact Us",
 };
 
 export default function ContactPage() {

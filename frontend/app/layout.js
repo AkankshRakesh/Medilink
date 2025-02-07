@@ -10,7 +10,7 @@ const opensans = Open_Sans({ subsets: ["latin"] });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export const metadata = {
-  title: "Moodl",
+  title: "CosmoCounsel",
   description: "Track your daily mood every day of the year!",
 };
 
@@ -18,7 +18,7 @@ export default function RootLayout({ children }) {
   const header = (
     <header className="p-4 flex items-center justify-between gap-4">
       <Link href={'/'}>
-        <h1 className={'text-base sm:text-lg textGradient ' + fugaz.className}>Moodl <i class="fa-solid fa-brain"></i></h1>
+        <h1 className={'text-base sm:text-lg textGradient ' + fugaz.className}>CosmoCounsel <i class="fa-solid fa-meteor"></i></h1>
       </Link>
       <Logout />
     </header>
