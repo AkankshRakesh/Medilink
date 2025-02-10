@@ -25,6 +25,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $username = $inputData['username'] ?? null;
     $email = $inputData['email'] ?? null;
     $password = $inputData['password'] ?? null;
+    $isDoctor = $inputData['isDoctor'] ?? false;
 
     // Validate email format
     if (!isValidEmail($email)) {
@@ -55,8 +56,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
     // Insert the new user into the database
-    $stmt = $pdo->prepare("INSERT INTO users (username, email, password) VALUES (:username, :email, :password)");
-    $stmt->execute(['username' => $username, 'email' => $email, 'password' => $hashedPassword]);
+    $stmt = $pdo->prepare("INSERT INTO users (username, email, password, isDoctor) VALUES (:username, :email, :password, :isDoctor)");
+    $stmt->execute(['username' => $username, 'email' => $email, 'password' => $hashedPassword, 'isDoctor' => $isDoctor]);
 
     echo json_encode(["message" => "User registered successfully"]);
 } else {

@@ -1,6 +1,6 @@
 <?php
 // Start the session to access session data
-session_start();
+include 'db.php';
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -17,15 +17,20 @@ $inputData = json_decode(file_get_contents('php://input'), true);
 $userId = $inputData['userId'] ?? null;
 
 if ($userId) {
-    // Assuming you have a way to verify the user (e.g., check in the database)
-    // For simplicity, we're just returning the user details based on userId
-    // You can replace this with your database check logic
-    echo json_encode([
-        'success' => true,
-        'user_id' => $userId,
-        'username' => 'example_username', // Replace with actual data from DB
-        'email' => 'example@example.com'  // Replace with actual data from DB
-    ]);
+
+    $stmt = $pdo->prepare("SELECT isDoctor FROM users WHERE id = :userId");
+    $stmt->execute(['userId' => $userId]);
+    $user = $stmt->fetch(PDO::FETCH_ASSOC);
+
+    if($user) {
+            echo json_encode([
+            'success' => true,
+            'user_id' => $userId,
+            'isDoctor' => $user['isDoctor']  // Replace with actual data from DB
+        ]);
+    } else{
+        echo json_encode(['success' => false, 'message' => 'User not found']);
+    }
 } else {
     // If no userId is provided
     echo json_encode([
