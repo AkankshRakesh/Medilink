@@ -4,6 +4,7 @@ import Link from "next/link";
 import Head from "./head";
 import { ToastContainer } from "react-toastify";
 import Logout from "@/components/Logout";
+import Login from "@/components/Login";
 
 const opensans = Open_Sans({ subsets: ["latin"] });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
@@ -25,7 +26,7 @@ export default function RootLayout({ children }) {
 
   return (
     <html lang="en">
-      <Head />
+      <Login/>
         <body className={'w-full max-w-[1000px] mx-auto text-sm sm:text-base min-h-screen flex flex-col text-slate-800  ' + opensans.className}>
           {header}
           <ToastContainer />
