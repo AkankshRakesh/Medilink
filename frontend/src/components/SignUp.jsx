@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import Buttom from "./Buttom";
 import OTPInput from "react-otp-input";
 import { Eye, EyeOff } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function SignUp({ toggleAuth }) {
   const [username, setUsername] = useState("");
@@ -15,6 +16,7 @@ export default function SignUp({ toggleAuth }) {
   const [loadingOtp, setLoadingOtp] = useState(false);
   const [registering, setRegistering] = useState(false);
   const [passwordVisiable, setPasswordVisiable] = useState(false)
+  const navigate = useNavigate();
 
   async function sendOtp() {
     if (!email) {
@@ -23,7 +25,7 @@ export default function SignUp({ toggleAuth }) {
     }
     setLoadingOtp(true);
     try {
-      await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/sendOtp.php`, {
+      await axios.post(`http://localhost/backend/sendOtp.php`, {
         email,
       });
       toast.success("OTP sent successfully!");
@@ -44,7 +46,7 @@ export default function SignUp({ toggleAuth }) {
     }
     try {
       const response = await axios.post(
-        `${process.env.NEXT_PUBLIC_BACKEND}/verifyOtp.php`,
+        `http://localhost/backend/verifyOtp.php`,
         { email, otp }
       );
       if (response.data.status === "success") {
@@ -73,12 +75,21 @@ export default function SignUp({ toggleAuth }) {
     }
     setRegistering(true);
     try {
-      const response = await axios.post(`/signup.php`, {
+      const response = await axios.post(`http://localhost/backend/signup.php`, {
         username,
         email,
         password,
       });
+      if(response.data.message == "Email already exists"){
+        toast.warning("Email already exists");
+        return;
+      }
+      else if(response.data.message == "User registered successfully"){
+        toast.success("User registered successfully");
+        
+      }
       toast.success(response.data.message);
+      navigate("/"); 
     } catch (error) {
       console.log(error);
       toast.error("Registration failed. Please try again.");
@@ -101,7 +112,7 @@ export default function SignUp({ toggleAuth }) {
         <input
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="w-full px-4 bg-transparent border border-gray-500 py-2 rounded-lg"
+          className="w-full px-4 bg-transparent border border-gray-500 py-2 rounded-full"
           placeholder="Username"
           required
         />
@@ -109,7 +120,7 @@ export default function SignUp({ toggleAuth }) {
           <input
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 bg-transparent border border-gray-500 py-2 rounded-lg"
+            className="w-full px-4 bg-transparent border border-gray-500 py-2 rounded-full"
             placeholder="Email"
             type="email"
             required
@@ -119,7 +130,7 @@ export default function SignUp({ toggleAuth }) {
             <button
               type="button"
               onClick={sendOtp}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white font-semibold px-3 py-1 rounded-lg"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white font-semibold px-3 py-1 rounded-full"
             >
               {loadingOtp ? "Sending..." : "Send OTP"}
             </button>
@@ -140,12 +151,13 @@ export default function SignUp({ toggleAuth }) {
               shouldAutoFocus={true}
               containerStyle={"flex w-full items-center justify-center"}
               inputStyle={{
-                border: "1px solid transparent",
+                border: "1px solid #fff",
                 borderRadius: "8px",
+                background :"transparent",
                 width: "45px",
                 height: "45px",
                 fontSize: "20px",
-                color: "#000",
+                color: "#fff",
                 fontWeight: "400",
                 caretColor: "blue",
               }}
@@ -165,7 +177,7 @@ export default function SignUp({ toggleAuth }) {
           <input
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 bg-transparent border border-gray-500 py-2 rounded-lg"
+            className="w-full px-4 bg-transparent border border-gray-500 py-2 rounded-full"
             placeholder="Password"
             type="password"
             minLength={6}
@@ -181,11 +193,13 @@ export default function SignUp({ toggleAuth }) {
           </div>
         </div>
         <div className="mt-4 w-full items-center justify-center flex">
+          <button type="submit">
           <Buttom
             type="submit"
             text={registering ? "Registering..." : "Register"}
             full
           />
+          </button>
         </div>
       </form>
       <button onClick={toggleAuth} className="mt-4 text-blue-400 underline">

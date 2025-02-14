@@ -5,7 +5,7 @@ import { Route, Routes } from "react-router-dom";
 import Auth from "./pages/Auth";
 import About from "./pages/About";
 import Service from "./pages/Service";
-import Contact from "./pages/Contect";
+import Contact from "./pages/Contact";
 
 function App() {
   return (

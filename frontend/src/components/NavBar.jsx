@@ -49,7 +49,7 @@ export default function NavBar() {
             <Ambulance />
               Services
             </Link>
-            <Link to={"/contect"} className="hover:text-gray-300 flex items-center gap-1">
+            <Link to={"/contact"} className="hover:text-gray-300 flex items-center gap-1">
             <ContactRound />
               Contact
             </Link>

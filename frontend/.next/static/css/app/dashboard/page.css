@@ -1,0 +1,60 @@
+/*!***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[14].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"components\\Calendar.jsx","import":"Fugaz_One","arguments":[{"subsets":["latin"],"weight":["400"]}],"variableName":"fugaz"} ***!
+  \***********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* latin */
+@font-face {
+  font-family: '__Fugaz_One_7d2d5c';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/_next/static/media/4007bd53a5e80126-s.p.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}@font-face {font-family: '__Fugaz_One_Fallback_7d2d5c';src: local("Arial");ascent-override: 92.89%;descent-override: 37.48%;line-gap-override: 0.00%;size-adjust: 112.61%
+}.__className_7d2d5c {font-family: '__Fugaz_One_7d2d5c', '__Fugaz_One_Fallback_7d2d5c';font-weight: 400;font-style: normal
+}
+
+/*!*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[14].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"components\\Button.jsx","import":"Fugaz_One","arguments":[{"subsets":["latin"],"weight":["400"]}],"variableName":"fugaz"} ***!
+  \*********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* latin */
+@font-face {
+  font-family: '__Fugaz_One_7d2d5c';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/_next/static/media/4007bd53a5e80126-s.p.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}@font-face {font-family: '__Fugaz_One_Fallback_7d2d5c';src: local("Arial");ascent-override: 92.89%;descent-override: 37.48%;line-gap-override: 0.00%;size-adjust: 112.61%
+}.__className_7d2d5c {font-family: '__Fugaz_One_7d2d5c', '__Fugaz_One_Fallback_7d2d5c';font-weight: 400;font-style: normal
+}
+
+/*!********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[14].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"components\\Login.jsx","import":"Fugaz_One","arguments":[{"subsets":["latin"],"weight":["400"]}],"variableName":"fugaz"} ***!
+  \********************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* latin */
+@font-face {
+  font-family: '__Fugaz_One_7d2d5c';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/_next/static/media/4007bd53a5e80126-s.p.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}@font-face {font-family: '__Fugaz_One_Fallback_7d2d5c';src: local("Arial");ascent-override: 92.89%;descent-override: 37.48%;line-gap-override: 0.00%;size-adjust: 112.61%
+}.__className_7d2d5c {font-family: '__Fugaz_One_7d2d5c', '__Fugaz_One_Fallback_7d2d5c';font-weight: 400;font-style: normal
+}
+
+/*!************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************!*\
+  !*** css ./node_modules/next/dist/build/webpack/loaders/css-loader/src/index.js??ruleSet[1].rules[14].oneOf[2].use[1]!./node_modules/next/dist/build/webpack/loaders/next-font-loader/index.js??ruleSet[1].rules[14].oneOf[2].use[2]!./node_modules/next/font/google/target.css?{"path":"components\\Dashboard.jsx","import":"Fugaz_One","arguments":[{"subsets":["latin"],"weight":["400"]}],"variableName":"fugaz"} ***!
+  \************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************************/
+/* latin */
+@font-face {
+  font-family: '__Fugaz_One_7d2d5c';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(/_next/static/media/4007bd53a5e80126-s.p.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}@font-face {font-family: '__Fugaz_One_Fallback_7d2d5c';src: local("Arial");ascent-override: 92.89%;descent-override: 37.48%;line-gap-override: 0.00%;size-adjust: 112.61%
+}.__className_7d2d5c {font-family: '__Fugaz_One_7d2d5c', '__Fugaz_One_Fallback_7d2d5c';font-weight: 400;font-style: normal
+}
+

@@ -12,7 +12,7 @@ const Login = ({ toggleAuth }) => {
     password: "",
     otp: "",
   });
-  const [otpSent, setOtpSent] = useState(true);
+  const [otpSent, setOtpSent] = useState(false);
   const [otpVerified, setOtpVerified] = useState(false);
   const [authenticating, setAuthenticating] = useState(false);
   const [loadingOtp, setLoadingOtp] = useState(false);
@@ -26,7 +26,7 @@ const Login = ({ toggleAuth }) => {
     if (!formData.email) return toast.error("Please enter your email first.");
     setLoadingOtp(true);
     try {
-      await axios.post(`/sendOtp.php`, { email: formData.email });
+      await axios.post(`http://localhost/backend/sendOtp.php`, { email: formData.email });
       toast.success("OTP sent successfully!");
       setOtpSent(true);
     } catch (error) {
@@ -39,7 +39,7 @@ const Login = ({ toggleAuth }) => {
   const verifyOtp = async () => {
     if (!formData.otp) return toast.error("Please enter the OTP.");
     try {
-      const response = await axios.post(`/verifyOtp.php`, {
+      const response = await axios.post(`http://localhost/backend/verifyOtp.php`, {
         email: formData.email,
         otp: formData.otp,
       });
@@ -62,7 +62,7 @@ const Login = ({ toggleAuth }) => {
     if (!otpVerified) return toast.warning("Please verify your email first.");
     setAuthenticating(true);
     try {
-      const endpoint = `/login.php`;
+      const endpoint = `http://localhost/backend/login.php`;
       const response = await axios.post(endpoint, formData);
       toast.success(response.data.message);
       if (response.data.message === "Login successful") {
@@ -99,7 +99,7 @@ const Login = ({ toggleAuth }) => {
             <button
               type="button"
               onClick={sendOtp}
-              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white font-semibold px-2 py-0.5 text-sm rounded-lg"
+              className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-blue-600 text-white font-semibold px-2 py-0.5 text-sm rounded-full"
             >
               {loadingOtp ? "Sending..." : "Send OTP"}
             </button>
@@ -131,7 +131,7 @@ const Login = ({ toggleAuth }) => {
           <button
             type="button"
             onClick={verifyOtp}
-            className="bg-green-600 text-white py-2 px-4 rounded-lg"
+            className="bg-green-600 text-white py-2 px-4 rounded-full"
           >
             Verify OTP
           </button>
@@ -142,7 +142,7 @@ const Login = ({ toggleAuth }) => {
             name="password"
             value={formData.password}
             onChange={handleChange}
-            className="relative w-full px-4 bg-transparent border border-gray-500 py-2 rounded-lg"
+            className="relative w-full px-4 bg-transparent border border-gray-500 py-2 rounded-full"
             placeholder="Password"
             type={!passwordVisiable?"password":"text"}
             required
@@ -152,11 +152,13 @@ const Login = ({ toggleAuth }) => {
           </div>
         </div>
         <div className="mt-4 w-full items-center justify-center flex">
+          <button type="submit">
           <Buttom
             type="submit"
             text={authenticating ? "Loging In...!!" : "Log In"}
             full
           />
+          </button>
         </div>
       </form>
       <button onClick={toggleAuth} className="mt-4 text-blue-400 underline">
