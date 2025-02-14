@@ -1,7 +1,6 @@
 <?php
 // Start the session to access session data
 include 'db.php';
-
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
@@ -23,11 +22,12 @@ if ($userId) {
     $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
     if($user) {
-            echo json_encode([
+        echo json_encode([
             'success' => true,
             'user_id' => $userId,
             'isDoctor' => $user['isDoctor']  // Replace with actual data from DB
         ]);
+        
     } else{
         echo json_encode(['success' => false, 'message' => 'User not found']);
     }
