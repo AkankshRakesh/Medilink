@@ -113,19 +113,7 @@ export default function NavBar() {
               </div>
             </div>
             <div className="p-4 flex justify-between items-center px-8">
-              <div
-                className="flex items-center gap-2 text-xl font-bold cursor-pointer"
-                onClick={() => {
-                  toggleMenu();
-                  navigate("/auth");
-                }}
-              >
-                <LogOut className="cursor-pointer" />
-                <p>Log In</p>
-              </div>
-              <div>
-                <CircleUserRound size={40} />
-              </div>
+              <Logout />
             </div>
           </motion.div>
         )}
