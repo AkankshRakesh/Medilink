@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { Ambulance, CircleUserRound, ContactRound, Hospital, House, KeyRound, LogOut, Menu, X } from "lucide-react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
+import Logout from "./Logout";
 
 export default function NavBar() {
   const navigate = useNavigate();
@@ -54,15 +55,7 @@ export default function NavBar() {
               Contact
             </Link>
           </div>
-          <div
-            className="flex gap-2 items-center bg-slate-600 hover:bg-slate-700 px-4 py-1 rounded-xl cursor-pointer"
-            onClick={() => {
-              navigate("/auth");
-            }}
-          >
-            <KeyRound className="font-bold" />
-            <p className="font-bold text-xl">Log In</p>
-          </div>
+          <Logout />
         </div>
 
         <button className="md:hidden" onClick={toggleMenu}>
