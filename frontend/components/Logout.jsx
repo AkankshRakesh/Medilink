@@ -3,8 +3,8 @@ import React, { useEffect, useState } from 'react'
 import Button from './Button'
 import { usePathname } from 'next/navigation'
 import Link from 'next/link'
-import { Fugaz_One } from 'next/font/google'
-
+import { Fugaz_One, Open_Sans } from 'next/font/google'
+const opensans = Open_Sans({ subsets: ["latin"], weight: ["500"]  });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Logout() {
@@ -27,7 +27,7 @@ export default function Logout() {
     if (pathname === '/') {
         return (
             <Link href={'/contact'}>
-                <h1 className={'text-base sm:text-lg py-2 sm:py-3 textGradient ' + fugaz.className}>
+                <h1 className={'text-base sm:text-lg py-2 sm:py-3 textGradient ' + opensans.className}>
                     Contact us
                 </h1>
             </Link>
@@ -36,7 +36,7 @@ export default function Logout() {
     else if(pathname === '/contact') {
         return (
             <Link href={'/dashboard'}>
-                <h1 className={'text-base sm:text-lg py-2 sm:py-3 textGradient ' + fugaz.className}>
+                <h1 className={'text-base sm:text-lg py-2 sm:py-3 textGradient ' + opensans.className}>
                     Go to dashboard
                 </h1>
             </Link>
@@ -46,7 +46,7 @@ export default function Logout() {
     if (!isUserLoggedIn) {
         return (
             <Link href={'/contact'}>
-                <h1 className={'text-base sm:text-lg py-2 sm:py-3 textGradient ' + fugaz.className}>
+                <h1 className={'text-base sm:text-lg py-2 sm:py-3 textGradient ' + opensans.className}>
                     Contact us
                 </h1>
             </Link>
