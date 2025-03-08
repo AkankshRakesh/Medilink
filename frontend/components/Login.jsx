@@ -161,7 +161,7 @@ export default function Login() {
                         onClick={youAreVerified}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 text-white px-3 md:py-2 py-1 rounded-full text-sm"
                     >
-                        Verified <i class="fa-solid fa-circle-check"></i>
+                        Verified <i className="fa-solid fa-circle-check"></i>
                     </button>
                     )}
                     {otpSent && (
@@ -254,7 +254,7 @@ export default function Login() {
                         onClick={youAreVerified}
                         className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 text-white px-3 md:py-2 py-1 rounded-full text-sm"
                     >
-                        Verified <i class="fa-solid fa-circle-check"></i>
+                        Verified <i className="fa-solid fa-circle-check"></i>
                     </button>
                     )}
                     {otpSent && (

@@ -6,6 +6,7 @@ import Link from "next/link";
 import Logout from "@/components/Logout";
 import { motion, AnimatePresence } from "framer-motion";
 import { Open_Sans } from 'next/font/google'
+import CallToAction from "./CallToAction";
 const opensans = Open_Sans({ subsets: ["latin"], weight: ["500"]  });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] });
 
@@ -16,21 +17,24 @@ export default function Navbar() {
     <header className="p-4 flex items-center justify-between gap-4 sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
       <Link href="/">
         <div className="flex gap-4 items-center">
-          <h1 className={`text-base sm:text-lg textGradient ${fugaz.className}`}>
-            CosmoCounsel <i class="fa-solid fa-pills"></i>
+          <h1 className={`text-xl lg:text-2xl textGradient ${fugaz.className}`}>
+            Medilink <i className="fa-solid fa-pills"></i>
           </h1>
 
           {/* Desktop Navigation */}
           <nav className="hidden md:flex gap-4">
-            <Link href="/location" className={`text-base sm:text-lg textGradient ${opensans.className}`}>
+            <Link href="/location" className={`text-base textGradient ${opensans.className}`}>
               Location
             </Link>
-            <Link href="/doctors" className={`text-base sm:text-lg textGradient ${opensans.className}`}>
+            <Link href="/doctors" className={`text-base textGradient ${opensans.className}`}>
               Find Doctors
             </Link>
-            <Link href="/consultation" className={`text-base sm:text-lg textGradient ${opensans.className}`}>
+            <Link href="/consultation" className={`text-base textGradient ${opensans.className}`}>
               Video Consultation
             </Link>
+            <Link href="/contact" className={`text-base textGradient ${opensans.className}`} onClick={() => setIsOpen(false)}>
+                Contact Us
+              </Link>
           </nav>
         </div>
       </Link>
@@ -63,17 +67,20 @@ export default function Navbar() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: -50, opacity: 0 }}
             transition={{ duration: 0.3 }}
-            className="fixed top-14 left-0 right-0 bg-white/95 border-b shadow-lg md:hidden"
+            className="fixed top-12 left-0 right-0 bg-white/95 border-b shadow-lg md:hidden"
           >
             <nav className="flex flex-col p-4 gap-4">
-              <Link href="/location" className={`text-base pb-2 textGradient ${opensans.className}`} onClick={() => setIsOpen(false)}>
+              <Link href="/location" className={`text-base pb-1 textGradient ${opensans.className}`} onClick={() => setIsOpen(false)}>
                 Location
               </Link>
-              <Link href="/doctors" className={`text-base py-2 textGradient ${opensans.className}`} onClick={() => setIsOpen(false)}>
+              <Link href="/doctors" className={`text-base py-1 textGradient ${opensans.className}`} onClick={() => setIsOpen(false)}>
                 Find Doctors
               </Link>
-              <Link href="/consultation" className={`text-base pt-2 textGradient ${opensans.className}`} onClick={() => setIsOpen(false)}>
+              <Link href="/consultation" className={`text-base pt-1 textGradient ${opensans.className}`} onClick={() => setIsOpen(false)}>
                 Video Consultation
+              </Link>
+              <Link href="/contact" className={`text-base pt-1 textGradient ${opensans.className}`} onClick={() => setIsOpen(false)}>
+                Contact Us
               </Link>
               <Logout />
             </nav>

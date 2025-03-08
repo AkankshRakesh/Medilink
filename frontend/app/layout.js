@@ -19,8 +19,8 @@ export default function RootLayout({ children }) {
   const header = (
     <header className="p-4 flex items-center justify-between gap-4">
       <Link href={'/'}>
-        <div class="flex gap-4">
-          <h1 className={'text-base sm:text-lg textGradient ' + fugaz.className}>CosmoCounsel <i class="fa-solid fa-prescription"></i></h1>
+        <div className="flex gap-4">
+          <h1 className={'text-base sm:text-lg textGradient ' + fugaz.className}>CosmoCounsel <i className="fa-solid fa-prescription"></i></h1>
           <h1 className={'text-base sm:text-lg textGradient ' + fugaz.className}>Location</h1>
           <h1 className={'text-base sm:text-lg textGradient ' + fugaz.className}>Find Doctors</h1>
           <h1 className={'text-base sm:text-lg textGradient ' + fugaz.className}>Video Consultation</h1>
