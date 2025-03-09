@@ -3,7 +3,7 @@ import Dashboard from "@/components/Dashboard";
 import Main from "@/components/Main";
 
 export const metadata = {
-    title: "CosmoCounsel · Contact Us",
+    title: "Medilink · Contact Us",
 };
 
 export default function ContactPage() {

@@ -4,6 +4,7 @@ import Button from './Button';
 import Calendar from './Calendar';
 import Link from 'next/link';
 import CallToAction from './CallToAction';
+import Specialties from './Specialties';
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Hero() {
@@ -87,8 +88,8 @@ export default function Hero() {
         </div>
             <h1 className={'text-5xl sm:text-6xl md:text-7xl text-center mb-8 ' + fugaz.className}><span className='textGradient'>Medilink</span> helps you track your <span className='textGradient'>daily</span> mood!</h1>
             <p className='text-lg sm:text-xl md:text-2xl text-center w-full mx-auto mb-8 max-w-[600px]'>Create your mood record and see how you feel on <span className='font-semibold'>every day of every year.</span></p>
+            <Specialties/>
             <CallToAction />
-            
             {/* <Calendar demo /> */}
         </div>
     )

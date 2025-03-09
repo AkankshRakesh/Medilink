@@ -11,7 +11,7 @@ const opensans = Open_Sans({ subsets: ["latin"] });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export const metadata = {
-  title: "CosmoCounsel",
+  title: "Medilink",
   description: "Track your daily mood every day of the year!",
 };
 
