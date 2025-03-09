@@ -36,7 +36,7 @@ export default function Navbar() {
             <Link href="/consultation" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/consultation')}`}>
               Video Consultation
             </Link>
-            <Link href="/contact" className={`text-base  textGradient pb-1 ${opensans.className} ${isActive('/contact')}`} onClick={() => setIsOpen(false)}>
+            <Link href="/contact" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/contact')}`} onClick={() => setIsOpen(false)}>
               Contact Us
             </Link>
           </nav>
