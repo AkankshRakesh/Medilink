@@ -27,17 +27,14 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex gap-4 mt-2">
-            <Link href="/location" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/location')}`}>
-              Location
-            </Link>
             <Link href="/" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/')}`}>
-              Find Doctors
+            <i className="fa-solid fa-user-doctor mr-2"></i>Find Doctors
             </Link>
             <Link href="/consultation" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/consultation')}`}>
-              Video Consultation
+            <i className="fa-solid fa-video mr-2"></i>Video Consultation
             </Link>
             <Link href="/contact" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/contact')}`} onClick={() => setIsOpen(false)}>
-              Contact Us
+            <i className="fa-solid fa-headset mr-2"></i>Contact Us
             </Link>
           </nav>
         </div>
@@ -72,17 +69,14 @@ export default function Navbar() {
             className="fixed top-12 left-0 right-0 bg-white/95 border-b shadow-lg lg:hidden"
           >
             <nav className="flex flex-col p-4 gap-4">
-              <Link href="/location" className={`text-base pb-1 textGradient ${opensans.className} ${isActive('/location')}`} onClick={() => setIsOpen(false)}>
-                Location
-              </Link>
-              <Link href="/doctors" className={`text-base py-1 textGradient ${opensans.className} ${isActive('/doctors')}`} onClick={() => setIsOpen(false)}>
-                Find Doctors
+              <Link href="/" className={`text-base py-1 textGradient ${opensans.className} ${isActive('/doctors')}`} onClick={() => setIsOpen(false)}>
+              <i className="fa-solid fa-user-doctor mr-2"></i>Find Doctors
               </Link>
               <Link href="/consultation" className={`text-base pt-1 textGradient ${opensans.className} ${isActive('/consultation')}`} onClick={() => setIsOpen(false)}>
-                Video Consultation
+              <i className="fa-solid fa-video mr-2"></i>Video Consultation
               </Link>
               <Link href="/contact" className={`text-base pt-1 textGradient ${opensans.className} ${isActive('/contact')}`} onClick={() => setIsOpen(false)}>
-                Contact Us
+              <i className="fa-solid fa-headset mr-2"></i>Contact Us
               </Link>
               <Logout />
             </nav>

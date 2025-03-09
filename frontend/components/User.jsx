@@ -1,0 +1,68 @@
+'use client'
+import React, { useEffect, useState } from 'react'
+import { Fugaz_One } from 'next/font/google';
+const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
+export const User = () => {
+    const [loading, setLoading] = useState(true);
+    const [currentUser, setCurrentUser] = useState(null);
+    const [isCounsellor, setIsCounsellor] = useState(false);
+    useEffect(() => {
+        const checkAuth = async () => {
+          try {
+            const userId = localStorage.getItem('userId');
+    
+            if (!userId) {
+              setLoading(false);
+              setCurrentUser(null);
+              console.log('No userId found in local storage');
+              return;
+            }
+    
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/checkSession.php`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({ userId }),
+            });
+    
+            if (!response.ok) {
+              throw new Error('Network response was not ok');
+            }
+    
+            const result = await response.json();
+            if (result.success) {
+              setCurrentUser(result);
+              setIsCounsellor(result.isDoctor === 1); // Assuming isDoctor is returned as 1 or 0
+            } else {
+              setCurrentUser(null);
+            }
+          } catch (error) {
+            console.error('Failed to verify session:', error);
+          } finally {
+            setLoading(false);
+          }
+        };
+    
+        checkAuth();
+      }, []);
+    return (
+        <div className='flex flex-col flex-1 gap-8 sm:gap-12 md:gap-16'>
+          {isCounsellor ? (
+            <div>
+              <h4 className={'text-5xl sm:text-6xl md:text-7xl text-center ' + fugaz.className}>
+            <span className='textGradient'>Counsellor</span> Dashboard </h4>
+            <div className='bg-indigo-50 text-indigo-500 p-4 gap-4 rounded-lg'>
+              <p className='text-center'>Welcome, Counsellor! Here you can manage appointments, view patient history, and more.</p>
+            </div>
+            </div>
+          ) : (
+            <div>
+              <h4 className={'text-5xl sm:text-6xl md:text-7xl text-center ' + fugaz.className}>
+              <span className='textGradient'>User</span> Dashboard </h4>
+              <p>Welcome to your dashboard! Track your mood and activities.</p>
+            </div>
+          )}
+        </div>
+      );
+}
