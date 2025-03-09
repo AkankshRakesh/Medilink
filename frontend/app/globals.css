@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+
+.no-scrollbar::-webkit-scrollbar{
+    display: none;
+}
+
+.no-scrollbar::-webkit-scrollbar{
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
 .textGradient {
     background: -webkit-linear-gradient(#4338ca, #818cf8);
     -webkit-background-clip: text;

@@ -1,3 +1,4 @@
+'use client'
 import { Fugaz_One } from 'next/font/google';
 import React from 'react'
 import Button from './Button';
@@ -9,7 +10,7 @@ const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Hero() {
     return (
-        <div className='pb-4 flex flex-col sm:gap-10'>
+        <div className='pb-4 flex flex-col'>
             <div className=" bg-[#FFF1EC]">
       {/* Hero Section */}
       <div className="px-6 pb-16 pt-12 lg:p-16">
@@ -86,10 +87,10 @@ export default function Hero() {
             <div className="text-gray-400 text-sm">App Rating</div>
           </div>
         </div>
-            <h1 className={'text-5xl sm:text-6xl md:text-7xl text-center mb-8 ' + fugaz.className}><span className='textGradient'>Medilink</span> helps you track your <span className='textGradient'>daily</span> mood!</h1>
-            <p className='text-lg sm:text-xl md:text-2xl text-center w-full mx-auto mb-8 max-w-[600px]'>Create your mood record and see how you feel on <span className='font-semibold'>every day of every year.</span></p>
+            {/* <h1 className={'text-5xl sm:text-6xl md:text-7xl text-center mb-8 ' + fugaz.className}><span className='textGradient'>Medilink</span> helps you to track your <span className='textGradient'>health</span> everyday!</h1>
+            <p className='text-lg sm:text-xl md:text-2xl text-center w-full mx-auto mb-8 max-w-[600px]'>Create your mood record and see how you feel on <span className='font-semibold'>every day of every year.</span></p> */}
             <Specialties/>
-            <CallToAction />
+            {/* <CallToAction /> */}
             {/* <Calendar demo /> */}
         </div>
     )

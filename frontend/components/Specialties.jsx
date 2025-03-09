@@ -1,3 +1,4 @@
+'use client'
 import React from 'react';
 import generalphys from '../public/Specs/general.webp';
 import derma from '../public/Specs/derma.webp';
@@ -54,18 +55,18 @@ const specialties = [
 const Specialties = () => {
   return (
     <div className="p-6 xl:mx-12 bg-white">
-      <h2 className="text-2xl font-bold mb-8">Browse by Specialties</h2>
-      <div className="grid grid-cols-3 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-12 gap-2">
+      <h2 className="text-xl font-bold mb-4">Browse by Specialties</h2>
+      <div className="grid grid-cols-3 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-12 ">
         {specialties.map((specialty) => (
           <div
             key={specialty.id}
-            className="flex flex-col items-center p-4 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+            className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
           >
-            <div className="w-16 h-16 bg-gray-100 rounded-full flex items-center justify-center mb-3">
+            <div className="w-20 h-20 bg-gray-100 rounded-full flex items-center justify-center mb-2">
               {/* Icon placeholder - you'll add Font Awesome icons here */}
-              <Image src={specialty.image} alt={specialty.name} width={32} height={32} />
+              <Image src={specialty.image} alt={specialty.name} width={42} height={42} />
             </div>
-            <span className="text-center text-xs md:text-sm font-medium text-gray-800">
+            <span className="text-center text-xs md:text-sm xl:text-md font-medium text-gray-800">
               {specialty.shortName}
             </span>
           </div>

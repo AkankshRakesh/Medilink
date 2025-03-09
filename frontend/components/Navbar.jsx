@@ -1,4 +1,4 @@
-"use client";
+'use client'
 
 import { useState } from "react";
 import { usePathname } from "next/navigation";
@@ -20,14 +20,13 @@ export default function Navbar() {
 
   return (
     <header className="p-4 flex items-center justify-between gap-4 sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur">
-      <Link href="/">
-        <div className="flex gap-4 items-center">
+        <div className="flex gap-4 items-center ">
           <h1 className={`text-xl lg:text-2xl textGradient ${fugaz.className}`}>
-            Medilink <i className="fa-solid fa-pills"></i>
+           <Link href="/">Medilink <i className="fa-solid fa-pills"></i></Link>
           </h1>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex gap-4">
+          <nav className="hidden lg:flex gap-4 mt-2">
             <Link href="/location" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/location')}`}>
               Location
             </Link>
@@ -42,7 +41,6 @@ export default function Navbar() {
             </Link>
           </nav>
         </div>
-      </Link>
 
       {/* Animated Hamburger Button */}
       <button className="flex lg:hidden flex-col justify-center items-center" onClick={() => setIsOpen(!isOpen)}>

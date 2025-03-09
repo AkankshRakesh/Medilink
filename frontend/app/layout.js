@@ -4,7 +4,6 @@ import Link from "next/link";
 import Head from "./head";
 import { ToastContainer } from "react-toastify";
 import Logout from "@/components/Logout";
-import { GoogleOAuthProvider } from "@react-oauth/google";
 import Navbar from "@/components/Navbar";
 
 const opensans = Open_Sans({ subsets: ["latin"] });
@@ -36,12 +35,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <Head />
-        <body className={'w-full mx-auto text-sm sm:text-base min-h-screen flex flex-col text-slate-800  ' + opensans.className}>
+        <body className={'w-full mx-auto text-sm sm:text-base min-h-screen flex flex-col text-slate-800 overflow-y-scroll no-scrollbar ' + opensans.className}>
           <Navbar />
           <ToastContainer />
-          <GoogleOAuthProvider clientId="236783902486-2n0e2j7c18t8ar3cgvo2rndi93jno75h.apps.googleusercontent.com" >
           {children}
-          </GoogleOAuthProvider>
         </body>
     </html>
   );

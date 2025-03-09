@@ -5,7 +5,6 @@ import Button from './Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
-import { GoogleLogin, useGoogleLogin } from '@react-oauth/google';
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
@@ -22,10 +21,6 @@ export default function Login() {
     const [loadingOtp, setLoadingOtp] = useState(false);
 
     const router = useRouter();
-    const googleLogin = useGoogleLogin({
-        onError: error => console.error(error),
-        onSuccess: tokenResponse => console.log(tokenResponse),
-      });
 
       async function sendOtp() {
         if (!email) {
