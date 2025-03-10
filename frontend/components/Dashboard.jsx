@@ -37,11 +37,12 @@ export default function Dashboard() {
         if (!response.ok) {
           throw new Error('Network response was not ok');
         }
-
         const result = await response.json();
+        console.log(result);
         if (result.success) {
           setCurrentUser(result);
-          setIsCounsellor(result.isDoctor === 1); // Assuming isDoctor is returned as 1 or 0
+          setIsCounsellor(result.isDoctor == 1); // Assuming isDoctor is returned as 1 or 0
+          
         } else {
           setCurrentUser(null);
         }
@@ -77,10 +78,6 @@ export default function Dashboard() {
 
   if (loading) {
     return <Loading />;
-  }
-
-  if (!currentUser) {
-    return <Login />;
   }
 
   return (

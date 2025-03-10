@@ -17,10 +17,31 @@ export default function Logout() {
         setIsUserLoggedIn(!!userId); // Convert userId to boolean
     }, []);
 
-    const logout = () => {
+    const callLogoutEndpoint = async (userId) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/logout.php`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ userId }),
+            });
+            if (!response.ok) {
+                throw new Error('Logout failed');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+    };
+
+    const logout = async () => {
+        const userId = localStorage.getItem('userId');
+        if (userId) {
+            await callLogoutEndpoint(userId);
+        }
         localStorage.removeItem('userId');
         setIsUserLoggedIn(false);
-        window.location.href = '/'; // Redirect to homepage after logout
+        // window.location.href = '/'; // Redirect to homepage after logout
     };
 
     if (!isUserLoggedIn) {

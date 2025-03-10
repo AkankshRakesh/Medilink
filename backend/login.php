@@ -1,5 +1,12 @@
 <?php
+session_start(); // Start the session
 include 'db.php';
+
+// Check if the user is already logged in
+if (isset($_SESSION['user_id'])) {
+    echo json_encode(["message" => "User already logged in", "user_id" => $_SESSION['user_id']]);
+    exit;
+}
 
 header("Access-Control-Allow-Origin: *"); // Use specific domain in production
 header("Access-Control-Allow-Methods: POST, OPTIONS"); // Allow POST and OPTIONS methods
@@ -28,7 +35,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     if (password_verify($password, $user['password'])) {
-        // $_SESSION['user_id'] = $user['id'];
+        $_SESSION['user_id'] = $user['id'];
         echo json_encode(["message" => "Login successful", "user_id" => $user['id'], "username" => $user['username']]);
     } else {
         echo json_encode(["message" => "Invalid email or password"]);

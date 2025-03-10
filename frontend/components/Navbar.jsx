@@ -26,7 +26,7 @@ export default function Navbar() {
           </h1>
 
           {/* Desktop Navigation */}
-          <nav className="hidden lg:flex gap-4 mt-2">
+          <nav className="hidden lg:flex gap-4 mt-1">
             <Link href="/doctors" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/doctors')}`}>
             <i className="fa-solid fa-user-doctor mr-2"></i>Find Doctors
             </Link>
