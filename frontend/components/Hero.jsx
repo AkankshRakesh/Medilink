@@ -23,9 +23,11 @@ export default function Hero() {
             <p className="text-lg text-gray-700">
               Private consultation + Audio call · Starts at just ₹199
             </p>
+            <Link href="/doctors" className="inline-block">
             <button className="bg-[#4C6FFF] text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors">
               Consult Now
             </button>
+            </Link>
             
             <div className="flex gap-6 pt-4">
               <div className="flex items-center gap-2">

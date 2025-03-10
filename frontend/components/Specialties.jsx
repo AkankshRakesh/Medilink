@@ -25,6 +25,7 @@ import onco from '../public/Specs/onco.webp';
 import diab from '../public/Specs/diab.webp';
 import dent from '../public/Specs/dent.webp';
 import Image from 'next/image';
+import Link from 'next/link';
 const specialties = [
   { id: 1, name: 'General Physician', shortName: 'General Physician', image: generalphys },
   { id: 2, name: 'Dermatology', shortName: 'Dermatology', image: derma },
@@ -58,7 +59,7 @@ const Specialties = () => {
       <h2 className="text-xl font-bold mb-4">Browse by Specialties</h2>
       <div className="grid grid-cols-3 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-12 ">
         {specialties.map((specialty) => (
-          <div
+          <Link href={`/doctors`}
             key={specialty.id}
             className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
           >
@@ -69,7 +70,7 @@ const Specialties = () => {
             <span className="text-center text-xs md:text-sm xl:text-md font-medium text-gray-800">
               {specialty.shortName}
             </span>
-          </div>
+          </Link>
         ))}
       </div>
     </div>

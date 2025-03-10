@@ -27,7 +27,7 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <nav className="hidden lg:flex gap-4 mt-2">
-            <Link href="/" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/')}`}>
+            <Link href="/doctors" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/doctors')}`}>
             <i className="fa-solid fa-user-doctor mr-2"></i>Find Doctors
             </Link>
             <Link href="/consultation" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/consultation')}`}>
@@ -69,7 +69,7 @@ export default function Navbar() {
             className="fixed top-12 left-0 right-0 bg-white/95 border-b shadow-lg lg:hidden"
           >
             <nav className="flex flex-col p-4 gap-4">
-              <Link href="/" className={`text-base py-1 textGradient ${opensans.className} ${isActive('/doctors')}`} onClick={() => setIsOpen(false)}>
+              <Link href="/doctors" className={`text-base py-1 textGradient ${opensans.className} ${isActive('/doctors')}`} onClick={() => setIsOpen(false)}>
               <i className="fa-solid fa-user-doctor mr-2"></i>Find Doctors
               </Link>
               <Link href="/consultation" className={`text-base pt-1 textGradient ${opensans.className} ${isActive('/consultation')}`} onClick={() => setIsOpen(false)}>
