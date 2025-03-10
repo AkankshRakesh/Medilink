@@ -28,18 +28,29 @@ export default function Logout() {
             <div className="flex justify-center gap-4">
                 <Link href={'/login'}>
                     <div className='lg:hidden'><Button text="Log in" /></div>
-                    <div className={'hidden lg:block text-lg font-bold border-r-2 pr-4 textGradient purpleShadow' + opensans.className}>Log in</div>
+                    <div className={'hidden lg:block text-xs' + opensans.className}><Button text="Log in" /></div>
                 </Link>
                 <Link href={'/signup'}>
                     <div className='lg:hidden'><Button text="Signup" dark/></div>
-                    <div className={'hidden lg:block text-lg font-bold textGradient purpleShadow' + opensans.className}>Signup</div>
+                    <div className={'hidden lg:block text-xs' + opensans.className}><Button text="Signup" dark/></div>
                 </Link>
             </div>
         );
     }
 
-    if (pathname === '/') {
-        return <Button text="Logout" clickHandler={logout} />;
+    else {
+        return (
+            <div className="flex justify-center gap-4">
+                <Link href={'/user'}>
+                    <div className='lg:hidden'><Button text="User Profile" icon={<i className="fa-solid fa-address-card mr-2"></i>} /></div>
+                    <div className={'hidden lg:block text-sm purpleShadow' + opensans.className}><Button text="User Profile" icon={<i className="fa-solid fa-address-card mr-2"></i>} /></div>
+                </Link>
+                <Link href={'/'}>
+                    <div className='lg:hidden'><Button text="Logout" dark clickHandler={logout} icon={<i className="fa-solid fa-right-from-bracket mr-2"></i>}/></div>
+                    <div className={'hidden lg:block text-sm purpleShadow' + opensans.className}><Button text="Logout" dark clickHandler={logout} icon={<i className="fa-solid fa-right-from-bracket mr-2"></i>}/></div>
+                </Link>
+            </div>
+    );
     }
 
     if (pathname === '/contact') {
@@ -52,5 +63,4 @@ export default function Logout() {
         );
     }
 
-    return <Button text="Logout" clickHandler={logout} />;
 }

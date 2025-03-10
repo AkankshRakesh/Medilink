@@ -193,10 +193,7 @@ export default function Login() {
                 </div>
             </form>
             <p className='text-center'>
-                {isRegister ? 'Already have an account? ' : "Don't have an account? "}
-                <button onClick={() => setIsRegister(!isRegister)} className='text-indigo-600'>
-                    {isRegister ? 'Sign in' : 'Sign up'}
-                </button>
+                Don't have an account? <a href="/signup" className="text-indigo-600">Signup</a>
             </p>
         </div>
         
