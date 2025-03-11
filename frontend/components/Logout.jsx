@@ -40,6 +40,8 @@ export default function Logout() {
             await callLogoutEndpoint(userId);
         }
         localStorage.removeItem('userId');
+        localStorage.removeItem('username');
+        localStorage.removeItem('email');
         setIsUserLoggedIn(false);
         // window.location.href = '/'; // Redirect to homepage after logout
     };

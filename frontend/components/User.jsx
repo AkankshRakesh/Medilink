@@ -10,14 +10,20 @@ const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 export const User = () => {
   const [loading, setLoading] = useState(true);
   const [currentUser, setCurrentUser] = useState(null);
-  const [isCounsellor, setIsCounsellor] = useState(false);
-  const now = new Date();
+  const [isDoctor, setIsDoctor] = useState(false);
+  const [email, setEmail] = useState('Unknown');
+  const [username, setUsername] = useState('Anonymous User');
+  const [time, setTime] = useState(new Date());
 
   useEffect(() => {
+    // Initialize state with localStorage values
+    setEmail(localStorage.getItem('email') || 'Unknown');
+    setTime(localStorage.getItem('loginTime') || new Date());
+    setUsername(localStorage.getItem('username') || 'Anonymous User');
+    
     const checkAuth = async () => {
       try {
         const userId = localStorage.getItem('userId');
-
         if (!userId) {
           setLoading(false);
           setCurrentUser(null);
@@ -40,7 +46,7 @@ export const User = () => {
         console.log(result);
         if (result.success) {
           setCurrentUser(result);
-          setIsCounsellor(result.isDoctor == 1);
+          setIsDoctor(result.isDoctor == 1);
         } else {
           setCurrentUser(null);
         }
@@ -65,7 +71,7 @@ export const User = () => {
         <div>
           <h4 className={'text-5xl sm:text-6xl md:text-7xl text-center ' + fugaz.className}>
             <span className="textGradient">
-              {isCounsellor ? 'Counsellor' : 'User'}
+              {isDoctor ? 'Counsellor' : 'User'}
             </span>{' '}
             Dashboard
           </h4>
@@ -76,40 +82,34 @@ export const User = () => {
           {/* User Profile Card */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
             <div className="p-6">
-              <div className="flex items-center gap-2 mb-6">
-                <svg className="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
-                  <circle cx="12" cy="7" r="4" />
-                </svg>
-                <h2 className="text-xl font-semibold">Profile Information</h2>
+              <div className="flex items-center mb-6">
+                <h2 className="text-xl font-semibold text-gray-200">Profile Information</h2>
               </div>
               <div className="flex items-center gap-4 mb-6">
                 <div className="relative h-20 w-20 rounded-full overflow-hidden bg-gray-200">
                   <img
-                    src={currentUser?.avatar || "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=128&h=128&fit=crop"}
+                    src={currentUser?.avatar || `https://ui-avatars.com/api/?name=${(username || 'A').charAt(0)}&background=random`}
                     alt="Profile"
                     className="h-full w-full object-cover"
-                    onError={(e) => {
-                      e.currentTarget.src = `https://ui-avatars.com/api/?name=${currentUser?.name?.charAt(0) || 'U'}&background=random`;
-                    }}
+                    onError={(e) => (e.currentTarget.src = `https://ui-avatars.com/api/?name=${username.charAt(0) || 'U'}&background=random`)}
                   />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold">{currentUser?.name || 'Anonymous User'}</h3>
+                  <h3 className="text-2xl font-semibold text-gray-200">{username}</h3>
                   <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
                     <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                       <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
                       <polyline points="22,6 12,13 2,6" />
                     </svg>
-                    <span>{currentUser?.email || 'No email provided'}</span>
+                    <span>{email}</span>
                   </div>
                   <div className="mt-2">
                     <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      isCounsellor 
+                      isDoctor 
                         ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
                         : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
                     }`}>
-                      {isCounsellor ? 'Counsellor' : 'Patient'}
+                      {isDoctor ? 'Doctor' : 'Patient'}
                     </span>
                   </div>
                 </div>
@@ -132,7 +132,15 @@ export const User = () => {
                     <circle cx="12" cy="12" r="10" />
                     <polyline points="12 6 12 12 16 14" />
                   </svg>
-                  <span>Last login: {currentUser?.lastLogin || 'Unknown'}</span>
+                  <span>Last login: {new Date(time).toLocaleString('en-IN', {
+                    weekday: 'long',
+                    day: '2-digit',
+                    month: 'long',
+                    year: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                    hour12: true
+                  })}</span>
                 </div>
               </div>
             </div>
@@ -141,8 +149,8 @@ export const User = () => {
           {/* Activity Summary Card */}
           <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
             <div className="p-6">
-              <h2 className="text-xl font-semibold mb-6">Activity Summary</h2>
-              {isCounsellor ? (
+              <h2 className="text-xl font-semibold mb-6 text-gray-200">Activity Summary</h2>
+              {isDoctor ? (
                 <div className="space-y-4">
                   <p className="text-gray-600 dark:text-gray-400">
                     Welcome to your counsellor dashboard. Here you can:
