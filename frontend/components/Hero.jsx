@@ -6,19 +6,20 @@ import Calendar from './Calendar';
 import Link from 'next/link';
 import CallToAction from './CallToAction';
 import Specialties from './Specialties';
+import Find_Doc from './findDoc';
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Hero() {
     return (
         <div className='pb-4 flex flex-col'>
-            <div className=" bg-[#FFF1EC]">
+            <div className=" bg-[#dfe2ec]">
       {/* Hero Section */}
       <div className="px-6 pb-16 pt-12 lg:p-16">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Left Content */}
           <div className="flex-1 space-y-6">
             <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
-              Find the right doctor for all your ailments
+              Find the right doctor for all your concerns
             </h1>
             <p className="text-lg text-gray-700">
               Private consultation + Audio call · Starts at just ₹199
@@ -71,29 +72,27 @@ export default function Hero() {
         
       </div>
     </div>
-    <div className=" grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 bg-gray-900  p-8">
-          <div className="text-center">
-            <div className="text-white text-2xl font-bold">2,00,000+</div>
-            <div className="text-gray-400 text-sm">Happy Users</div>
-          </div>
-          <div className="text-center">
-            <div className="text-white text-2xl font-bold">20,000+</div>
-            <div className="text-gray-400 text-sm">Verified Doctors</div>
-          </div>
-          <div className="text-center">
-            <div className="text-white text-2xl font-bold">25+</div>
-            <div className="text-gray-400 text-sm">Specialities</div>
-          </div>
-          <div className="text-center">
-            <div className="text-white text-2xl font-bold">4.5/5</div>
-            <div className="text-gray-400 text-sm">App Rating</div>
-          </div>
-        </div>
-            {/* <h1 className={'text-5xl sm:text-6xl md:text-7xl text-center mb-8 ' + fugaz.className}><span className='textGradient'>Medilink</span> helps you to track your <span className='textGradient'>health</span> everyday!</h1>
-            <p className='text-lg sm:text-xl md:text-2xl text-center w-full mx-auto mb-8 max-w-[600px]'>Create your mood record and see how you feel on <span className='font-semibold'>every day of every year.</span></p> */}
+
+            <Find_Doc/>
             <Specialties/>
-            {/* <CallToAction /> */}
-            {/* <Calendar demo /> */}
+            <div className=" grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 bg-gray-900  p-8">
+                  <div className="text-center">
+                    <div className="text-white text-2xl font-bold">2,00,000+</div>
+                    <div className="text-gray-400 text-sm">Happy Users</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-white text-2xl font-bold">20,000+</div>
+                    <div className="text-gray-400 text-sm">Verified Doctors</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-white text-2xl font-bold">25+</div>
+                    <div className="text-gray-400 text-sm">Specialities</div>
+                  </div>
+                  <div className="text-center">
+                    <div className="text-white text-2xl font-bold">4.5/5</div>
+                    <div className="text-gray-400 text-sm">App Rating</div>
+                  </div>
+                </div>
         </div>
     )
 }
