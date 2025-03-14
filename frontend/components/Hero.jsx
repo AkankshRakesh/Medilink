@@ -93,6 +93,73 @@ export default function Hero() {
                     <div className="text-gray-400 text-sm">App Rating</div>
                   </div>
                 </div>
-        </div>
+
+
+
+              <div className="text-black text-xl sm:text-2xl md:text-3xl ml-4 sm:ml-6 md:ml-12 lg:ml-[60px] font-bold">
+                Benefits of Online Consultation
+              </div>
+              <div className="gap-2 border border-gray-200 mx-4 sm:mx-6 md:mx-12 lg:mx-16 my-5 p-4 sm:p-8 md:p-16 lg:p-24 rounded-xl transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)] max-w-9xl mx-auto">
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-12">
+                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
+                    <div className="text-blue-500">
+                      Consult Top Doctors 24x7
+                    </div>
+                    <div>
+                      Connect instantly with a 24x7 specialist or choose to video visit a particular
+                      doctor.
+                    </div>
+                  </div>
+                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  style={{ boxShadow: '0 0 20px 5px rgba(59, 130, 246, 0.4)' }}>
+                    <div className="text-blue-500">
+                      Convenient and Easy
+                    </div>
+                    <div className="text-gray-700">
+                      Start an instant consultation within 2 minutes or do video consultation
+                      at the scheduled time.
+                    </div>
+                  </div>
+                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
+                    <div className="text-blue-500">
+                      100% Safe Consultations
+                    </div>
+                    <div className="text-gray-700">
+                      Be assured that your online consultation will be fully private and secured.
+                    </div>
+                  </div>
+                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
+                    <div className="text-blue-500">
+                      Digital Prescriptions
+                    </div>
+                    <div className="text-gray-700">
+                      Receive legally valid prescriptions straight to your phone or email.
+                    </div>
+                  </div>
+                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  style={{ boxShadow: '0 0 20px 5px rgba(59, 130, 246, 0.4)' }}>
+                    <div className="text-blue-500">
+                      Free Follow-up
+                    </div>
+                    <div className="text-gray-700">
+                      Get a valid digital prescription and a 7-day, free follow-up for further
+                      clarifications.
+                    </div>
+                  </div>
+                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
+                    <div className="text-blue-500">
+                      Instant Access
+                    </div>
+                    <div className="text-gray-700">
+                      Connect with a certified doctor instantly—no waiting, no hassle.
+                    </div>
+                  </div>
+                </div>
+              </div>
+              </div>
     )
 }
