@@ -1,19 +1,17 @@
 'use client'
 import React, {useState, useMemo} from 'react';
 import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@heroui/react";
-import {DatePicker} from "@heroui/react";
 
-export default function FindDoc() {
-    // Add new state for dropdown visibilityz
+    //state_management
+    export default function FindDoc() {
+
     const [isSpecialtyOpen, setIsSpecialtyOpen] = useState(false);
-    const [isLanguageOpen, setIsLanguageOpen] = useState(false);
-    
-    // State variables
+    const [isLanguageOpen, setIsLanguageOpen] = useState(false); 
     const [date, setDate] = useState('');
-    const [specialty, setSpecialty] = useState(new Set([]));
-    const [lang, setLang] = useState(new Set([]));
+    const [selectedSpecialty, setSpecialty] = useState('');
+    const [selectedLanguage, setLang] = useState('');
 
-    const doctors = [
+    const specialties = [
         {key: "general_physician", label: "General Physician"},
         {key: "dermatology", label: "Dermatology"},
         {key: "gynecology", label: "Obstetrics & Gynaecology"},
@@ -24,7 +22,7 @@ export default function FindDoc() {
         {key: "urology", label: "Urology"}
     ];
 
-    const langs = [
+    const languages = [
         {key: "english", label: "English"},
         {key: "hindi", label: "Hindi"},
         {key: "tamil", label: "Tamil"},
@@ -33,47 +31,46 @@ export default function FindDoc() {
         {key: "kannada", label: "Kannada"}
     ];
 
-    const specialtyValue = useMemo(
-        () => Array.from(specialty).map(key => 
-            doctors.find(doc => doc.key === key)?.label || key
-        ).join(", "),
-        [specialty]
-    );
+    const selectedSpecialtyLabel = useMemo(() => {
+        return specialties.find((item) => item.key === selectedSpecialty)?.label || "";
+      }, [selectedSpecialty]);
+    
+    const selectedLanguageLabel = useMemo(() => {
+        return languages.find((item) => item.key === selectedLanguage)?.label || "";
+    }, [selectedLanguage]);
 
-    const langValue = useMemo(
-        () => Array.from(lang).map(key => 
-            langs.find(l => l.key === key)?.label || key
-        ).join(", "),
-        [lang]
-    );
 
+    //submission_handler
     const handleSubmit = (event) => {
         event.preventDefault();
-        console.log('Speciality:', specialtyValue);
+        console.log('Specialty:', selectedSpecialtyLabel);
         console.log('Date:', date);
-        console.log('Language:', langValue);
-    };
-
-    const handleDropdownClick = async (elementId, setIsOpen) => {
+        console.log('Language:', selectedLanguageLabel);
+      };
+    
+      //scroll_effect
+      const handleDropdownClick = async (elementId, setIsOpen) => {
         const element = document.getElementById(elementId);
         if (element) {
-            const yOffset = -150; // Increased offset for better visibility
-            const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-            
-            // Close dropdown, scroll, then open
-            setIsOpen(false);
-            await new Promise((resolve) => {
-                window.scrollTo({ 
-                    top: y, 
-                    behavior: 'smooth' 
-                });
-                setTimeout(() => {
-                    setIsOpen(true);
-                    resolve();
-                }, 300); // Reduced timeout for better responsiveness
+          const yOffset = -150; // offset for scroll position
+          const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+      
+          setIsOpen(false); // close dropdown
+      
+          await new Promise((resolve) => {
+            window.scrollTo({
+              top: y,
+              behavior: 'smooth',
             });
+      
+            setTimeout(() => {
+              setIsOpen(true); // reopen dropdown
+              resolve();
+            }, 500);
+          });
         }
-    };
+      };
+      
 
     return(
         <div className="bg-white p-8 rounded-lg shadow-lg mx-6 -mt-8 mb-8 relative z-10 transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)]">
@@ -93,24 +90,24 @@ export default function FindDoc() {
                     >
                         <DropdownTrigger>
                             <Button 
-                                className="w-full border border-gray-300 rounded-lg p-3 bg-white  capitalize hover:bg-gray-50 flex justify-start text-gray-500"
+                                className="w-full border border-gray-300 rounded-lg p-6 bg-white  capitalize hover:bg-gray-50 flex justify-start text-gray-500"
                                 variant="bordered"
                                 onClick={() => handleDropdownClick('specialty-dropdown', setIsSpecialtyOpen)}
                             >
-                                {specialtyValue || "Choose Speciality"}
+                                {selectedSpecialtyLabel || "Choose Speciality"}
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu
                             className="w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-[300px] overflow-y-auto mt-1"
                             disallowEmptySelection
                             aria-label="Select speciality"
-                            selectedKeys={specialty}
+                            selectedKeys={[selectedSpecialty]}
                             selectionMode="single"
-                            onSelectionChange={setSpecialty}
+                            onSelectionChange={(key) => setSelectedSpeciality(key)}
                             placement="bottom"
                             offset={8}
                         >
-                            {doctors.map((spec) => (
+                            {specialties.map((spec) => (
                                 <DropdownItem 
                                     key={spec.key}
                                     className="hover:bg-gray-100 px-4 py-2 cursor-pointer"
@@ -129,7 +126,7 @@ export default function FindDoc() {
                     <input
                         type="date"
                         value={date}
-                        onChange={(e) => setDate(e.target.value)}
+                        onChange={(event) => setDate(event.target.value)}
                         className="border border-gray-300 rounded-lg p-3 focus:outline-none hover:bg-gray-50 text-gray-500"
                         required
                     />
@@ -144,24 +141,24 @@ export default function FindDoc() {
                     >
                         <DropdownTrigger>
                             <Button 
-                                className="w-full border border-gray-300 rounded-lg p-3 bg-white capitalize hover:bg-gray-50 flex justify-start text-gray-500"
+                                className="w-full border border-gray-300 rounded-lg p-6 bg-white capitalize hover:bg-gray-50 flex justify-start text-gray-500"
                                 variant="bordered"
                                 onClick={() => handleDropdownClick('language-dropdown', setIsLanguageOpen)}
                             >
-                                {langValue || "Choose Language"}
+                                {selectedLanguageLabel || "Choose Language"}
                             </Button>
                         </DropdownTrigger>
                         <DropdownMenu
                             className="w-full bg-white border border-gray-200 rounded-lg shadow-lg max-h-[300px] overflow-y-auto mt-1"
                             disallowEmptySelection
                             aria-label="Select language"
-                            selectedKeys={lang}
-                            selectionMode="single"
-                            onSelectionChange={setLang}
+                            selectedKeys={[selectedLanguage]}
+                            selectionMode="sing(le"
+                            onSelectionChange={(key) => setSelectedLanguage(key)}
                             placement="bottom"
                             offset={8}
                         >
-                            {langs.map((lang) => (
+                            {languages.map((lang) => (
                                 <DropdownItem 
                                     key={lang.key}
                                     className="hover:bg-gray-100 px-4 py-2 cursor-pointer"
@@ -170,8 +167,19 @@ export default function FindDoc() {
                                 </DropdownItem>
                             ))}
                         </DropdownMenu>
-                    </Dropdown>
+                    </Dropdown> 
                 </div>
+
+
+                <div className="flex w-full md:w-auto justify-center md:justify-end mt-4 md:mt-0">
+                    <Button
+                        type="submit"
+                        className="text-white bg-[#4C6FFF] py-10 px-4 rounded-xl font-semibold w-full md:w-auto"                    
+                    >
+                        Submit
+                    </Button>
+                </div>
+
             </form>
         </div>
     );
