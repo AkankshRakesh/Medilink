@@ -7,6 +7,7 @@ import Link from 'next/link';
 import CallToAction from './CallToAction';
 import Specialties from './Specialties';
 import Find_Doc from './findDoc';
+// import Carousel from './Carousel';
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Hero() {
@@ -29,7 +30,7 @@ export default function Hero() {
               Consult Now
             </button>
             </Link>
-            
+
             <div className="flex gap-6 pt-4">
               <div className="flex items-center gap-2">
                 <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -96,22 +97,30 @@ export default function Hero() {
 
 
 
-              <div className="text-black text-xl sm:text-2xl md:text-3xl ml-4 sm:ml-6 md:ml-12 lg:ml-[60px] font-bold">
-                Benefits of Online Consultation
+              <div className="text-black text-xl sm:text-2xl md:text-3xl ml-4 sm:ml-6 md:ml-12 lg:ml-[62px] font-bold">
+              {/* <span>
+              <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              viewBox="0 0 576 512"
+              className="w-5 h-5"
+              >
+              <path d="M287.9 0c9.2 0 17.6 5.2 21.6 13.5l68.6 141.3 153.2 22.6c9 1.3 16.5 7.6 19.3 16.3s.5 18.1-5.9 24.5L433.6 328.4l26.2 155.6c1.5 9-2.2 18.1-9.7 23.5s-17.3 6-25.3 1.7l-137-73.2L151 509.1c-8.1 4.3-17.9 3.7-25.3-1.7s-11.2-14.5-9.7-23.5l26.2-155.6L31.1 218.2c-6.5-6.4-8.7-15.9-5.9-24.5s10.3-14.9 19.3-16.3l153.2-22.6L266.3 13.5C270.4 5.2 278.7 0 287.9 0zm0 79L235.4 187.2c-3.5 7.1-10.2 12.1-18.1 13.3L99 217.9 184.9 303c5.5 5.5 8.1 13.3 6.8 21L171.4 443.7l105.2-56.2c7.1-3.8 15.6-3.8 22.6 0l105.2 56.2L384.2 324.1c-1.3-7.7 1.2-15.5 6.8-21l85.9-85.1L358.6 200.5c-7.8-1.2-14.6-6.1-18.1-13.3L287.9 79z"/> */}
+              {/* </svg> */}
+              Benefits of Online Consultation  
               </div>
               <div className="gap-2 border border-gray-200 mx-4 sm:mx-6 md:mx-12 lg:mx-16 my-5 p-4 sm:p-8 md:p-16 lg:p-24 rounded-xl transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)] max-w-9xl mx-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-12">
-                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
                     <div className="text-blue-500">
                       Consult Top Doctors 24x7
                     </div>
-                    <div>
+                    <div className="text-gray-700">
                       Connect instantly with a 24x7 specialist or choose to video visit a particular
                       doctor.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{ boxShadow: '0 0 20px 5px rgba(59, 130, 246, 0.4)' }}>
                     <div className="text-blue-500">
                       Convenient and Easy
@@ -121,7 +130,7 @@ export default function Hero() {
                       at the scheduled time.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
                     <div className="text-blue-500">
                       100% Safe Consultations
@@ -130,7 +139,7 @@ export default function Hero() {
                       Be assured that your online consultation will be fully private and secured.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
                     <div className="text-blue-500">
                       Digital Prescriptions
@@ -139,7 +148,7 @@ export default function Hero() {
                       Receive legally valid prescriptions straight to your phone or email.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{ boxShadow: '0 0 20px 5px rgba(59, 130, 246, 0.4)' }}>
                     <div className="text-blue-500">
                       Free Follow-up
@@ -149,7 +158,7 @@ export default function Hero() {
                       clarifications.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-600 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
                     <div className="text-blue-500">
                       Instant Access
@@ -160,6 +169,9 @@ export default function Hero() {
                   </div>
                 </div>
               </div>
+
+
+              {/* <Carousel/> */}
               </div>
     )
 }
