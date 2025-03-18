@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.26.3",
+    "@splinetool/react-spline": "^4.0.0",
+    "@splinetool/runtime": "^1.9.79",
     "axios": "^1.8.2",
     "framer-motion": "^12.4.10",
     "next": "^15.2.1",

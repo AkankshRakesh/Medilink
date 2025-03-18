@@ -90,7 +90,7 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@he
                     >
                         <DropdownTrigger>
                             <Button 
-                                className="w-full border border-gray-300 rounded-lg p-6 bg-white  capitalize hover:bg-gray-50 flex justify-start text-gray-500"
+                                className="w-full border border-gray-300 rounded-lg p-3 bg-white  capitalize hover:bg-gray-50 flex justify-start text-gray-500"
                                 variant="bordered"
                                 onClick={() => handleDropdownClick('specialty-dropdown', setIsSpecialtyOpen)}
                             >
@@ -141,7 +141,7 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@he
                     >
                         <DropdownTrigger>
                             <Button 
-                                className="w-full border border-gray-300 rounded-lg p-6 bg-white capitalize hover:bg-gray-50 flex justify-start text-gray-500"
+                                className="w-full border border-gray-300 rounded-lg p-3 bg-white capitalize hover:bg-gray-50 flex justify-start text-gray-500"
                                 variant="bordered"
                                 onClick={() => handleDropdownClick('language-dropdown', setIsLanguageOpen)}
                             >
@@ -174,7 +174,7 @@ import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem, Button} from "@he
                 <div className="flex w-full md:w-auto justify-center md:justify-end mt-4 md:mt-0">
                     <Button
                         type="submit"
-                        className="text-white bg-[#4C6FFF] py-10 px-4 rounded-xl font-semibold w-full md:w-auto"                    
+                        className="text-white bg-[#4C6FFF] p-5 rounded-xl font-semibold w-full md:w-auto"                    
                     >
                         Submit
                     </Button>
