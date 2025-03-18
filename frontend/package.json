@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.26.3",
+    "@heroui/dropdown": "^2.3.16",
     "@splinetool/react-spline": "^4.0.0",
     "@splinetool/runtime": "^1.9.79",
     "axios": "^1.8.2",
