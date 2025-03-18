@@ -46,7 +46,7 @@ export default function ContactUs() {
     };
 
     return (
-        <div className='flex flex-col flex-1 gap-8 sm:gap-12 md:gap-16 py-4 md:py-0'>
+        <div className='flex flex-col flex-1 gap-5 sm:gap-12 md:gap-16 pt-10 py-0 md:px-96 px-10 bg-gradient-to-t from-indigo-400 via-violet-300 to-indigo-200'>
             <h4 className={'text-5xl sm:text-6xl md:text-7xl text-center ' + fugaz.className}>
                 Contact <span className='textGradient'>Us</span>
             </h4>
