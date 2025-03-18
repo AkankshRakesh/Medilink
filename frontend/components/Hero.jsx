@@ -8,14 +8,17 @@ import CallToAction from './CallToAction';
 import Specialties from './Specialties';
 import Find_Doc from './findDoc';
 // import Carousel from './Carousel';
+
+import Spline from '@splinetool/react-spline';
+
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Hero() {
     return (
         <div className='pb-4 flex flex-col'>
-            <div className=" bg-[#dfe2ec]">
+            <div className=" bg-[#D4D5E5]">
       {/* Hero Section */}
-      <div className="px-6 pb-16 pt-12 lg:p-16">
+      <div className="px-6 pb-16 pt-12 lg:p-10 py-0">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Left Content */}
           <div className="flex-1 space-y-6">
@@ -60,17 +63,20 @@ export default function Hero() {
           </div>
 
           {/* Right Image */}
-          <div className="flex-1">
+          <div className="flex-1 relative h-[620px] block md:hidden z-10">
             <img
               src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
-              alt="Doctor consultation"
-              className="rounded-2xl shadow-xl w-full"
+              alt="Mobile View"
+              className="w-full h-full object-cover rounded-xl shadow-xl"
             />
           </div>
-        </div>
+          <div className="flex-1 relative h-[620px] hidden md:block">
+        <Spline
+          className="w-auto h-auto"
+          scene="https://prod.spline.design/DsttbXsriKDBQQMr/scene.splinecode"/>
 
-        {/* Stats Section */}
-        
+      </div>
+        </div>
       </div>
     </div>
 
@@ -110,7 +116,7 @@ export default function Hero() {
               </div>
               <div className="gap-2 border border-gray-200 mx-4 sm:mx-6 md:mx-12 lg:mx-16 my-5 p-4 sm:p-8 md:p-16 lg:p-24 rounded-xl transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)] max-w-9xl mx-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-12">
-                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8  font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
                     <div className="text-blue-500">
                       Consult Top Doctors 24x7
@@ -120,7 +126,7 @@ export default function Hero() {
                       doctor.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8  font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{ boxShadow: '0 0 20px 5px rgba(59, 130, 246, 0.4)' }}>
                     <div className="text-blue-500">
                       Convenient and Easy
@@ -130,7 +136,7 @@ export default function Hero() {
                       at the scheduled time.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8  font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
                     <div className="text-blue-500">
                       100% Safe Consultations
@@ -139,7 +145,7 @@ export default function Hero() {
                       Be assured that your online consultation will be fully private and secured.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8  font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
                     <div className="text-blue-500">
                       Digital Prescriptions
@@ -148,7 +154,7 @@ export default function Hero() {
                       Receive legally valid prescriptions straight to your phone or email.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8 font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{ boxShadow: '0 0 20px 5px rgba(59, 130, 246, 0.4)' }}>
                     <div className="text-blue-500">
                       Free Follow-up
@@ -158,7 +164,7 @@ export default function Hero() {
                       clarifications.
                     </div>
                   </div>
-                  <div className="flex flex-col border border-gray-300 p-8 font-mono font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
+                  <div className="flex flex-col border border-gray-300 p-8  font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>
                     <div className="text-blue-500">
                       Instant Access
@@ -169,7 +175,7 @@ export default function Hero() {
                   </div>
                 </div>
               </div>
-
+              
 
               {/* <Carousel/> */}
               </div>
