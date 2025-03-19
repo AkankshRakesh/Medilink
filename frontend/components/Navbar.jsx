@@ -37,7 +37,7 @@ export default function Navbar() {
             <i className="fa-solid fa-headset mr-2"></i>Contact Us
             </Link>
             <Link href="/about" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/about')}`} onClick={() => setIsOpen(false)}>
-            <i class="fa-solid fa-user-nurse mr-2"></i>About Us
+            <i className="fa-solid fa-user-nurse mr-2"></i>About Us
             </Link>
           </nav>
         </div>
@@ -82,7 +82,7 @@ export default function Navbar() {
               <i className="fa-solid fa-headset mr-2"></i>Contact Us
               </Link>
               <Link href="/about" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/about')}`} onClick={() => setIsOpen(false)}>
-              <i class="fa-solid fa-user-nurse mr-2"></i>About Us
+              <i className="fa-solid fa-user-nurse mr-2"></i>About Us
               </Link>
               <Logout />
             </nav>
