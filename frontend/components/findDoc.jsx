@@ -13,9 +13,9 @@ import {
     // DropdownMenuSubContent,
     // DropdownMenuSubTrigger,
     DropdownMenuTrigger,
-  } from "../components/ui/dropdown-menu"
+  } from "./ui/dropdown-menu"
 
-  import { Button } from "../components/ui/button"
+  import { Button } from "./ui/button"
 
 //   import { format } from "moment-fns"
 //   import { CalendarIcon } from "lucide-react"
