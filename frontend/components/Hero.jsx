@@ -177,7 +177,7 @@ export default function Hero() {
               </div>
               
 
-              {/* <Carousel/> */}
+              {/* <Carousel/> */} 
               </div>
     )
 }
