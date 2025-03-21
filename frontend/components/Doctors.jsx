@@ -1,6 +1,5 @@
 "use client";
-import { useState } from "react";
-import data from "./data";
+import { useState, useEffect } from "react";
 
 const filtersData = {
   experience: ["0-5", "6-10", "11+"],
@@ -9,13 +8,32 @@ const filtersData = {
 };
 
 function Doctors() {
+  const [doctors, setDoctors] = useState([]);
   const [selectedFilters, setSelectedFilters] = useState({
     experience: [],
     fees: [],
     languages: [],
   });
-
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
+
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData.php`)
+      .then((res) => res.json())
+      .then((data) => {
+        console.log("Fetched doctors:", data);
+        if (data.success && Array.isArray(data.doctors)) {
+          setDoctors(data.doctors); // ✅ Ensure doctors is an array
+        } else {
+          setDoctors([]); // ✅ Prevent undefined issues
+        }
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setDoctors([]); // ✅ Handle network errors
+      });
+  }, []);
+  
+
   const toggleFilter = (category, value) => {
     setSelectedFilters((prev) => ({
       ...prev,
@@ -26,27 +44,19 @@ function Doctors() {
   };
 
   const clearFilters = () => {
-    setSelectedFilters({
-      experience: [],
-      fees: [],
-      languages: [],
-    });
+    setSelectedFilters({ experience: [], fees: [], languages: [] });
   };
 
   const filterDoctors = (doctors) => {
     return doctors.filter((doctor) => {
-      // Filter by experience
       const experienceMatch =
         selectedFilters.experience.length === 0 ||
         selectedFilters.experience.some((range) => {
           const [min, max] = range.split("-").map(Number);
           return (
-            doctor.experience >= min &&
-            (max ? doctor.experience <= max : doctor.experience >= min)
+            doctor.experience >= min && (max ? doctor.experience <= max : true)
           );
         });
-
-      // Filter by fees
       const feesMatch =
         selectedFilters.fees.length === 0 ||
         selectedFilters.fees.some((range) => {
@@ -57,106 +67,50 @@ function Doctors() {
             return doctor.fee >= min && doctor.fee <= max;
           }
         });
-
-      // Filter by languages
       const languageMatch =
         selectedFilters.languages.length === 0 ||
-        selectedFilters.languages.some((lang) =>
-          doctor.languages.includes(lang)
-        );
-
+        selectedFilters.languages.some((lang) => doctor.languages.includes(lang));
       return experienceMatch && feesMatch && languageMatch;
     });
   };
 
-  const filteredDoctors = filterDoctors(data);
+  const filteredDoctors = filterDoctors(doctors);
 
   return (
     <div className="mt-2 px-4 h-[calc(100vh-2rem)] flex flex-col">
-      <p className="text-sky-600 text-xs">
-        Home <i className="fa-solid fa-angle-right"></i> Doctors{" "}
-        <i className="fa-solid fa-angle-right"></i> General Physicians{" "}
-      </p>
-
+      <p className="text-sky-600 text-xs">Home <i className="fa-solid fa-angle-right"></i> Doctors</p>
       <div className="flex flex-col md:flex-row gap-4 mt-4 h-full">
-        {/* Filters Section */}
         <div className="w-full md:w-1/4">
-          {/* Filters Toggle Button for Small Screens */}
           <button
             onClick={() => setIsFiltersOpen(!isFiltersOpen)}
             className="md:hidden w-full bg-sky-600 text-white py-2 rounded-lg mb-4"
           >
             {isFiltersOpen ? "Hide Filters" : "Show Filters"}
           </button>
-
-          {/* Filters Dropdown for Small Screens */}
-          <div
-            className={`${
-              isFiltersOpen ? "block" : "hidden"
-            } md:block md:relative md:top-0 md:left-0 md:bg-transparent md:shadow-none md:rounded-none md:p-0 bg-white shadow-md rounded-lg p-4`}
-          >
+          <div className={`${isFiltersOpen ? "block" : "hidden"} md:block bg-white shadow-md rounded-lg p-4`}>
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-bold">Filters</h2>
-              <button
-                onClick={clearFilters}
-                className="text-sky-600 font-semibold"
-              >
-                Clear All
-              </button>
+              <button onClick={clearFilters} className="text-sky-600 font-semibold">Clear All</button>
             </div>
-
-            {/* Experience Filter */}
-            <div className="mt-4">
-              <h3 className="font-semibold">Experience (In Years)</h3>
-              {filtersData.experience.map((item) => (
-                <label key={item} className="flex items-center gap-2 mt-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedFilters.experience.includes(item)}
-                    onChange={() => toggleFilter("experience", item)}
-                  />
-                  {item}
-                </label>
-              ))}
-            </div>
-
-            {/* Fees Filter */}
-            <div className="mt-4">
-              <h3 className="font-semibold">Fees (In Rupees)</h3>
-              {filtersData.fees.map((item) => (
-                <label key={item} className="flex items-center gap-2 mt-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedFilters.fees.includes(item)}
-                    onChange={() => toggleFilter("fees", item)}
-                  />
-                  {item}
-                </label>
-              ))}
-            </div>
-
-            {/* Language Filter */}
-            <div className="mt-4">
-              <h3 className="font-semibold">Language</h3>
-              {filtersData.languages.map((item) => (
-                <label key={item} className="flex items-center gap-2 mt-2">
-                  <input
-                    type="checkbox"
-                    checked={selectedFilters.languages.includes(item)}
-                    onChange={() => toggleFilter("languages", item)}
-                  />
-                  {item}
-                </label>
-              ))}
-            </div>
+            {Object.keys(filtersData).map((category) => (
+              <div key={category} className="mt-4">
+                <h3 className="font-semibold">{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+                {filtersData[category].map((item) => (
+                  <label key={item} className="flex items-center gap-2 mt-2">
+                    <input
+                      type="checkbox"
+                      checked={selectedFilters[category].includes(item)}
+                      onChange={() => toggleFilter(category, item)}
+                    />
+                    {item}
+                  </label>
+                ))}
+              </div>
+            ))}
           </div>
         </div>
-
-        {/* Doctors List Section */}
         <div className="w-full md:w-3/4 h-full overflow-y-auto">
-          <p className="my-5 font-bold text-xl tracking-wide">
-            Consult General Physicians Online - Internal Medicine Specialists
-          </p>
+          <p className="my-5 font-bold text-xl">Consult General Physicians Online</p>
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
             {filteredDoctors.map((doctor) => (
               <DoctorCard key={doctor.name} doctor={doctor} />
