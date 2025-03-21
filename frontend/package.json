@@ -10,12 +10,21 @@
   },
   "dependencies": {
     "@babel/preset-react": "^7.26.3",
+    "@radix-ui/react-dropdown-menu": "^2.1.6",
+    "@radix-ui/react-slot": "^1.1.2",
+    "@splinetool/react-spline": "^4.0.0",
+    "@splinetool/runtime": "^1.9.79",
     "axios": "^1.8.2",
+    "class-variance-authority": "^0.7.1",
+    "clsx": "^2.1.1",
     "framer-motion": "^12.4.10",
+    "lucide-react": "^0.483.0",
     "next": "^15.2.1",
     "react": "^18",
     "react-dom": "^18",
-    "react-toastify": "^11.0.3"
+    "react-toastify": "^11.0.3",
+    "tailwind-merge": "^3.0.2",
+    "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@babel/core": "^7.26.7",
