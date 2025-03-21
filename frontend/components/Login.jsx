@@ -193,8 +193,9 @@ export default function Login() {
                 </div>
             </form>
             <p className='text-center'>
-                Don't have an account? <a href="/signup" className="text-indigo-600">Signup</a>
-            </p>
+  You don&apos;t have an account? <a href="/signup" className="text-indigo-600">Signup</a>
+</p>
+
         </div>
         
     ): (
