@@ -71,7 +71,7 @@ export const User = () => {
         <div>
           <h4 className={'text-5xl sm:text-6xl md:text-7xl text-center ' + fugaz.className}>
             <span className="textGradient">
-              {isDoctor ? 'Counsellor' : 'User'}
+              {isDoctor ? 'Doctor' : 'User'}
             </span>{' '}
             Dashboard
           </h4>
