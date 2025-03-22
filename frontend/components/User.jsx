@@ -1,181 +1,253 @@
-'use client'
-import { Fugaz_One } from 'next/font/google';
-import React, { useEffect, useState } from 'react';
-import Calendar from './Calendar';
-import Loading from './Loading';
-import Login from './Login';
+"use client"
+import { Fugaz_One } from "next/font/google"
+import { useEffect, useState } from "react"
+import Loading from "./Loading"
+import { toast } from "react-toastify"
 
-const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
+// Add these styles to your CSS or add them inline here
+const styles = {
+  "@keyframes fadeIn": {
+    from: { opacity: 0 },
+    to: { opacity: 1 },
+  },
+  "@keyframes scaleIn": {
+    from: { transform: "scale(0.95)", opacity: 0 },
+    to: { transform: "scale(1)", opacity: 1 },
+  },
+}
+
+// Add these utility classes
+const utilityClasses = `
+  .animate-fadeIn {
+    animation: fadeIn 0.2s ease-out;
+  }
+  .animate-scaleIn {
+    animation: scaleIn 0.2s ease-out;
+  }
+`
+
+const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] })
 
 export const User = () => {
-  const [loading, setLoading] = useState(true);
-  const [currentUser, setCurrentUser] = useState(null);
-  const [isDoctor, setIsDoctor] = useState(false);
-  const [email, setEmail] = useState('Unknown');
-  const [username, setUsername] = useState('Anonymous User');
-  const [time, setTime] = useState(new Date());
+  const [loading, setLoading] = useState(true)
+  const [currentUser, setCurrentUser] = useState(null)
+  const [isDoctor, setIsDoctor] = useState(false)
+  const [doctorDetails, setDoctorDetails] = useState(null)
+  const [email, setEmail] = useState("Unknown")
+  const [userId, setUserId] = useState("0")
+  const [username, setUsername] = useState("Anonymous User")
+  const [time, setTime] = useState(new Date())
+  const [isModalOpen, setIsModalOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    userId: userId,
+    name: "",
+    experience: "",
+    specialization: "",
+    qualification: "",
+    rating: "",
+    patients: "",
+    fee: "",
+    availabilityStart: "",
+    availabilityEnd: "",
+    location: "",
+  })
+
+  const handleAddDetails = () => {
+    setIsModalOpen(true)
+  }
+
+  const handleCloseModal = () => {
+    if (document.getElementById("modal")) {
+      setIsModalOpen(false)
+    }
+  }
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    try {
+      console.log(formData);
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/addDoctors.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+
+      if (!response.ok) throw new Error("Failed to add doctor details");
+      toast.success("Doctor details added successfully!", { position: "top-right", autoClose: 3000 });
+      handleCloseModal(); // Close modal upon success
+    } catch (error) {
+      toast.error("Error adding doctor details. Please try again.", { position: "top-right" });
+    }
+  };
 
   useEffect(() => {
-    // Initialize state with localStorage values
-    setEmail(localStorage.getItem('email') || 'Unknown');
-    setTime(localStorage.getItem('loginTime') || new Date());
-    setUsername(localStorage.getItem('username') || 'Anonymous User');
-    
+    setEmail(localStorage.getItem("email") || "Unknown")
+    setTime(localStorage.getItem("loginTime") || new Date())
+    setUsername(localStorage.getItem("username") || "Anonymous User")
+    setUserId(localStorage.getItem("userId") || "0")
     const checkAuth = async () => {
       try {
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem("userId")
         if (!userId) {
-          setLoading(false);
-          setCurrentUser(null);
-          console.log('No userId found in local storage');
-          return;
+          setLoading(false)
+          setCurrentUser(null)
+          return
         }
-
+        
         const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/checkSession.php`, {
-          method: 'POST',
+          method: "POST",
           headers: {
-            'Content-Type': 'application/json',
+            "Content-Type": "application/json",
           },
           body: JSON.stringify({ userId }),
-        });
+        })
 
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        const result = await response.json();
-        console.log(result);
+        if (!response.ok) throw new Error("Network response was not ok")
+
+        const result = await response.json()
         if (result.success) {
-          setCurrentUser(result);
-          setIsDoctor(result.isDoctor == 1);
+          setCurrentUser(result)
+          setIsDoctor(result.isDoctor == 1)
+          if (result.isDoctor) {
+            fetchDoctorDetails(userId)
+          }
         } else {
-          setCurrentUser(null);
+          setCurrentUser(null)
         }
       } catch (error) {
-        console.error('Failed to verify session:', error);
+        console.error("Failed to verify session:", error)
       } finally {
-        setLoading(false);
+        setLoading(false)
       }
-    };
+    }
 
-    checkAuth();
-  }, []);
+    checkAuth()
+  }, [])
+
+  const fetchDoctorDetails = async (userId) => {
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/getDoctor.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userId }),
+      })
+      if (!response.ok) throw new Error("Failed to fetch doctor details")
+
+      const doctorData = await response.json()
+      console.log("Doctor Data:", doctorData)
+      if (doctorData.success) {
+        setDoctorDetails(doctorData.doctor)
+      }
+    } catch (error) {
+      console.error("Error fetching doctor details:", error)
+    }
+  }
 
   if (loading) {
-    return <Loading />;
+    return <Loading />
   }
 
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="flex flex-col gap-8">
-        {/* Header Section */}
-        <div>
-          <h4 className={'text-5xl sm:text-6xl md:text-7xl text-center ' + fugaz.className}>
-            <span className="textGradient">
-              {isDoctor ? 'Doctor' : 'User'}
-            </span>{' '}
-            Dashboard
-          </h4>
-        </div>
+        <h4 className={"text-5xl sm:text-6xl md:text-7xl text-center " + fugaz.className}>
+          <span className="textGradient">{isDoctor ? "Doctor" : "User"}</span> Dashboard
+        </h4>
 
-        {/* Profile Section */}
         <div className="grid gap-6 md:grid-cols-2">
-          {/* User Profile Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          {/* Left Grid Component - Profile Info */}
+          <div className="bg-gray-900 rounded-lg shadow-xl overflow-hidden">
             <div className="p-6">
-              <div className="flex items-center mb-6">
-                <h2 className="text-xl font-semibold text-gray-200">Profile Information</h2>
-              </div>
-              <div className="flex items-center gap-4 mb-6">
-                <div className="relative h-20 w-20 rounded-full overflow-hidden bg-gray-200">
+              <h2 className="text-xl font-semibold text-gray-200">Profile Information</h2>
+              <div className="flex items-center gap-4 mt-4">
+                <div className="relative h-24 w-24 rounded-full overflow-hidden bg-gray-300">
                   <img
-                    src={currentUser?.avatar || `https://ui-avatars.com/api/?name=${(username || 'A').charAt(0)}&background=random`}
+                    src={
+                      currentUser?.avatar ||
+                      `https://ui-avatars.com/api/?name=${(username || "A").charAt(0)}&background=random`
+                    }
                     alt="Profile"
                     className="h-full w-full object-cover"
-                    onError={(e) => (e.currentTarget.src = `https://ui-avatars.com/api/?name=${username.charAt(0) || 'U'}&background=random`)}
+                    onError={(e) =>
+                      (e.currentTarget.src = `https://ui-avatars.com/api/?name=${username.charAt(0) || "U"}&background=random`)
+                    }
                   />
                 </div>
                 <div>
-                  <h3 className="text-2xl font-semibold text-gray-200">{username}</h3>
-                  <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                    <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                      <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z" />
-                      <polyline points="22,6 12,13 2,6" />
-                    </svg>
-                    <span>{email}</span>
-                  </div>
-                  <div className="mt-2">
-                    <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                      isDoctor 
-                        ? 'bg-blue-100 text-blue-800 dark:bg-blue-900 dark:text-blue-200'
-                        : 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200'
-                    }`}>
-                      {isDoctor ? 'Doctor' : 'Patient'}
-                    </span>
-                  </div>
-                </div>
-              </div>
-              
-              <div className="h-px bg-gray-200 dark:bg-gray-700 my-4" />
-              
-              <div className="grid gap-4">
-                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
-                    <line x1="16" y1="2" x2="16" y2="6" />
-                    <line x1="8" y1="2" x2="8" y2="6" />
-                    <line x1="3" y1="10" x2="21" y2="10" />
-                  </svg>
-                  <span>Member since: {currentUser?.joinDate || 'Unknown'}</span>
-                </div>
-                <div className="flex items-center gap-2 text-gray-600 dark:text-gray-400">
-                  <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                  <span>Last login: {new Date(time).toLocaleString('en-IN', {
-                    weekday: 'long',
-                    day: '2-digit',
-                    month: 'long',
-                    year: 'numeric',
-                    hour: '2-digit',
-                    minute: '2-digit',
-                    hour12: true
-                  })}</span>
+                  <h3 className="text-2xl font-semibold text-white">{username}</h3>
+                  <p className="text-gray-400">{email}</p>
+                  <p className="text-sm text-gray-500">Last Login: {new Date(time).toLocaleString()}</p>
                 </div>
               </div>
             </div>
           </div>
 
-          {/* Activity Summary Card */}
-          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
+          {/* Right Grid Component - Doctor Details */}
+          <div className="bg-gray-900 rounded-lg shadow-xl overflow-hidden">
             <div className="p-6">
-              <h2 className="text-xl font-semibold mb-6 text-gray-200">Activity Summary</h2>
-              {isDoctor ? (
-                <div className="space-y-4">
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Welcome to your counsellor dashboard. Here you can:
+              <h2 className="text-xl font-semibold mb-6 text-gray-200">
+                {isDoctor ? "Doctor Details" : "Activity Summary"}
+              </h2>
+
+              {isDoctor && doctorDetails ? (
+                <div className="grid grid-cols-2 gap-4 text-gray-300">
+                  <p className="col-span-2 text-2xl font-semibold text-white">{doctorDetails.name}</p>
+                  <p>
+                    <strong>Experience:</strong> {doctorDetails.experience} years
                   </p>
-                  <ul className="space-y-2">
-                    {['Manage appointments', 'View patient history', 'Access counselling resources', 'Generate reports'].map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-                        {item}
-                      </li>
-                    ))}
-                  </ul>
+                  <p>
+                    <strong>Specialization:</strong> {doctorDetails.specialization}
+                  </p>
+                  <p>
+                    <strong>Qualification:</strong> {doctorDetails.qualification}
+                  </p>
+                  <p>
+                    <strong>Rating:</strong> ⭐ {doctorDetails.rating}
+                  </p>
+                  <p>
+                    <strong>Patients:</strong> {doctorDetails.patients}
+                  </p>
+                  <p>
+                    <strong>Fee:</strong> ₹{doctorDetails.fee}
+                  </p>
+                  <p>
+                    <strong>Availability:</strong> {doctorDetails.availabilityStart} - {doctorDetails.availabilityEnd}
+                  </p>
+                  <p className="col-span-2">
+                    <strong>Location:</strong> {doctorDetails.location}
+                  </p>
+                </div>
+              ) : isDoctor ? (
+                <div className="flex flex-col items-center justify-center text-gray-400">
+                  <p className="text-center">You haven't added your details yet.</p>
+                  <button
+                    onClick={handleAddDetails}
+                    className="mt-4 px-6 py-2 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-lg transition duration-300"
+                  >
+                    Add Your Details
+                  </button>
                 </div>
               ) : (
                 <div className="space-y-4">
-                  <p className="text-gray-600 dark:text-gray-400">
-                    Track your progress and wellness journey:
-                  </p>
+                  <p className="text-gray-400">Track your progress and wellness journey:</p>
                   <ul className="space-y-2">
-                    {['Monitor your mood patterns', 'Schedule appointments', 'Access self-help resources', 'View your activity history'].map((item, index) => (
-                      <li key={index} className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-                        <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
-                        {item}
-                      </li>
-                    ))}
+                    {["Monitor mood patterns", "Schedule appointments", "Access resources", "View history"].map(
+                      (item, index) => (
+                        <li key={index} className="flex items-center gap-2 text-gray-300">
+                          <span className="h-2 w-2 rounded-full bg-blue-500" />
+                          {item}
+                        </li>
+                      ),
+                    )}
                   </ul>
                 </div>
               )}
@@ -183,6 +255,184 @@ export const User = () => {
           </div>
         </div>
       </div>
+      {isModalOpen && (
+        <div
+          id="modal"
+          className="fixed inset-0 bg-black bg-opacity-60 backdrop-blur-sm flex justify-center items-center z-50 animate-fadeIn"
+          onClick={(e) => {
+            if (e.target === e.currentTarget) handleCloseModal()
+          }}
+        >
+          <div className="bg-gray-900 max-h-[90vh] overflow-y-auto no-scrollbar p-6 rounded-xl shadow-2xl w-11/12 max-w-lg border border-gray-700 animate-scaleIn">
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-2xl font-semibold text-white">Add Your Doctor Details</h2>
+              <button onClick={handleCloseModal} className="text-gray-400 hover:text-white transition-colors">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    placeholder="Dr. John Doe"
+                    onChange={handleChange}
+                    className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Experience (years)</label>
+                  <input
+                    type="number"
+                    name="experience"
+                    placeholder="10"
+                    onChange={handleChange}
+                    className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Specialization</label>
+                  <input
+                    type="text"
+                    name="specialization"
+                    placeholder="Cardiology"
+                    onChange={handleChange}
+                    className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Qualification</label>
+                  <input
+                    type="text"
+                    name="qualification"
+                    placeholder="MBBS, MD"
+                    onChange={handleChange}
+                    className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Rating (out of 5)</label>
+                  <input
+                    type="number"
+                    name="rating"
+                    placeholder="4.5"
+                    min="1"
+                    max="5"
+                    step="0.1"
+                    onChange={handleChange}
+                    className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Patients Treated</label>
+                  <input
+                    type="number"
+                    name="patients"
+                    placeholder="1000"
+                    onChange={handleChange}
+                    className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Consultation Fee (₹)</label>
+                <input
+                  type="number"
+                  name="fee"
+                  placeholder="1500"
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  required
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Availability Hours</label>
+                <div className="flex gap-4">
+                  <div className="w-1/2">
+                    <label className="block text-xs text-gray-400 mb-1">From</label>
+                    <input
+                      type="time"
+                      name="availabilityStart"
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      required
+                    />
+                  </div>
+                  <div className="w-1/2">
+                    <label className="block text-xs text-gray-400 mb-1">To</label>
+                    <input
+                      type="time"
+                      name="availabilityEnd"
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      required
+                    />
+                  </div>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Location</label>
+                <input
+                  type="text"
+                  name="location"
+                  placeholder="123 Medical Center, City"
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 bg-gray-800 border border-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  required
+                />
+              </div>
+
+              <div className="flex justify-end gap-4 mt-6">
+                <button
+                  type="button"
+                  onClick={handleCloseModal}
+                  className="px-5 py-2.5 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-800 hover:text-white transition-colors"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 bg-blue-600 hover:bg-blue-500 text-white font-medium rounded-lg transition-colors"
+                >
+                  Save Details
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
     </div>
-  );
+  )
 }
+
