@@ -34,15 +34,18 @@ export const User = () => {
   const [isDoctor, setIsDoctor] = useState(false)
   const [doctorDetails, setDoctorDetails] = useState(null)
   const [email, setEmail] = useState("Unknown")
-  const [userId, setUserId] = useState("0")
+  const [userId, setUserId] = useState(0)
   const [username, setUsername] = useState("Anonymous User")
   const [time, setTime] = useState(new Date())
   const [isModalOpen, setIsModalOpen] = useState(false)
+  const [image, setImage] = useState(null);
+  const [imagePreview, setImagePreview] = useState(null);
   const [formData, setFormData] = useState({
-    userId: userId,
+    userId: 0,
     name: "",
     experience: "",
     specialization: "",
+    picture: image,
     qualification: "",
     rating: "",
     patients: "",
@@ -51,6 +54,43 @@ export const User = () => {
     availabilityEnd: "",
     location: "",
   })
+  useEffect(() => {
+    if (userId) {
+      setFormData(prevState => ({
+        ...prevState,
+        userId: userId, // Update userId when it's available
+      }));
+    }
+  }, [userId]);
+const handleImageChange = (e) => {
+  const file = e.target.files?.[0];
+  if (file) {
+    setImage(file);
+    setImagePreview(URL.createObjectURL(file));
+  }
+};
+
+const uploadImageToCloudinary = async () => {
+  if (!image) return null;
+
+  const formData = new FormData();
+  formData.append("file", image);
+  formData.append("upload_preset", "ml_default");   
+
+  try {
+    const res = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY}/image/upload`, {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    return data.secure_url; // Return Cloudinary image URL  
+  } catch (error) {
+    console.error("Image upload failed", error);
+    toast.error("Image upload failed.");
+    return null;
+  }
+};
 
   const handleAddDetails = () => {
     setIsModalOpen(true)
@@ -68,17 +108,25 @@ export const User = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+  
+    const imageUrl = await uploadImageToCloudinary(); // Upload first
+    if (!imageUrl) return; // Stop if upload fails
+  
+    const updatedFormData = {
+      ...formData,
+      picture: imageUrl, // Use the uploaded image URL
+    };
+  
     try {
-      console.log(formData);
+      console.log(updatedFormData);
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/addDoctors.php`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify(updatedFormData),
       });
-
+  
       if (!response.ok) throw new Error("Failed to add doctor details");
       toast.success("Doctor details added successfully!", { position: "top-right", autoClose: 3000 });
       handleCloseModal(); // Close modal upon success
@@ -86,12 +134,23 @@ export const User = () => {
       toast.error("Error adding doctor details. Please try again.", { position: "top-right" });
     }
   };
+  
+  useEffect(() => {
+    const storedUserId = localStorage.getItem("userId");
+    if (storedUserId) {
+      setUserId(Number(storedUserId));
+      console.log("Stored User ID:", storedUserId); // Log before updating state
+    }
+  }, []);
+  useEffect(() => {
+    console.log("Updated userId:", userId);
+  }, [userId]); // This will log userId whenever it updates.
+    
 
   useEffect(() => {
     setEmail(localStorage.getItem("email") || "Unknown")
     setTime(localStorage.getItem("loginTime") || new Date())
     setUsername(localStorage.getItem("username") || "Anonymous User")
-    setUserId(localStorage.getItem("userId") || "0")
     const checkAuth = async () => {
       try {
         const userId = localStorage.getItem("userId")
@@ -144,6 +203,15 @@ export const User = () => {
 
       const doctorData = await response.json()
       console.log("Doctor Data:", doctorData)
+
+      if (doctorData.success) {
+        setDoctorDetails(doctorData.doctor);
+  
+        // Set image from Cloudinary URL
+        if (doctorData.doctor.picture) {
+          setImagePreview(doctorData.doctor.picture);
+        }
+      }
       if (doctorData.success) {
         setDoctorDetails(doctorData.doctor)
       }
@@ -172,7 +240,7 @@ export const User = () => {
                 <div className="relative h-24 w-24 rounded-full overflow-hidden bg-gray-300">
                   <img
                     src={
-                      currentUser?.avatar ||
+                      imagePreview  ||
                       `https://ui-avatars.com/api/?name=${(username || "A").charAt(0)}&background=random`
                     }
                     alt="Profile"
@@ -377,7 +445,7 @@ export const User = () => {
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">Availability Hours</label>
-                <div className="flex gap-4">
+                <div className="flex gap-4 mb-4">
                   <div className="w-1/2">
                     <label className="block text-xs text-gray-400 mb-1">From</label>
                     <input
@@ -398,6 +466,19 @@ export const User = () => {
                       required
                     />
                   </div>
+                </div>
+                <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Upload Image</label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleImageChange}
+                  className="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white"
+                />
+                {imagePreview && (
+                  <img src={imagePreview} alt="Preview" className="mt-2 rounded-lg w-32 h-32 object-cover" />
+                )}
+
                 </div>
               </div>
 
