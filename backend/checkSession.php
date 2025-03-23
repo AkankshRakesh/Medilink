@@ -1,5 +1,6 @@
 <?php
 // Start the session to access session data
+session_start();
 include 'db.php';
 
 header("Access-Control-Allow-Origin: *");
@@ -8,13 +9,14 @@ header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
 
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    http_response_code(200); // Respond with a successful status
+    http_response_code(200);
     exit;
 }
-
-// Get user data from POST request body
-$inputData = json_decode(file_get_contents('php://input'), true);
-$userId = $inputData['userId'] ?? null;
+$userId = $_SESSION['user_id'] ?? null;
+if (!isset($_SESSION['user_id'])) {
+    $inputData = json_decode(file_get_contents('php://input'), true);
+    $userId = $inputData['userId'] ?? null;
+}
 
 if ($userId) {
 

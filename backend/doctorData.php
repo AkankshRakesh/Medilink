@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 try {
     // Query to fetch all doctors from the users table where isDoctor = 1
-    $stmt = $pdo->prepare("SELECT id, name,experience, specialization, qualification, rating, patients,fee, availabilityStart, availabilityEnd, location FROM doctors");
+    $stmt = $pdo->prepare("SELECT id, name,picture, experience, specialization, qualification, rating, patients,fee, availabilityStart, availabilityEnd, location FROM doctors");
     $stmt->execute();
     $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
