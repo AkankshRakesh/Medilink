@@ -7,7 +7,7 @@ import Link from 'next/link';
 import CallToAction from './CallToAction';
 import Specialties from './Specialties';
 import FindDoc from './findDoc';
-// import Carousel from './Carousel';z
+// import Carousel from './Carousel';
 
 import Spline from '@splinetool/react-spline';
 
@@ -114,7 +114,7 @@ export default function Hero() {
               {/* </svg> */}
               Benefits of Online Consultation  
               </div>
-              <div className="gap-2 border border-gray-200 mx-4 sm:mx-6 md:mx-12 lg:mx-16 my-5 p-4 sm:p-8 md:p-16 lg:p-24 rounded-xl transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)] max-w-9xl mx-auto">
+              <div className="gap-2 border border-gray-200 sm:mx-6 md:mx-12 lg:mx-16 my-5 p-4 sm:p-8 md:p-16 lg:p-24 rounded-xl transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)] max-w-9xl mx-auto">
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3  gap-12">
                   <div className="flex flex-col border border-gray-300 p-8  font-semibold text-base sm:text-lg md:text-xl gap-4 rounded-2xl"
                   style={{boxShadow: '0 0 20px 5px rgba(99, 102, 241, 0.4)'}}>

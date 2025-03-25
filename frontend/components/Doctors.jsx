@@ -133,7 +133,7 @@ const DoctorCard = ({ doctor }) => (
     </div>
     <div className="flex ml-4 -mt-12">
       <img
-        src={doctor.image}
+        src={doctor.picture ? doctor.picture : null}
         alt={doctor.name}
         className="w-24 h-24 rounded-full border-2 border-slate-800 shadow-md z-10"
       />
