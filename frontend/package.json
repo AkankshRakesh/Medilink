@@ -12,6 +12,7 @@
     "@babel/preset-react": "^7.26.3",
     "axios": "^1.8.2",
     "framer-motion": "^12.4.10",
+    "lucide-react": "^0.483.0",
     "next": "^15.2.1",
     "react": "^18",
     "react-dom": "^18",
