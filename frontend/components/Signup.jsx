@@ -61,6 +61,28 @@ export default function Signup() {
             setAuthenticating(false);
         }
     }
+    async function verifyOtp() {
+        if (!otp) {
+            toast.error('Please enter the OTP.');
+            return;
+        }
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/verifyOtp.php`, { email, otp });
+            if (response.data.status === "success") {
+                toast.success('OTP verified successfully!');
+                setOtpSent(false); // Hide OTP input after successful verification
+                setOtpVerified(true);
+            } else {
+                toast.error('Invalid OTP. Please try again.');
+            }
+        } catch (error) {
+            console.error('OTP Verification Error:', error.response?.data || error.message);
+            toast.error('OTP verification failed.');
+        }
+    }
+    function youAreVerified() {
+        toast.info('You are verified! Please proceed to submit the form.');
+    }
 
     return (
         <div className="flex flex-col flex-1 justify-center items-center gap-4">

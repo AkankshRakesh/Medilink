@@ -89,7 +89,6 @@ export default function Login() {
                 localStorage.setItem('userId', response.data.user_id);
                 localStorage.setItem('username', response.data.username);
                 localStorage.setItem('email', email);
-                localStorage.setItem('loginTime', new Date().toISOString());
                 router.push('/');
                 window.location.reload();
             }
@@ -196,8 +195,9 @@ export default function Login() {
                 </div>
             </form>
             <p className='text-center'>
-                Don't have an account? <a href="/signup" className="text-indigo-600">Signup</a>
-            </p>
+  You don&apos;t have an account? <a href="/signup" className="text-indigo-600">Signup</a>
+</p>
+
         </div>
         
     ): (
