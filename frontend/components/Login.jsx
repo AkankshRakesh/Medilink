@@ -22,7 +22,7 @@ export default function Login() {
 
     const router = useRouter();
 
-      async function sendOtp() {
+    async function sendOtp() {
         if (!email) {
             toast.error('Please enter your email first.');
             return;
