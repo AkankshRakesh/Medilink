@@ -1,5 +1,5 @@
 
-import BookingPage from "@/components/bookingPage";
+import BookingPage from "@/components/BookingPage";
 import Main from "@/components/Main";
 
 export const metadata = {
