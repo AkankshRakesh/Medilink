@@ -30,7 +30,7 @@ export default function Navbar() {
             <Link href="/doctors" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/doctors')}`}>
             <i className="fa-solid fa-user-doctor mr-2"></i>Find Doctors
             </Link>
-            <Link href="/consultation" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/consultation')}`}>
+            <Link href="/booking" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/booking')}`}>
             <i className="fa-solid fa-video mr-2"></i>Video Consultation
             </Link>
             <Link href="/contact" className={`text-base textGradient pb-1 ${opensans.className} ${isActive('/contact')}`} onClick={() => setIsOpen(false)}>
@@ -75,7 +75,7 @@ export default function Navbar() {
               <Link href="/doctors" className={`text-base py-1 textGradient ${opensans.className} ${isActive('/doctors')}`} onClick={() => setIsOpen(false)}>
               <i className="fa-solid fa-user-doctor mr-2"></i>Find Doctors
               </Link>
-              <Link href="/consultation" className={`text-base pt-1 textGradient ${opensans.className} ${isActive('/consultation')}`} onClick={() => setIsOpen(false)}>
+              <Link href="/booking" className={`text-base pt-1 textGradient ${opensans.className} ${isActive('/booking')}`} onClick={() => setIsOpen(false)}>
               <i className="fa-solid fa-video mr-2"></i>Video Consultation
               </Link>
               <Link href="/contact" className={`text-base pt-1 textGradient ${opensans.className} ${isActive('/contact')}`} onClick={() => setIsOpen(false)}>
