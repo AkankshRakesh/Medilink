@@ -41,10 +41,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;
         $mail->Port = 587;
 
-        $mail->setFrom('akankshrakesh@gmail.com', 'Your App Name');
+        $mail->setFrom('akankshrakesh@gmail.com', 'Medilink');
         $mail->addAddress($email);
-        $mail->Subject = 'Your OTP Code';
-        $mail->Body = "Your OTP code is: $otp. This OTP is valid for 10 minutes.";
+        $mail->Subject = 'Email Verification';
+        $mail->Body = "Your OTP code for Medilink is: $otp. This OTP is valid for 10 minutes.";
 
         $mail->send();
         echo json_encode(["status" => "success", "message" => "OTP sent successfully"]);
