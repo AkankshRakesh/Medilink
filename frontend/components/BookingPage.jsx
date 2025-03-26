@@ -25,11 +25,16 @@ function BookingPage() {
   const [selectedTime, setSelectedTime] = useState("")
   const [availableTimes, setAvailableTimes] = useState([])
   const [doctorDetails, setDoctorDetails] = useState(null);
-  const [loading, setLoading] = useState(true); // Loading state
-
+  const [loading, setLoading] = useState(true);
+  const [topDoctors, setTopDoctors] = useState([]);
+  const [firstDoctorChoice, setFirstDoctorChoice] = useState(null);
+  const [secondDoctorChoice, setSecondDoctorChoice] = useState(null);
+  const [thirdDoctorChoice, setThirdDoctorChoice] = useState(null);
+  const [highestRating, setHighestRating] = useState(0);
   const id = searchParams.get("id");
-  console.log(id);
-
+  let first = true;
+  let second = true;
+  let third = true;
   useEffect(() => {
     const fetchDoctorDetails = async () => {
       if (!id) return;
@@ -50,16 +55,64 @@ function BookingPage() {
 
         const data = await response.json();
         setDoctorDetails(data);
+        if(first){
+          setFirstDoctorChoice(data);
+          first = false;
+        }
       } catch (error) {
         console.error("Error fetching doctor details:", error);
       } finally {
-        setLoading(false); // Set loading to false after fetching
+        setLoading(false);
       }
     };
 
     fetchDoctorDetails();
   }, [id]);
 
+  useEffect(() => {
+    const fetchTopDoctors = async () => {
+      if (!doctorDetails?.specialization) return;
+      
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND}/getTopDoctor.php`, 
+          {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ specialization: doctorDetails.specialization }),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        // Filter out the current doctor from the top doctors list
+        setSecondDoctorChoice(data[0]);
+        setThirdDoctorChoice(data[1]);
+        setTopDoctors(data.filter(doctor => doctor.id !== doctorDetails.id).slice(0, 2));
+      } catch (error) {
+        console.error("Error fetching top doctors:", error);
+      }
+    };
+
+    fetchTopDoctors();
+  }, [doctorDetails]);
+
+  // Handle doctor selection from top doctors
+  const handleDoctorSelect = (selectedDoctor) => {
+    setTopDoctors((prevTopDoctors) =>
+      prevTopDoctors.map((doc) =>
+        doc.id === selectedDoctor.id ? doctorDetails : doc
+      )
+    );
+  
+    setDoctorDetails(selectedDoctor);
+  };
+  
+
+  // Rest of your existing code...
   useEffect(() => {
     if(doctorDetails){
       const today = new Date()
@@ -75,19 +128,16 @@ function BookingPage() {
       setDates(upcomingDates)
       setSelectedDate(upcomingDates[0].fullDate)
     }
-  }, [doctorDetails]) // Add doctorDetails as a dependency
+  }, [doctorDetails])
 
   useEffect(() => {
-    if (selectedDate) {
+    if (selectedDate && doctorDetails) {
       fetchAvailableTimes(selectedDate)
     }
-  }, [selectedDate])
+  }, [selectedDate, doctorDetails])
 
   const fetchAvailableTimes = async (date) => {
     try {
-      // Simulated API response (replace with actual API call)
-      const startTime = "20:57:15.000000"
-      const endTime = "22:57:15.000000"
       generateTimeSlots(doctorDetails.availabilityStart, doctorDetails.availabilityEnd);
     } catch (error) {
       console.error("Error fetching times:", error)
@@ -96,7 +146,6 @@ function BookingPage() {
 
   const generateTimeSlots = (startTime, endTime) => {
     const slots = []
-
     const parseTime = (timeStr) => {
       const [hours, minutes, seconds] = timeStr.split(":").map(Number)
       return new Date(1970, 0, 1, hours, minutes, seconds)
@@ -130,7 +179,6 @@ function BookingPage() {
     }
   }
 
-  // Show loading indicator while fetching data
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -145,7 +193,6 @@ function BookingPage() {
         <h1 className="text-2xl md:text-3xl font-bold mb-6">Book Your Appointment</h1>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-          {/* Main booking section - takes 2/3 of the space on large screens */}
           <div className="lg:col-span-2 space-y-6">
             {/* Category selection */}
             <Card>
@@ -169,38 +216,79 @@ function BookingPage() {
               </CardContent>
             </Card>
 
-            {/* Doctor selection */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle>Selected Doctor</CardTitle>
+                <CardTitle>Select your doctor</CardTitle>
               </CardHeader>
               <CardContent>
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                  {/* First Doctor Choice */}
+                  {firstDoctorChoice && (
                     <div
-                      className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
-                        doctorDetails && doctorDetails.name === doctorDetails.name
-                          ? "border-primary bg-primary/5"
-                          : "border-border hover:border-primary/50"
-                      }`}
+                      className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails.id === firstDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
+                      onClick={() => handleDoctorSelect(firstDoctorChoice)}
                     >
                       <Avatar className="h-14 w-14 border">
-                        <AvatarImage src={doctorDetails.picture} alt={doctorDetails.name} />
-                        <AvatarFallback>{doctorDetails.name.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={firstDoctorChoice.picture} alt={firstDoctorChoice.name} />
+                        <AvatarFallback>{firstDoctorChoice.name?.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <p className="font-semibold text-foreground">{doctorDetails.name}</p>
-                        <p className="text-sm text-muted-foreground">{doctorDetails.specialization}</p>
+                        <p className="font-semibold text-foreground">{firstDoctorChoice.name}</p>
+                        <p className="text-sm text-muted-foreground">{firstDoctorChoice.specialization}</p>
                         <div className="flex items-center mt-1">
                           <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                          <span className="text-sm font-medium ml-1">{doctorDetails.rating}</span>
+                          <span className="text-sm font-medium ml-1">{firstDoctorChoice.rating}</span>
                         </div>
                       </div>
                     </div>
+                  )}
+
+                  {/* Second Doctor Choice */}
+                  {secondDoctorChoice && secondDoctorChoice.id !== firstDoctorChoice?.id && (
+                    <div
+                      className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails.id === secondDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
+                      onClick={() => handleDoctorSelect(secondDoctorChoice)}
+                    >
+                      <Avatar className="h-14 w-14 border">
+                        <AvatarImage src={secondDoctorChoice.picture} alt={secondDoctorChoice.name} />
+                        <AvatarFallback>{secondDoctorChoice.name?.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <div className="flex-1">
+                        <p className="font-semibold text-foreground">{secondDoctorChoice.name}</p>
+                        <p className="text-sm text-muted-foreground">{secondDoctorChoice.specialization}</p>
+                        <div className="flex items-center mt-1">
+                          <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                          <span className="text-sm font-medium ml-1">{secondDoctorChoice.rating}</span>
+                        </div>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Third Doctor Choice */}
+                  {thirdDoctorChoice &&
+                    thirdDoctorChoice.id !== firstDoctorChoice?.id &&
+                    thirdDoctorChoice.id !== secondDoctorChoice?.id && (
+                      <div
+                        className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails.id === thirdDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
+                        onClick={() => handleDoctorSelect(thirdDoctorChoice)}
+                      >
+                        <Avatar className="h-14 w-14 border">
+                          <AvatarImage src={thirdDoctorChoice.picture} alt={thirdDoctorChoice.name} />
+                          <AvatarFallback>{thirdDoctorChoice.name?.charAt(0)}</AvatarFallback>
+                        </Avatar>
+                        <div className="flex-1">
+                          <p className="font-semibold text-foreground">{thirdDoctorChoice.name}</p>
+                          <p className="text-sm text-muted-foreground">{thirdDoctorChoice.specialization}</p>
+                          <div className="flex items-center mt-1">
+                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <span className="text-sm font-medium ml-1">{thirdDoctorChoice.rating}</span>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                 </div>
               </CardContent>
             </Card>
-
-            {/* Date and time selection */}
             <Card>
               <CardHeader className="pb-3">
                 <div className="flex justify-between items-center">
@@ -275,7 +363,7 @@ function BookingPage() {
             </Card>
           </div>
 
-          {/* Doctor profile section - takes 1/3 of the space on large screens */}
+          {/* Doctor profile section */}
           <div className="lg:col-span-1">
             <Card className="sticky top-6">
               <CardContent className="pt-6">
