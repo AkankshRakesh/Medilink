@@ -15,7 +15,7 @@ const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Hero() {
     return (
-        <div className='pb-4 flex flex-col'>
+        <div className='pb-4 mt-6 flex flex-col'>
             <div className=" bg-[#D4D5E5]">
       {/* Hero Section */}
       <div className="px-6 pb-16 pt-12 lg:p-10 py-0">

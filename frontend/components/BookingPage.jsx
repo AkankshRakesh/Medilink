@@ -1,7 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
-import data from "@/components/data"
+import { useSearchParams } from "next/navigation"
 import { Calendar, Mail, PhoneCall, Smartphone, MapPin, Star, Clock } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -9,38 +9,73 @@ import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 
 const category = [
-  "Cardiologist",
-  "Dermatologist",
-  "Neurologist",
-  "Orthopedic Surgeon",
-  "Pediatrician",
-  "Psychiatrist",
-  "Oncologist",
-  "Endocrinologist",
-  "Ophthalmologist",
+    "General Physician", "Dermatology", "Obstetrics & Gynaecology", "Orthopaedics",
+    "ENT", "Neurology", "Cardiology", "Urology", "Gastroenterology/GI medicine",
+    "Psychiatry", "Paediatrics", "Pulmonology/Respiratory", "Endocrinology",
+    "Nephrology", "Neurosurgery", "Rheumatology", "Ophthalmology",
+    "Surgical Gastroenterology", "Infectious Disease",
+    "General & Laparoscopic Surgery", "Psychology", "Medical Oncology",
+    "Diabetology", "Dentist"
 ]
 
 function BookingPage() {
+  const searchParams = useSearchParams();
   const [dates, setDates] = useState([])
   const [selectedDate, setSelectedDate] = useState("")
   const [selectedTime, setSelectedTime] = useState("")
   const [availableTimes, setAvailableTimes] = useState([])
-  const [selectedDoctor, setSelectedDoctor] = useState(data[0])
+  const [doctorDetails, setDoctorDetails] = useState(null);
+  const [loading, setLoading] = useState(true); // Loading state
+
+  const id = searchParams.get("id");
+  console.log(id);
 
   useEffect(() => {
-    const today = new Date()
-    const upcomingDates = Array.from({ length: 5 }, (_, i) => {
-      const date = new Date()
-      date.setDate(today.getDate() + i)
-      return {
-        day: date.toLocaleDateString("en-US", { weekday: "short" }),
-        date: date.getDate(),
-        fullDate: date.toISOString().split("T")[0],
+    const fetchDoctorDetails = async () => {
+      if (!id) return;
+
+      try {
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BACKEND}/saveDoctor.php?id=${id}`, 
+          {
+            method: "GET",
+            headers: { "Content-Type": "application/json" },
+            credentials: "include",
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        setDoctorDetails(data);
+      } catch (error) {
+        console.error("Error fetching doctor details:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
-    })
-    setDates(upcomingDates)
-    setSelectedDate(upcomingDates[0].fullDate)
-  }, [])
+    };
+
+    fetchDoctorDetails();
+  }, [id]);
+
+  useEffect(() => {
+    if(doctorDetails){
+      const today = new Date()
+      const upcomingDates = Array.from({ length: 5 }, (_, i) => {
+        const date = new Date()
+        date.setDate(today.getDate() + i)
+        return {
+          day: date.toLocaleDateString("en-US", { weekday: "short" }),
+          date: date.getDate(),
+          fullDate: date.toISOString().split("T")[0],
+        }
+      })
+      setDates(upcomingDates)
+      setSelectedDate(upcomingDates[0].fullDate)
+    }
+  }, [doctorDetails]) // Add doctorDetails as a dependency
 
   useEffect(() => {
     if (selectedDate) {
@@ -53,7 +88,7 @@ function BookingPage() {
       // Simulated API response (replace with actual API call)
       const startTime = "20:57:15.000000"
       const endTime = "22:57:15.000000"
-      generateTimeSlots(startTime, endTime)
+      generateTimeSlots(doctorDetails.availabilityStart, doctorDetails.availabilityEnd);
     } catch (error) {
       console.error("Error fetching times:", error)
     }
@@ -85,15 +120,8 @@ function BookingPage() {
 
   const bookAppointment = async () => {
     try {
-      // Commented out since axios is not imported
-      // const response = await axios.post("/api/book-appointment", {
-      //   doctorId: selectedDoctor.id,
-      //   date: selectedDate,
-      //   time: selectedTime,
-      // });
-      // console.log("Appointment booked:", response.data);
       console.log("Booking appointment with:", {
-        doctorId: selectedDoctor.id,
+        doctorId: doctorDetails?.id,
         date: selectedDate,
         time: selectedTime,
       })
@@ -102,8 +130,17 @@ function BookingPage() {
     }
   }
 
+  // Show loading indicator while fetching data
+  if (loading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-lg">Loading...</p>
+      </div>
+    );
+  }
+
   return (
-    <div className="bg-gray-50 min-h-screen">
+    <div className="bg-gray-50 min-h-screen mt-6">
       <div className="container mx-auto py-6 px-4 md:px-6">
         <h1 className="text-2xl md:text-3xl font-bold mb-6">Book Your Appointment</h1>
 
@@ -113,15 +150,17 @@ function BookingPage() {
             {/* Category selection */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle>Choose Specialty</CardTitle>
+                <CardTitle>Choosen Specialty</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="flex flex-wrap gap-2">
                   {category.map((cat) => (
                     <Badge
                       key={cat}
-                      variant="outline"
-                      className="px-3 py-1 cursor-pointer hover:bg-primary/10 transition-colors"
+                      variant={doctorDetails?.specialization === cat ? "outline" : "outline"}
+                      className={`px-3 py-1 cursor-pointer hover:bg-primary/10 transition-colors ${
+                        doctorDetails?.specialization === cat ? "bg-primary text-primary-foreground" : ""
+                      }`}
                     >
                       {cat}
                     </Badge>
@@ -133,34 +172,30 @@ function BookingPage() {
             {/* Doctor selection */}
             <Card>
               <CardHeader className="pb-3">
-                <CardTitle>Select Doctor</CardTitle>
+                <CardTitle>Selected Doctor</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  {data.slice(0, 2).map((doctor) => (
                     <div
-                      key={doctor.name}
-                      onClick={() => setSelectedDoctor(doctor)}
                       className={`flex items-center gap-3 p-3 rounded-lg border-2 transition-all cursor-pointer hover:shadow-md ${
-                        selectedDoctor.name === doctor.name
+                        doctorDetails && doctorDetails.name === doctorDetails.name
                           ? "border-primary bg-primary/5"
                           : "border-border hover:border-primary/50"
                       }`}
                     >
                       <Avatar className="h-14 w-14 border">
-                        <AvatarImage src={doctor.image} alt={doctor.name} />
-                        <AvatarFallback>{doctor.name.charAt(0)}</AvatarFallback>
+                        <AvatarImage src={doctorDetails.picture} alt={doctorDetails.name} />
+                        <AvatarFallback>{doctorDetails.name.charAt(0)}</AvatarFallback>
                       </Avatar>
                       <div className="flex-1">
-                        <p className="font-semibold text-foreground">{doctor.name}</p>
-                        <p className="text-sm text-muted-foreground">{doctor.specialization}</p>
+                        <p className="font-semibold text-foreground">{doctorDetails.name}</p>
+                        <p className="text-sm text-muted-foreground">{doctorDetails.specialization}</p>
                         <div className="flex items-center mt-1">
                           <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                          <span className="text-sm font-medium ml-1">{doctor.rating}</span>
+                          <span className="text-sm font-medium ml-1">{doctorDetails.rating}</span>
                         </div>
                       </div>
                     </div>
-                  ))}
                 </div>
               </CardContent>
             </Card>
@@ -232,7 +267,7 @@ function BookingPage() {
                       disabled={!selectedTime}
                       className="bg-green-600 hover:bg-green-700 text-white"
                     >
-                      Pay ₹{selectedDoctor.fee}
+                      Pay ₹{doctorDetails ? doctorDetails.fee : "0"}
                     </Button>
                   </div>
                 </div>
@@ -245,44 +280,43 @@ function BookingPage() {
             <Card className="sticky top-6">
               <CardContent className="pt-6">
                 <div className="flex flex-col items-center mb-6">
-                  <Avatar className="h-24 w-24 mb-4 border-4 border-primary/10">
-                    <AvatarImage src={selectedDoctor.image} alt={selectedDoctor.name} />
-                    <AvatarFallback>{selectedDoctor.name.charAt(0)}</AvatarFallback>
-                  </Avatar>
-                  <h2 className="text-xl font-bold text-center">{selectedDoctor.name}</h2>
-                  <p className="text-muted-foreground">{selectedDoctor.specialization}</p>
+                  {doctorDetails && (
+                    <>
+                      <Avatar className="h-24 w-24 mb-4 border-4 border-primary/10">
+                        <AvatarImage src={doctorDetails.picture} alt={doctorDetails.name} />
+                        <AvatarFallback>{doctorDetails.name.charAt(0)}</AvatarFallback>
+                      </Avatar>
+                      <h2 className="text-xl font-bold text-center">{doctorDetails.name}</h2>
+                      <p className="text-muted-foreground">{doctorDetails.specialization}</p>
 
-                  <div className="flex items-center mt-2">
-                    <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
-                    <span className="font-medium ml-1">{selectedDoctor.rating}</span>
-                  </div>
+                      <div className="flex items-center mt-2">
+                        <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
+                        <span className="font-medium ml-1">{doctorDetails.rating}</span>
+                      </div>
 
-                  <div className="flex gap-4 mt-4">
-                    <Button size="icon" variant="outline" className="rounded-full h-10 w-10">
-                      <Mail className="h-4 w-4" />
-                      <span className="sr-only">Email</span>
-                    </Button>
-                    <Button size="icon" variant="outline" className="rounded-full h-10 w-10">
-                      <PhoneCall className="h-4 w-4" />
-                      <span className="sr-only">Call</span>
-                    </Button>
-                    <Button size="icon" variant="outline" className="rounded-full h-10 w-10">
-                      <Smartphone className="h-4 w-4" />
-                      <span className="sr-only">Message</span>
-                    </Button>
-                  </div>
+                      <div className="flex gap-4 mt-4">
+                        <Button size="icon" variant="outline" className="rounded-full h-10 w-10">
+                          <Mail className="h-4 w-4" />
+                          <span className="sr-only">Email</span>
+                        </Button>
+                        <Button size="icon" variant="outline" className="rounded-full h-10 w-10">
+                          <PhoneCall className="h-4 w-4" />
+                          <span className="sr-only">Call</span>
+                        </Button>
+                        <Button size="icon" variant="outline" className="rounded-full h-10 w-10">
+                          <Smartphone className="h-4 w-4" />
+                          <span className="sr-only">Message</span>
+                        </Button>
+                      </div>
+                    </>
+                  )}
                 </div>
 
                 <div className="space-y-4">
                   <div>
                     <h3 className="text-lg font-semibold mb-2">Biography</h3>
                     <p className="text-sm text-muted-foreground bg-muted p-4 rounded-lg">
-                      {selectedDoctor.bio ||
-                        "Dr. " +
-                          selectedDoctor.name +
-                          " is a highly qualified specialist with years of experience in " +
-                          selectedDoctor.specialization +
-                          "."}
+                      {doctorDetails ? doctorDetails.bio : "Loading..."}
                     </p>
                   </div>
 
@@ -305,4 +339,3 @@ function BookingPage() {
 }
 
 export default BookingPage
-
