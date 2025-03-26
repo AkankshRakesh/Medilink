@@ -70,7 +70,7 @@ export default function Hero() {
               className="w-full h-full object-cover rounded-xl shadow-xl"
             />
           </div>
-          <div className="flex-1 relative h-[620px] hidden md:block">
+          <div className="flex-1 relative h-[620px] hidden lg:block">
         <Spline
           className="w-auto h-auto"
           scene="https://prod.spline.design/DsttbXsriKDBQQMr/scene.splinecode"/>
