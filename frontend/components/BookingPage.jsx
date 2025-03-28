@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { Calendar, Mail, PhoneCall, Smartphone, MapPin, Star, Clock, User } from "lucide-react"
+import { Calendar, Mail, PhoneCall, Smartphone, MapPin, Star, Clock, User, ChevronUp, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
@@ -50,6 +50,7 @@ function BookingPage() {
   const [thirdDoctorChoice, setThirdDoctorChoice] = useState(null)
   const [selectedSpecialty, setSelectedSpecialty] = useState(null)
   const [noDoctorsAvailable, setNoDoctorsAvailable] = useState(false)
+  const [showMoreDoctors, setShowMoreDoctors] = useState(false);
   const id = searchParams.get("id")
   let first = true
   const second = true
@@ -320,118 +321,141 @@ function BookingPage() {
                 </div>
               </CardContent>
             </Card>
-
             <Card>
-              <CardHeader className="pb-3">
-                <CardTitle>Select your doctor</CardTitle>
-              </CardHeader>
-              <CardContent>
-                {!doctorDetails ? (
-                  <div className="text-center py-8">
-                    <div className="mb-6 mx-auto w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center">
-                      <Calendar className="h-10 w-10 text-muted-foreground" />
+  <CardHeader className="pb-3">
+    <CardTitle>Select your doctor</CardTitle>
+  </CardHeader>
+  <CardContent>
+    {!doctorDetails ? (
+      <div className="text-center py-8">
+        <div className="mb-6 mx-auto w-20 h-20 rounded-full bg-gray-100 flex items-center justify-center">
+          <Calendar className="h-10 w-10 text-muted-foreground" />
+        </div>
+        <p className="text-lg font-medium mb-2">No doctors available</p>
+        <p className="text-muted-foreground mb-6">
+          {selectedSpecialty
+            ? `We couldn't find any doctors for ${selectedSpecialty}`
+            : "Please select a specialty to see available doctors"}
+        </p>
+        <Link href="/doctors">
+          <Button>Browse all doctors</Button>
+        </Link>
+      </div>
+    ) : (
+      <div className="space-y-4">
+        {/* First Doctor (Always shown) */}
+        {firstDoctorChoice && (
+          <div
+            className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails?.id === firstDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
+            onClick={() => handleDoctorSelect(firstDoctorChoice)}
+          >
+            <Avatar className="h-14 w-14 border">
+              <AvatarImage src={firstDoctorChoice.picture} alt={firstDoctorChoice.name} />
+              <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                {firstDoctorChoice.name
+                  ?.split(" ")
+                  .map((n) => n[0])
+                  .join("")
+                  .substring(0, 2)
+                  .toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+            <div className="flex-1">
+              <p className="font-semibold text-foreground">{firstDoctorChoice.name}</p>
+              <p className="text-sm text-muted-foreground">{firstDoctorChoice.specialization}</p>
+              <div className="flex items-center mt-1">
+                <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                <span className="text-sm font-medium ml-1">{firstDoctorChoice.rating}</span>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Additional Doctors (Shown when expanded) */}
+        {showMoreDoctors && (
+          <>
+            {secondDoctorChoice && secondDoctorChoice.id !== firstDoctorChoice?.id && (
+              <div
+                className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails?.id === secondDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
+                onClick={() => handleDoctorSelect(secondDoctorChoice)}
+              >
+                <Avatar className="h-14 w-14 border">
+                  <AvatarImage src={secondDoctorChoice.picture} alt={secondDoctorChoice.name} />
+                  <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                    {secondDoctorChoice.name
+                      ?.split(" ")
+                      .map((n) => n[0])
+                      .join("")
+                      .substring(0, 2)
+                      .toUpperCase()}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex-1">
+                  <p className="font-semibold text-foreground">{secondDoctorChoice.name}</p>
+                  <p className="text-sm text-muted-foreground">{secondDoctorChoice.specialization}</p>
+                  <div className="flex items-center mt-1">
+                    <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                    <span className="text-sm font-medium ml-1">{secondDoctorChoice.rating}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {thirdDoctorChoice &&
+              thirdDoctorChoice.id !== firstDoctorChoice?.id &&
+              thirdDoctorChoice.id !== secondDoctorChoice?.id && (
+                <div
+                  className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails?.id === thirdDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
+                  onClick={() => handleDoctorSelect(thirdDoctorChoice)}
+                >
+                  <Avatar className="h-14 w-14 border">
+                    <AvatarImage src={thirdDoctorChoice.picture} alt={thirdDoctorChoice.name} />
+                    <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                      {thirdDoctorChoice.name
+                        ?.split(" ")
+                        .map((n) => n[0])
+                        .join("")
+                        .substring(0, 2)
+                        .toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                  <div className="flex-1">
+                    <p className="font-semibold text-foreground">{thirdDoctorChoice.name}</p>
+                    <p className="text-sm text-muted-foreground">{thirdDoctorChoice.specialization}</p>
+                    <div className="flex items-center mt-1">
+                      <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                      <span className="text-sm font-medium ml-1">{thirdDoctorChoice.rating}</span>
                     </div>
-                    <p className="text-lg font-medium mb-2">No doctors available</p>
-                    <p className="text-muted-foreground mb-6">
-                      {selectedSpecialty
-                        ? `We couldn't find any doctors for ${selectedSpecialty}`
-                        : "Please select a specialty to see available doctors"}
-                    </p>
-                    <Link href="/doctors">
-                      <Button>Browse all doctors</Button>
-                    </Link>
                   </div>
-                ) : (
-                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
-                    {/* First Doctor Choice */}
-                    {firstDoctorChoice && (
-                      <div
-                        className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails?.id === firstDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
-                        onClick={() => handleDoctorSelect(firstDoctorChoice)}
-                      >
-                        <Avatar className="h-14 w-14 border">
-                          <AvatarImage src={firstDoctorChoice.picture} alt={firstDoctorChoice.name} />
-                          <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                            {firstDoctorChoice.name
-                              ?.split(" ")
-                              .map((n) => n[0])
-                              .join("")
-                              .substring(0, 2)
-                              .toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <p className="font-semibold text-foreground">{firstDoctorChoice.name}</p>
-                          <p className="text-sm text-muted-foreground">{firstDoctorChoice.specialization}</p>
-                          <div className="flex items-center mt-1">
-                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                            <span className="text-sm font-medium ml-1">{firstDoctorChoice.rating}</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
+                </div>
+              )}
+          </>
+        )}
 
-                    {/* Second Doctor Choice */}
-                    {secondDoctorChoice && secondDoctorChoice.id !== firstDoctorChoice?.id && (
-                      <div
-                        className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails?.id === secondDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
-                        onClick={() => handleDoctorSelect(secondDoctorChoice)}
-                      >
-                        <Avatar className="h-14 w-14 border">
-                          <AvatarImage src={secondDoctorChoice.picture} alt={secondDoctorChoice.name} />
-                          <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                            {secondDoctorChoice.name
-                              ?.split(" ")
-                              .map((n) => n[0])
-                              .join("")
-                              .substring(0, 2)
-                              .toUpperCase()}
-                          </AvatarFallback>
-                        </Avatar>
-                        <div className="flex-1">
-                          <p className="font-semibold text-foreground">{secondDoctorChoice.name}</p>
-                          <p className="text-sm text-muted-foreground">{secondDoctorChoice.specialization}</p>
-                          <div className="flex items-center mt-1">
-                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                            <span className="text-sm font-medium ml-1">{secondDoctorChoice.rating}</span>
-                          </div>
-                        </div>
-                      </div>
-                    )}
-
-                    {/* Third Doctor Choice */}
-                    {thirdDoctorChoice &&
-                      thirdDoctorChoice.id !== firstDoctorChoice?.id &&
-                      thirdDoctorChoice.id !== secondDoctorChoice?.id && (
-                        <div
-                          className={`flex items-center gap-3 p-3 rounded-lg border-2 ${doctorDetails?.id === thirdDoctorChoice.id ? "border-primary bg-primary/5" : "cursor-pointer"} relative`}
-                          onClick={() => handleDoctorSelect(thirdDoctorChoice)}
-                        >
-                          <Avatar className="h-14 w-14 border">
-                            <AvatarImage src={thirdDoctorChoice.picture} alt={thirdDoctorChoice.name} />
-                            <AvatarFallback className="bg-primary/10 text-primary font-bold">
-                              {thirdDoctorChoice.name
-                                ?.split(" ")
-                                .map((n) => n[0])
-                                .join("")
-                                .substring(0, 2)
-                                .toUpperCase()}
-                            </AvatarFallback>
-                          </Avatar>
-                          <div className="flex-1">
-                            <p className="font-semibold text-foreground">{thirdDoctorChoice.name}</p>
-                            <p className="text-sm text-muted-foreground">{thirdDoctorChoice.specialization}</p>
-                            <div className="flex items-center mt-1">
-                              <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                              <span className="text-sm font-medium ml-1">{thirdDoctorChoice.rating}</span>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                  </div>
-                )}
-              </CardContent>
-            </Card>
+        {/* Compact Show More/Show Less Button */}
+        {(secondDoctorChoice || thirdDoctorChoice) && (
+          <div className="flex justify-center">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground hover:text-primary"
+              onClick={() => setShowMoreDoctors(!showMoreDoctors)}
+            >
+              {showMoreDoctors ? (
+                <ChevronUp className="h-4 w-4" />
+              ) : (
+                <>
+                  <ChevronDown className="h-4 w-4 mr-1" />
+                  Show more
+                </>
+              )}
+            </Button>
+          </div>
+        )}
+      </div>
+    )}
+  </CardContent>
+</Card>
             {!doctorDetails ? (
               <></>
             ) : (
@@ -567,7 +591,7 @@ function BookingPage() {
                     <div>
                       <h3 className="text-lg font-semibold mb-2">Biography</h3>
                       <p className="text-sm text-muted-foreground bg-muted p-4 rounded-lg">
-                        {doctorDetails ? doctorDetails.bio : "Loading..."}
+                        {doctorDetails ? doctorDetails.biography : "Loading..."}
                       </p>
                     </div>
 
