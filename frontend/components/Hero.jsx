@@ -74,7 +74,7 @@ export default function Hero() {
         <Spline
           className="w-auto h-auto"
           scene="https://prod.spline.design/DsttbXsriKDBQQMr/scene.splinecode"/>
-
+        <div className="absolute bottom-0 left-0 w-full h-14 bg-[#D4D5E5] z-10"></div>
       </div>
         </div>
       </div>
