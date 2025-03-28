@@ -1,10 +1,11 @@
 "use client";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const filtersData = {
   experience: ["0-5", "6-10", "11+"],
   fees: ["100-500", "500-1000", "1000+"],
-  languages: ["English", "Hindi", "Telugu"],
+  languages: ["English", "Hindi"],
 };
 
 function Doctors() {
@@ -32,7 +33,6 @@ function Doctors() {
         setDoctors([]); // ✅ Handle network errors
       });
   }, []);
-  
 
   const toggleFilter = (category, value) => {
     setSelectedFilters((prev) => ({
@@ -53,9 +53,7 @@ function Doctors() {
         selectedFilters.experience.length === 0 ||
         selectedFilters.experience.some((range) => {
           const [min, max] = range.split("-").map(Number);
-          return (
-            doctor.experience >= min && (max ? doctor.experience <= max : true)
-          );
+          return doctor.experience >= min && (max ? doctor.experience <= max : true);
         });
       const feesMatch =
         selectedFilters.fees.length === 0 ||
@@ -78,7 +76,9 @@ function Doctors() {
 
   return (
     <div className="mt-2 px-4 h-[calc(100vh-2rem)] flex flex-col">
-      <p className="text-sky-600 text-xs">Home <i className="fa-solid fa-angle-right"></i> Doctors</p>
+      <p className="text-sky-600 text-xs">
+        Home <i className="fa-solid fa-angle-right"></i> Doctors
+      </p>
       <div className="flex flex-col md:flex-row gap-4 mt-4 h-full">
         <div className="w-full md:w-1/4">
           <button
@@ -87,14 +87,22 @@ function Doctors() {
           >
             {isFiltersOpen ? "Hide Filters" : "Show Filters"}
           </button>
-          <div className={`${isFiltersOpen ? "block" : "hidden"} md:block bg-white shadow-md rounded-lg p-4`}>
+          <div
+            className={`${
+              isFiltersOpen ? "block" : "hidden"
+            } md:block bg-white shadow-md rounded-lg p-4`}
+          >
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-bold">Filters</h2>
-              <button onClick={clearFilters} className="text-sky-600 font-semibold">Clear All</button>
+              <button onClick={clearFilters} className="text-sky-600 font-semibold">
+                Clear All
+              </button>
             </div>
             {Object.keys(filtersData).map((category) => (
               <div key={category} className="mt-4">
-                <h3 className="font-semibold">{category.charAt(0).toUpperCase() + category.slice(1)}</h3>
+                <h3 className="font-semibold">
+                  {category.charAt(0).toUpperCase() + category.slice(1)}
+                </h3>
                 {filtersData[category].map((item) => (
                   <label key={item} className="flex items-center gap-2 mt-2">
                     <input
@@ -122,44 +130,56 @@ function Doctors() {
   );
 }
 
-const DoctorCard = ({ doctor }) => (
-  <div className="bg-white rounded-lg shadow-md w-full">
-    <div className="relative h-28 w-full rounded-t-lg overflow-hidden">
-      <img
-        src="https://res.cloudinary.com/dwl2op3oh/image/upload/f_auto,q_auto/v1741589372/uploads/tixujivmssdziw8jfc4u.jpg"
-        alt="Cover Photo"
-        className="w-full object-cover h-full"
-      />
-    </div>
-    <div className="flex ml-4 -mt-12">
-      <img
-        src={doctor.image}
-        alt={doctor.name}
-        className="w-24 h-24 rounded-full border-2 border-slate-800 shadow-md z-10"
-      />
-    </div>
-    <div className="flex w-full justify-between px-4 items-center mt-3 pb-4">
-      <div>
-        <h3 className="text-xl font-semibold">{doctor.name}</h3>
-        <p className="text-gray-600 text-sm">{doctor.specialization}</p>
-        <p className="text-slate-800 font-medium">
-          {doctor.experience} YEARS • {doctor.qualification}
-        </p>
-        <p className="text-sm text-gray-500">{doctor.location}</p>
-        <p className="text-green-600 text-sm">
-          <i className="fa-solid fa-thumbs-up"></i> {doctor.rating}% (
-          {doctor.patients}+ Patients)
-        </p>
+const DoctorCard = ({ doctor }) => {
+  console.log("DoctorCard doctor:", doctor);
+  const router = useRouter();
+
+  const checkout = (doctor) => {
+    router.push(`/checkout?id=${doctor.userId}&fee=${doctor.fee}`);
+  };
+  return (
+    <div className="bg-white rounded-lg shadow-md w-full">
+      <div className="relative h-28 w-full rounded-t-lg overflow-hidden">
+        <img
+          src="https://res.cloudinary.com/dwl2op3oh/image/upload/f_auto,q_auto/v1741589372/uploads/tixujivmssdziw8jfc4u.jpg"
+          alt="Cover Photo"
+          className="w-full object-cover h-full"
+        />
       </div>
-      <div className="flex flex-col items-center">
-        <p className="text-lg font-bold text-gray-800">₹{doctor.fee}</p>
-        <button className="bg-blue-600 text-white px-6 py-2 rounded-lg mt-2 hover:bg-blue-700 transition">
-          Digital Consult
-        </button>
-        <p className="text-sm text-gray-500 mt-2">{doctor.availability}</p>
+      <div className="flex ml-4 -mt-12">
+        <img
+          src={doctor.image}
+          alt={doctor.name}
+          className="w-24 h-24 rounded-full border-2 border-slate-800 shadow-md z-10"
+        />
+      </div>
+      <div className="flex w-full justify-between px-4 items-center mt-3 pb-4">
+        <div>
+          <h3 className="text-xl font-semibold">{doctor.name}</h3>
+          <p className="text-gray-600 text-sm">{doctor.specialization}</p>
+          <p className="text-slate-800 font-medium">
+            {doctor.experience} YEARS • {doctor.qualification}
+          </p>
+          <p className="text-sm text-gray-500">{doctor.location}</p>
+          <p className="text-green-600 text-sm">
+            <i className="fa-solid fa-thumbs-up"></i> {doctor.rating}% ({doctor.patients}+ Patients)
+          </p>
+        </div>
+        <div className="flex flex-col items-center">
+          <p className="text-lg font-bold text-gray-800">₹{doctor.fee}</p>
+          <button
+            className="bg-blue-600 text-white px-6 py-2 rounded-lg mt-2 hover:bg-blue-700 transition"
+            onClick={() => {
+              checkout(doctor);
+            }}
+          >
+            Digital Consult
+          </button>
+          <p className="text-sm text-gray-500 mt-2">{doctor.availability}</p>
+        </div>
       </div>
     </div>
-  </div>
-);
+  );
+};
 
 export default Doctors;
