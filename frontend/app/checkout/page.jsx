@@ -1,4 +1,4 @@
-import ContactUs from "@/components/ContactUs";
+import CheckOut from "@/components/CheckOut";
 import Main from "@/components/Main";
 
 export const metadata = {
@@ -6,10 +6,10 @@ export const metadata = {
 };
 
 export default function ContactPage() {
-    
+
     return (
         <Main>
-            <ContactUs />
+            <CheckOut />
         </Main>
     )
 }
