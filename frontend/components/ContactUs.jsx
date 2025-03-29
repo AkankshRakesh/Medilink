@@ -1,111 +1,205 @@
-'use client'
-import { Fugaz_One } from 'next/font/google';
-import React, { useState } from 'react';
-import { toast } from 'react-toastify';
-import pic from '../public/contactus.jpg';
-import Image from 'next/image';
+"use client"
 
-const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
+import { useState } from "react"
+import { Fugaz_One } from "next/font/google"
+import { toast } from "react-toastify"
+import { Loader2 } from "lucide-react"
+
+const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] })
+
+import pic from "../public/contactus.jpg"
+import Image from "next/image"
+
+import Spline from '@splinetool/react-spline';
 
 export default function ContactUs() {
-    const [formData, setFormData] = useState({
-        name: '',
-        email: '',
-        message: ''
-    });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    message: "",
+  })
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [errors, setErrors] = useState({})
 
-    const handleChange = (e) => {
-        const { name, value } = e.target;
-        setFormData({
-            ...formData,
-            [name]: value
-        });
-    };
+  const validateForm = () => {
+    const newErrors = {}
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
+    if (!formData.name.trim()) {
+      newErrors.name = "Name is required"
+    }
 
-        try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/contactForm.php`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData),
-            });
+    if (!formData.email.trim()) {
+      newErrors.email = "Email is required"
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = "Email is invalid"
+    }
 
-            if (response.ok) {
-                toast.success('Your message has been sent successfully!');
-                console.log('Form submitted:', formData);
-                setFormData({ name: '', email: '', message: '' });
-            } else {
-                toast.error('Failed to send message. Please try again.');
-            }
-        } catch (error) {
-            toast.error('An error occurred. Please try again.');
-            console.error('Error submitting form:', error);
-        }
-    };
+    if (!formData.message.trim()) {
+      newErrors.message = "Message is required"
+    }
 
-    return (
-        <div className="md:mx-20 mx-6 ">
-          
-        <div className='md:flex items-center justify-center flex-1 md:pt-16   w-full'>
-            
-            <div className="md:w-1/2 items-center md:ms-7">
-            <h4 className='md:text-4xl text-2xl md:pt-0 pt-4 font-bold text-indigo-600'>Just Say Hello!</h4>
-        <p className='md:text-lg md:py-3 py-2 text-indigo-600'>Let us know more about you!</p>
-                <form onSubmit={handleSubmit} className='flex flex-col gap-6  md:w-2/3'>
-                    <div className='flex flex-col'>
-                        <label htmlFor='name' className='font-medium text-indigo-500'>Name</label>
-                        <input
-                            type='text'
-                            id='name'
-                            name='name'
-                            value={formData.name}
-                            onChange={handleChange}
-                            placeholder='Your name here'
-                            required
-                            className='p-2 border border-indigo-300 bg-indigo-100 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
-                        />
-                    </div>
-                    <div className='flex flex-col'>
-                        <label htmlFor='email' className='font-medium text-indigo-500'>Email</label>
-                        <input
-                            type='email'
-                            id='email'
-                            name='email'
-                            value={formData.email}
-                            onChange={handleChange}
-                            placeholder='Your email here'
-                            required
-                            className='p-2 border bg-indigo-100 border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
-                        />
-                    </div>
-                    <div className='flex flex-col'>
-                        <label htmlFor='message' className='font-medium text-indigo-500'>Message</label>
-                        <textarea
-                            id='message'
-                            name='message'
-                            value={formData.message}
-                            onChange={handleChange}
-                            placeholder='Your message here'
-                            required
-                            rows='4'
-                            className='p-2 border bg-indigo-100 border-indigo-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500'
-                        />
-                    </div>
-                    <button
-                        type='submit'
-                        className='p-4 rounded-2xl bg-indigo-500 text-white hover:bg-indigo-600 transition duration-200'
-                    >
-                        Send Message
-                    </button>
-                    
-                </form>
-                </div>
-                <div className="md:w-1/3"><Image className='' src={pic} alt="" /></div>
-            </div>
-            </div>
-    );
+    setErrors(newErrors)
+    return Object.keys(newErrors).length === 0
+  }
+
+  const handleChange = (e) => {
+    const { name, value } = e.target
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }))
+
+    // Clear error when user types
+    if (errors[name]) {
+      setErrors((prev) => ({
+        ...prev,
+        [name]: undefined,
+      }))
+    }
+  }
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+
+    if (!validateForm()) return
+
+    setIsSubmitting(true)
+
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/contactForm.php`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      })
+
+      if (response.ok) {
+        toast.success("Your message has been sent successfully!")
+        setFormData({ name: "", email: "", message: "" })
+      } else {
+        toast.error("Failed to send message. Please try again.")
+      }
+    } catch (error) {
+      toast.error("An error occurred. Please try again.")
+      console.error("Error submitting form:", error)
+    } finally {
+      setIsSubmitting(false)
+    }
+  }
+
+  return (
+    <section className="container mx-auto py-12 px-4 md:px-6 min-h-[80vh] flex items-center">
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-center w-full">
+        <div className="order-2 lg:order-1 flex flex-col justify-center">
+          <div className="max-w-xl mx-auto lg:mx-0">
+            <h1 className={`${fugaz.className} text-3xl md:text-4xl font-bold text-primary mb-2`}>Just Say Hello!</h1>
+            <p className="text-lg text-muted-foreground mb-8">
+              Let us know more about you! We'd love to hear from you.
+            </p>
+
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="space-y-2">
+                <label htmlFor="name" className="block font-medium text-primary">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  id="name"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
+                  placeholder="Your name"
+                  aria-describedby={errors.name ? "name-error" : undefined}
+                  className={`w-full p-3 rounded-lg border ${
+                    errors.name ? "border-red-500 bg-red-50" : "border-primary/20 bg-primary/5"
+                  } focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+                />
+                {errors.name && (
+                  <p id="name-error" className="text-red-500 text-sm mt-1">
+                    {errors.name}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="email" className="block font-medium text-primary">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  id="email"
+                  name="email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  placeholder="your.email@example.com"
+                  aria-describedby={errors.email ? "email-error" : undefined}
+                  className={`w-full p-3 rounded-lg border ${
+                    errors.email ? "border-red-500 bg-red-50" : "border-primary/20 bg-primary/5"
+                  } focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors`}
+                />
+                {errors.email && (
+                  <p id="email-error" className="text-red-500 text-sm mt-1">
+                    {errors.email}
+                  </p>
+                )}
+              </div>
+
+              <div className="space-y-2">
+                <label htmlFor="message" className="block font-medium text-primary">
+                  Message
+                </label>
+                <textarea
+                  id="message"
+                  name="message"
+                  value={formData.message}
+                  onChange={handleChange}
+                  placeholder="Your message here..."
+                  rows={5}
+                  aria-describedby={errors.message ? "message-error" : undefined}
+                  className={`w-full p-3 rounded-lg border ${
+                    errors.message ? "border-red-500 bg-red-50" : "border-primary/20 bg-primary/5"
+                  } focus:outline-none focus:ring-2 focus:ring-primary/50 transition-colors resize-y`}
+                />
+                {errors.message && (
+                  <p id="message-error" className="text-red-500 text-sm mt-1">
+                    {errors.message}
+                  </p>
+                )}
+              </div>
+
+              <button
+                type="submit"
+                disabled={isSubmitting}
+                className="w-full md:w-auto px-6 py-3 rounded-lg bg-primary text-white font-medium hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 transition-all duration-300 disabled:opacity-70 flex items-center justify-center"
+              >
+                {isSubmitting ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Sending...
+                  </>
+                ) : (
+                  "Send Message"
+                )}
+              </button>
+            </form>
+          </div>
+        </div>
+
+        <div className="order-1 md:order-2 flex justify-center h-full">
+          <div className="relative w-full h-[300px] md:h-[400px] lg:h-[500px] xl:h-[600px] rounded-lg overflow-hidden shadow-xl">
+          <Image
+              src={pic || "/placeholder.svg"}
+              alt="Contact us illustration"
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 50vw"
+              priority
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  )
 }
+
