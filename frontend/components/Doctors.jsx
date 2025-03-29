@@ -206,7 +206,11 @@ export default function Doctors() {
 }
 
 const DoctorCard = ({ doctor }) => {
-  const router = useRouter()
+  const router = useRouter();
+
+  const checkout = (doctor) => {
+    router.push(`/checkout?id=${doctor.userId}&fee=${doctor.fee}`);
+  };
 
   const handleConsultClick = async () => {
     const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/saveDoctor.php`, {
