@@ -1,6 +1,6 @@
 <?php
 session_start(); // Start the session
-include 'db.php';
+include '../db.php';
 
 // Check if the user is already logged in
 if (isset($_SESSION['user_id'])) {

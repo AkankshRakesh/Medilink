@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Loading from "./Loading"
 import { toast } from "react-toastify"
 import { Camera, Star, Users, Clock, MapPin, Award, Briefcase, GraduationCap, DollarSign } from "lucide-react"
+import { BookingList } from "./BookingList"
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ["400"] })
 
@@ -19,6 +20,10 @@ export const User = () => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [image, setImage] = useState(null)
   const [imagePreview, setImagePreview] = useState(null)
+  const [appointments, setAppointments] = useState({
+    asDoctor: [],
+    asPatient: [],
+  })
   const [formData, setFormData] = useState({
     userId: 0,
     name: "",
@@ -42,6 +47,33 @@ export const User = () => {
       }))
     }
   }, [userId])
+
+  const fetchAppointments = async () => {
+    try {
+      const userId = localStorage.getItem("userId")
+      if (!userId) return
+
+      // Fetch all appointments for this user (both as doctor and patient)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/bookings/getBookedTime.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId, type: 3 }), // Type 3 gets both
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch appointments")
+      }
+
+      const data = await response.json()
+      setAppointments({
+        asDoctor: data.as_doctor || [],
+        asPatient: data.as_patient || [],
+      })
+    } catch (error) {
+      console.error("Error fetching appointments:", error)
+      toast.error("Failed to load appointments")
+    }
+  }
 
   const handleImageChange = (e) => {
     const file = e.target.files?.[0]
@@ -99,7 +131,6 @@ export const User = () => {
     }
 
     try {
-      console.log(updatedFormData)
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/addDoctors.php`, {
         method: "POST",
         headers: {
@@ -166,9 +197,15 @@ export const User = () => {
     checkAuth()
   }, [])
 
+  useEffect(() => {
+    if (userId) {
+      fetchAppointments()
+    }
+  }, [userId])
+
   const fetchDoctorDetails = async (userId) => {
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/getDoctor.php`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/getDoctor.php`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -197,8 +234,7 @@ export const User = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-      <div className="container mx-auto px-4 py-12">
-        {/* Header with gradient text */}
+      <div className="container mx-auto px-4 py-8 md:py-12">
         <div className="mb-12 text-center">
           <h1 className={`${fugaz.className} text-5xl sm:text-6xl md:text-7xl mb-4`}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">
@@ -206,15 +242,20 @@ export const User = () => {
             </span>
           </h1>
           <div className="h-1 w-32 mx-auto bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full"></div>
+          
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3">
-          {/* Profile Card */}
-          <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-700 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
-            <div className="h-24 bg-gradient-to-r from-blue-600 to-purple-600"></div>
+        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+        <div className="lg:sticky lg:top-24 lg:self-start">
+        <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-700 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+            <div className="h-32 bg-gradient-to-r from-blue-600 to-purple-600 relative">
+              <div
+                className="absolute inset-0 opacity-30"
+              ></div>
+            </div>
             <div className="px-6 py-8 -mt-16">
               <div className="relative mb-6">
-                <div className="h-32 w-32 mx-auto rounded-full overflow-hidden border-4 border-gray-800 shadow-lg">
+                <div className="h-32 w-32 mx-auto rounded-full overflow-hidden border-4 border-gray-800 shadow-lg bg-gray-700">
                   <img
                     src={
                       imagePreview ||
@@ -227,128 +268,211 @@ export const User = () => {
                     }
                   />
                 </div>
+                {isDoctor && doctorDetails && (
+                  <div className="absolute -bottom-2 -right-2 bg-blue-500 rounded-full p-1.5 border-2 border-gray-800">
+                    <Briefcase className="h-4 w-4 text-white" />
+                  </div>
+                )}
               </div>
               <div className="text-center">
                 <h3 className="text-2xl font-bold mb-1">{username}</h3>
                 <p className="text-blue-400 mb-3">{email}</p>
-                <div className="flex items-center justify-center text-sm text-gray-400">
+                <div className="flex items-center justify-center text-sm text-gray-400 bg-gray-800 bg-opacity-50 py-2 px-3 rounded-full">
                   <Clock className="h-4 w-4 mr-1" />
                   <span>Last login: {new Date(time).toLocaleString()}</span>
                 </div>
               </div>
             </div>
           </div>
+          </div>
 
-          {/* Doctor Details or Activity Card */}
           <div
             className={`${isDoctor ? "lg:col-span-2" : ""} bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-700 transform transition-all duration-300 hover:shadow-2xl`}
           >
             <div className="p-6">
               <h2 className="text-xl font-bold mb-6 flex items-center">
                 <span className="h-8 w-1 bg-blue-500 rounded-full mr-3"></span>
-                {isDoctor ? "Professional Profile" : "Activity Summary"}
+                <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                  {isDoctor ? "Professional Profile" : "Your Appointments"}
+                </span>
               </h2>
 
               {isDoctor && doctorDetails ? (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                  <div className="space-y-4">
-                    <h3 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                      {doctorDetails.name}
-                    </h3>
+                <>
+                
+                <h3 className="text-2xl mb-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                        {doctorDetails.name}
+                      </h3>
+                  <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+                    <div className="space-y-4">
 
-                    <div className="flex items-center">
-                      <Briefcase className="h-5 w-5 text-blue-400 mr-2" />
-                      <span className="font-medium">Experience:</span>
-                      <span className="ml-2">{doctorDetails.experience} years</span>
-                    </div>
+                      <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <Briefcase className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-400">Experience</span>
+                          <p className="font-medium">{doctorDetails.experience} years</p>
+                        </div>
+                      </div>
 
-                    <div className="flex items-center">
-                      <Award className="h-5 w-5 text-blue-400 mr-2" />
-                      <span className="font-medium">Specialization:</span>
-                      <span className="ml-2">{doctorDetails.specialization}</span>
-                    </div>
+                      <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <Award className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-400">Specialization</span>
+                          <p className="font-medium">{doctorDetails.specialization}</p>
+                        </div>
+                      </div>
 
-                    <div className="flex items-center">
-                      <GraduationCap className="h-5 w-5 text-blue-400 mr-2" />
-                      <span className="font-medium">Qualification:</span>
-                      <span className="ml-2">{doctorDetails.qualification}</span>
-                    </div>
+                      <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <GraduationCap className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-400">Qualification</span>
+                          <p className="font-medium">{doctorDetails.qualification}</p>
+                        </div>
+                      </div>
 
-                    <div className="flex items-center">
-                      <MapPin className="h-5 w-5 text-blue-400 mr-2" />
-                      <span className="font-medium">Location:</span>
-                      <span className="ml-2">{doctorDetails.location}</span>
-                    </div>
-                  </div>
-
-                  <div className="space-y-4">
-                    <div className="flex items-center">
-                      <Star className="h-5 w-5 text-yellow-400 mr-2" />
-                      <span className="font-medium">Rating:</span>
-                      <div className="ml-2 flex items-center">
-                        <span className="mr-1">{doctorDetails.rating}</span>
-                        <div className="flex">
-                          {[...Array(5)].map((_, i) => (
-                            <Star
-                              key={i}
-                              className={`h-4 w-4 ${i < Math.floor(doctorDetails.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-500"}`}
-                            />
-                          ))}
+                      <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <MapPin className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-400">Location</span>
+                          <p className="font-medium">{doctorDetails.location}</p>
                         </div>
                       </div>
                     </div>
 
-                    <div className="flex items-center">
-                      <Users className="h-5 w-5 text-blue-400 mr-2" />
-                      <span className="font-medium">Patients:</span>
-                      <span className="ml-2">{doctorDetails.patients}</span>
-                    </div>
+                    <div className="space-y-4">
+                      <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <Star className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-400">Rating</span>
+                          <div className="flex items-center">
+                            <span className="font-medium mr-2">{doctorDetails.rating}</span>
+                            <div className="flex">
+                              {[...Array(5)].map((_, i) => (
+                                <Star
+                                  key={i}
+                                  className={`h-4 w-4 ${i < Math.floor(doctorDetails.rating) ? "text-yellow-400 fill-yellow-400" : "text-gray-500"}`}
+                                />
+                              ))}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
 
-                    <div className="flex items-center">
-                      <DollarSign className="h-5 w-5 text-blue-400 mr-2" />
-                      <span className="font-medium">Fee:</span>
-                      <span className="ml-2">₹{doctorDetails.fee}</span>
-                    </div>
+                      <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <Users className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-400">Patients</span>
+                          <p className="font-medium">{doctorDetails.patients}</p>
+                        </div>
+                      </div>
 
-                    <div className="flex items-center">
-                      <Clock className="h-5 w-5 text-blue-400 mr-2" />
-                      <span className="font-medium">Availability:</span>
-                      <span className="ml-2">
-                        {doctorDetails.availabilityStart} - {doctorDetails.availabilityEnd}
-                      </span>
+                      <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <DollarSign className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-400">Consultation Fee</span>
+                          <p className="font-medium">₹{doctorDetails.fee}</p>
+                        </div>
+                      </div>
+
+                      <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <Clock className="h-5 w-5 text-blue-400" />
+                        </div>
+                        <div>
+                          <span className="text-xs text-gray-400">Availability</span>
+                          <p className="font-medium">
+                            {doctorDetails.availabilityStart} - {doctorDetails.availabilityEnd}
+                          </p>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                </div>
+
+                  <div className="space-y-8">
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-bold flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <Users className="h-5 w-5 text-blue-400" />
+                        </div>
+                        Appointments With You
+                      </h3>
+                      <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
+                        <BookingList bookings={appointments.asDoctor} type="doctor" />
+                      </div>
+                    </div>
+
+                    <div className="space-y-4">
+                      <h3 className="text-xl font-bold flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <Clock className="h-5 w-5 text-blue-400" />
+                        </div>
+                        Your Personal Appointments
+                      </h3>
+                      <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
+                        <BookingList bookings={appointments.asPatient} type="personal" />
+                      </div>
+                    </div>
+                  </div>
+                </>
               ) : isDoctor ? (
-                <div className="flex flex-col items-center justify-center py-8 text-center">
-                  <div className="h-20 w-20 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center mb-4">
-                    <Briefcase className="h-10 w-10 text-blue-400" />
+                <div className="flex flex-col items-center justify-center py-12 text-center">
+                  <div className="h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 mb-6">
+                    <div className="h-full w-full rounded-full bg-gray-800 flex items-center justify-center">
+                      <Briefcase className="h-12 w-12 text-blue-400" />
+                    </div>
                   </div>
-                  <p className="text-lg mb-6">You haven't added your professional details yet.</p>
+                  <h3 className="text-2xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                    Complete Your Profile
+                  </h3>
+                  <p className="text-lg mb-8 text-gray-300 max-w-md">
+                    Add your professional details to help patients find you and book appointments.
+                  </p>
                   <button
                     onClick={handleAddDetails}
-                    className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg transition duration-300 transform hover:scale-105"
+                    className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg transition duration-300 transform hover:scale-105 overflow-hidden"
                   >
-                    Add Your Details
+                    <span className="relative z-10 flex items-center">
+                      <Briefcase className="h-5 w-5 mr-2" />
+                      Add Your Details
+                    </span>
+                    <span className="absolute inset-0 bg-white bg-opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
                   </button>
                 </div>
               ) : (
                 <div className="space-y-6">
-                  <p className="text-lg">Track your progress and wellness journey:</p>
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                    {[
-                      { icon: <Star className="h-5 w-5" />, text: "Monitor mood patterns" },
-                      { icon: <Clock className="h-5 w-5" />, text: "Schedule appointments" },
-                      { icon: <Award className="h-5 w-5" />, text: "Access resources" },
-                      { icon: <Users className="h-5 w-5" />, text: "View history" },
-                    ].map((item, index) => (
-                      <div key={index} className="flex items-center p-4 bg-gray-700 bg-opacity-40 rounded-xl">
-                        <div className="h-10 w-10 rounded-full bg-blue-500 bg-opacity-20 flex items-center justify-center mr-3">
-                          {item.icon}
-                        </div>
-                        <span>{item.text}</span>
+                  <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                    Your Appointments
+                  </h3>
+                  <div className="space-y-4">
+                    <div className="flex items-center mb-4">
+                      <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                        <Clock className="h-5 w-5 text-blue-400" />
                       </div>
-                    ))}
+                      <h4 className="text-lg font-semibold">As Patient</h4>
+                    </div>
+                    <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
+                      <BookingList bookings={appointments.asPatient} type="personal" />
+                      {appointments.asPatient?.length === 0 && (
+                        <div className="text-center py-8 text-gray-400">
+                          <Clock className="h-12 w-12 mx-auto mb-3 opacity-50" />
+                          <p>No appointments scheduled yet</p>
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
               )}
@@ -357,7 +481,6 @@ export const User = () => {
         </div>
       </div>
 
-      {/* Modal for adding doctor details */}
       {isModalOpen && (
         <div
           id="modal"
@@ -366,14 +489,20 @@ export const User = () => {
             if (e.target === e.currentTarget) handleCloseModal()
           }}
         >
-          <div className="bg-gray-800 max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-700 p-6 rounded-xl shadow-2xl w-11/12 max-w-lg border border-gray-700 animate-[scaleIn_0.2s_ease-out]">
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                Add Your Doctor Details
-              </h2>
+          <div className="bg-gray-800 max-h-[90vh] overflow-y-auto scrollbar-thin scrollbar-thumb-blue-500 scrollbar-track-gray-700 p-6 rounded-xl shadow-2xl w-11/12 max-w-lg border border-gray-700 animate-[scaleIn_0.2s_ease-out] relative">
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+            <div className="flex justify-between items-center mb-8">
+              <div className="flex items-center">
+                <div className="bg-gradient-to-br from-blue-500 to-purple-600 p-2 rounded-lg mr-3">
+                  <Briefcase className="h-6 w-6 text-white" />
+                </div>
+                <h2 className="text-2xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                  Add Your Doctor Details
+                </h2>
+              </div>
               <button
                 onClick={handleCloseModal}
-                className="h-8 w-8 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors"
+                className="h-8 w-8 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors hover:rotate-90 duration-300"
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -401,7 +530,7 @@ export const User = () => {
                     name="name"
                     placeholder="Dr. John Doe"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                     required
                   />
                 </div>
@@ -412,7 +541,7 @@ export const User = () => {
                     name="experience"
                     placeholder="10"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                     required
                   />
                 </div>
@@ -426,7 +555,7 @@ export const User = () => {
                     name="specialization"
                     placeholder="Cardiology"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                     required
                   />
                 </div>
@@ -437,7 +566,7 @@ export const User = () => {
                     name="qualification"
                     placeholder="MBBS, MD"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                     required
                   />
                 </div>
@@ -454,7 +583,7 @@ export const User = () => {
                     max="5"
                     step="0.1"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                     required
                   />
                 </div>
@@ -465,7 +594,7 @@ export const User = () => {
                     name="patients"
                     placeholder="1000"
                     onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                     required
                   />
                 </div>
@@ -478,7 +607,7 @@ export const User = () => {
                   name="fee"
                   placeholder="1500"
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                   required
                 />
               </div>
@@ -492,7 +621,7 @@ export const User = () => {
                       type="time"
                       name="availabilityStart"
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                       required
                     />
                   </div>
@@ -502,7 +631,7 @@ export const User = () => {
                       type="time"
                       name="availabilityEnd"
                       onChange={handleChange}
-                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                       required
                     />
                   </div>
@@ -519,18 +648,21 @@ export const User = () => {
                       onChange={handleImageChange}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
-                    <div className="px-4 py-3 bg-blue-600 hover:bg-blue-700 rounded-lg text-white font-medium flex items-center transition-colors">
+                    <div className="px-4 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 rounded-lg text-white font-medium flex items-center transition-colors shadow-md hover:shadow-blue-500/20">
                       <Camera className="h-5 w-5 mr-2" />
                       Choose Image
                     </div>
                   </div>
                   {imagePreview && (
-                    <div className="ml-4 relative h-16 w-16 rounded-full overflow-hidden border-2 border-blue-500">
+                    <div className="ml-4 relative h-16 w-16 rounded-full overflow-hidden border-2 border-blue-500 group">
                       <img
                         src={imagePreview || "/placeholder.svg"}
                         alt="Preview"
-                        className="h-full w-full object-cover"
+                        className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-300"
                       />
+                      <div className="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-20 transition-all duration-300 flex items-center justify-center">
+                        <Camera className="h-6 w-6 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -543,7 +675,7 @@ export const User = () => {
                   name="location"
                   placeholder="123 Medical Center, City"
                   onChange={handleChange}
-                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                   required
                 />
               </div>
@@ -558,9 +690,10 @@ export const User = () => {
                 </button>
                 <button
                   type="submit"
-                  className="px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg transition-all hover:shadow-blue-500/20"
+                  className="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg transition-all hover:shadow-blue-500/20 overflow-hidden"
                 >
-                  Save Details
+                  <span className="relative z-10 flex items-center">Save Details</span>
+                  <span className="absolute inset-0 bg-white bg-opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
                 </button>
               </div>
             </form>
@@ -577,6 +710,13 @@ export const User = () => {
           from { transform: scale(0.95); opacity: 0; }
           to { transform: scale(1); opacity: 1; }
         }
+        @keyframes pulse {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.7; }
+        }
+        .pulse {
+          animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+        }
         .scrollbar-thin::-webkit-scrollbar {
           width: 6px;
         }
@@ -585,11 +725,11 @@ export const User = () => {
           border-radius: 10px;
         }
         .scrollbar-thin::-webkit-scrollbar-thumb {
-          background: #3b82f6;
+          background: linear-gradient(to bottom, #3b82f6, #8b5cf6);
           border-radius: 10px;
         }
         .scrollbar-thin::-webkit-scrollbar-thumb:hover {
-          background: #2563eb;
+          background: linear-gradient(to bottom, #2563eb, #7c3aed);
         }
       `}</style>
     </div>

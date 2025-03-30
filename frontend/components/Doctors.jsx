@@ -27,7 +27,7 @@ export default function Doctors() {
 
   useEffect(() => {
     setLoading(true)
-    fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData.php`)
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/doctorData.php`)
       .then((res) => res.json())
       .then((data) => {
         console.log("Fetched doctors:", data)
@@ -213,7 +213,7 @@ const DoctorCard = ({ doctor }) => {
   };
 
   const handleConsultClick = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/saveDoctor.php`, {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/saveDoctor.php`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(doctor),

@@ -1,6 +1,6 @@
 <?php 
 session_start();
-include 'db.php';
+include '../db.php';
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -18,9 +18,9 @@ $specialization = $data['specialization'] ?? '';
 if (!empty($specialization)) {
     try {
         // Prepare and execute query
-        $stmt = $pdo->prepare("SELECT * FROM doctors WHERE specialization = ? ORDER BY rating DESC LIMIT 1");
+        $stmt = $pdo->prepare("SELECT * FROM doctors WHERE specialization = ? ORDER BY rating DESC LIMIT 2");
         $stmt->execute([$specialization]);
-        $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
+        $doctor = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         if ($doctor) {
             echo json_encode($doctor);

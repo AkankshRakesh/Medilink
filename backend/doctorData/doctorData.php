@@ -1,6 +1,6 @@
 <?php
 // Include the database connection file
-include 'db.php';
+include '../db.php';
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: GET, OPTIONS");
@@ -14,7 +14,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 try {
     // Query to fetch all doctors from the users table where isDoctor = 1
-    $stmt = $pdo->prepare("SELECT id,userId, name,picture, experience, specialization, qualification, rating, patients,fee, availabilityStart, availabilityEnd, location FROM doctors");
+    $stmt = $pdo->prepare("SELECT * FROM doctors");
     $stmt->execute();
     $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
@@ -29,3 +29,4 @@ try {
 } catch (PDOException $e) {
     echo json_encode(['success' => false, 'message' => 'Database query failed: ' . $e->getMessage()]);
 }
+?>

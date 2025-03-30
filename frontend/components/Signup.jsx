@@ -49,7 +49,7 @@ export default function Signup() {
         }
         setAuthenticating(true);
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/signup.php`, { username, email, password, isDoctor: isDoctor ? 1 : 0 }, {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/auth/signup.php`, { username, email, password, isDoctor: isDoctor ? 1 : 0 }, {
                 headers: { 'Content-Type': 'application/json' },
             });
             toast.success(response.data.message);

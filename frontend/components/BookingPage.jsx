@@ -8,6 +8,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
+import { createRazorpayOrder, processPayment } from "@/lib/razorpay"
+import { toast } from "react-toastify"
 
 const category = [
   "General Physician",
@@ -60,7 +62,7 @@ function BookingPage() {
       if (!id) return
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/saveDoctor.php?id=${id}`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/saveDoctor.php?id=${id}`, {
           method: "GET",
           headers: { "Content-Type": "application/json" },
           credentials: "include",
@@ -91,7 +93,7 @@ function BookingPage() {
       if (!doctorDetails?.specialization) return
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/getTopDoctor.php`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/getTopDoctor.php`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ specialization: doctorDetails.specialization }),
@@ -126,7 +128,7 @@ function BookingPage() {
       setLoading(true)
       setNoDoctorsAvailable(false)
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/getTopDoctor.php`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/getTopDoctor.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ specialization: specialty }),
@@ -177,22 +179,23 @@ function BookingPage() {
   }
 
   // Rest of your existing code...
-  useEffect(() => {
-    if (doctorDetails) {
-      const today = new Date()
-      const upcomingDates = Array.from({ length: 5 }, (_, i) => {
-        const date = new Date()
-        date.setDate(today.getDate() + i)
-        return {
-          day: date.toLocaleDateString("en-US", { weekday: "short" }),
-          date: date.getDate(),
-          fullDate: date.toISOString().split("T")[0],
-        }
-      })
-      setDates(upcomingDates)
-      setSelectedDate(upcomingDates[0].fullDate)
-    }
-  }, [doctorDetails])
+  // In your useEffect where you set dates, ensure consistent format:
+useEffect(() => {
+  if (doctorDetails) {
+    const today = new Date();
+    const upcomingDates = Array.from({ length: 5 }, (_, i) => {
+      const date = new Date();
+      date.setDate(today.getDate() + i);
+      return {
+        day: date.toLocaleDateString("en-US", { weekday: "short" }),
+        date: date.getDate(),
+        fullDate: date.toISOString().split('T')[0] // YYYY-MM-DD format
+      };
+    });
+    setDates(upcomingDates);
+    setSelectedDate(upcomingDates[0].fullDate);
+  }
+}, [doctorDetails]);
 
   useEffect(() => {
     if (selectedDate && doctorDetails) {
@@ -202,46 +205,177 @@ function BookingPage() {
 
   const fetchAvailableTimes = async (date) => {
     try {
-      generateTimeSlots(doctorDetails.availabilityStart, doctorDetails.availabilityEnd)
+      const { availabilityStart, availabilityEnd } = doctorDetails;
+      
+      
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/bookings/getBookedTime.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ userId: doctorDetails.userId, type:1 }),
+      });
+      
+      const bookedSlots = await response.json();
+  
+      // Normalize dates and times for comparison
+      const normalizeTime = (timeStr) => {
+        // Handle cases like "9:00" -> "09:00"
+        const [hours, minutes] = timeStr.split(':');
+        return `${hours.padStart(2, '0')}:${minutes.padStart(2, '0')}`;
+      };
+  
+      const bookedTimesForDate = bookedSlots
+        .filter(slot => {
+          return slot.date === date;
+        })
+        .map(slot => {
+          const normalizedTime = normalizeTime(slot.time);
+          return normalizedTime;
+        });
+  
+  
+      const allSlots = generateTimeSlots(availabilityStart, availabilityEnd);
+  
+      const timeSlots = allSlots.map(time => {
+        const isBooked = bookedTimesForDate.includes(time);
+        return {
+          time,
+          booked: isBooked
+        };
+      });
+  
+      setAvailableTimes(timeSlots);
     } catch (error) {
-      console.error("Error fetching times:", error)
+      console.error("Error:", error);
+      setAvailableTimes([]);
     }
-  }
-
+  };
+  
+  // Update your generateTimeSlots function to return array of time strings
   const generateTimeSlots = (startTime, endTime) => {
-    const slots = []
+    const slots = [];
+    
+    // Parse start and end times
     const parseTime = (timeStr) => {
-      const [hours, minutes, seconds] = timeStr.split(":").map(Number)
-      return new Date(1970, 0, 1, hours, minutes, seconds)
-    }
-
-    const current = parseTime(startTime)
-    const end = parseTime(endTime)
-
-    if (isNaN(current) || isNaN(end) || current >= end) {
-      console.error("Invalid time range")
-      return
-    }
-
+      const [hours, minutes] = timeStr.split(':').map(Number);
+      return hours * 60 + minutes; // Convert to minutes since midnight
+    };
+  
+    const formatTime = (minutes) => {
+      const hrs = Math.floor(minutes / 60);
+      const mins = minutes % 60;
+      return `${String(hrs).padStart(2, '0')}:${String(mins).padStart(2, '0')}`;
+    };
+  
+    let current = parseTime(startTime);
+    const end = parseTime(endTime);
+  
     while (current <= end) {
-      slots.push(current.toTimeString().slice(0, 5))
-      current.setMinutes(current.getMinutes() + 30)
+      slots.push(formatTime(current));
+      current += 30; // 30 minute intervals
     }
-
-    setAvailableTimes(slots)
-  }
+  
+    return slots;
+  };
 
   const bookAppointment = async () => {
-    try {
-      console.log("Booking appointment with:", {
-        doctorId: doctorDetails?.id,
-        date: selectedDate,
-        time: selectedTime,
-      })
-    } catch (error) {
-      console.error("Error booking appointment:", error)
+    if (doctorDetails.userId == localStorage.getItem("userId")) {
+      toast.error("You cannot book an appointment with yourself");
+      return;
     }
-  }
+  
+    try {
+      const payload = {
+        doctor_id: doctorDetails.userId,
+        patient_id: localStorage.getItem("userId"),
+        amount: doctorDetails.fee,
+        meeting_date: selectedDate,
+        meeting_time: selectedTime,
+      };
+  
+      const order = await createRazorpayOrder(payload);
+      if (!order) {
+        toast.error("Failed to create order");
+        return;
+      }
+  
+      const paymentResponse = await processPayment(order);
+      console.log(paymentResponse, order.order_id);
+  
+      // 1. First update the order status
+      await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/bookings/updateOrder.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          order_id: order.order_id, 
+          payment_id: paymentResponse.paymentId 
+        }),
+      });
+  
+      if (paymentResponse.success) {
+        // 2. Only after payment success, create Google Meet
+        const meetLink = await createGoogleMeet(selectedDate, selectedTime);
+        
+        if (!meetLink) {
+          toast.error("Appointment booked but failed to create meeting link");
+          // Still proceed with booking even if Meet fails
+        }
+        console.log(meetLink);
+        // 3. Send booking data with meet link to backend
+        const bookingResponse = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/bookTime.php`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            doctorId: doctorDetails.userId,
+            doctorName: doctorDetails.name,
+            patientId: localStorage.getItem("userId"),
+            date: selectedDate,
+            time: selectedTime,
+            paymentId: paymentResponse.paymentId,
+            meetLink: meetLink || null // Send null if meet creation failed
+          }),
+        });
+  
+        if (!bookingResponse.ok) {
+          throw new Error("Failed to save booking");
+        }
+  
+        toast.success("Payment successful! Meeting details will be sent to your email", {
+          onClose: () => window.location.reload(),
+        });
+      }
+    } catch (error) {
+      console.error("Error booking appointment:", error);
+      toast.error("Error processing appointment");
+    }
+  };
+  const generateGoogleMeetLink = () => {
+    // Generate a random 10-character meeting code
+    const chars = 'abcdefghijklmnopqrstuvwxyz0123456789';
+    let meetCode = '';
+    
+    for (let i = 0; i < 10; i++) {
+      meetCode += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    
+    return `https://meet.google.com/${meetCode}`;
+  };
+  
+  const createGoogleMeet = async (date, time) => {
+    try {
+      // Generate the Meet link
+      const meetLink = generateGoogleMeetLink();
+      
+      // Verify the link format (simple validation)
+      if (!meetLink.startsWith('https://meet.google.com/') || meetLink.length < 30) {
+        throw new Error('Invalid Meet link generated');
+      }
+      
+      return meetLink;
+    } catch (error) {
+      console.error('Meet creation error:', error);
+      return null;
+    }
+  };
 
   if (loading) {
     return (
@@ -495,20 +629,28 @@ function BookingPage() {
                       <h3 className="text-sm font-medium">Available Time Slots</h3>
                     </div>
                     <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                      {availableTimes.map((time) => (
-                        <button
-                          key={time}
-                          onClick={() => setSelectedTime(time)}
-                          className={`p-2 text-sm rounded-md border transition-all ${
-                            time === selectedTime
-                              ? "bg-primary/10 border-primary text-primary font-medium"
-                              : "border-input text-foreground hover:bg-accent"
-                          }`}
-                        >
-                          {time}
-                        </button>
-                      ))}
-                    </div>
+  {availableTimes.map((slot, index) => (
+    <button
+      key={`${slot.time}-${index}`}
+      onClick={() => !slot.booked && setSelectedTime(slot.time)}
+      className={`p-2 text-sm rounded-md border transition-all relative ${
+        slot.time === selectedTime
+          ? "bg-primary/10 border-primary text-primary font-medium"
+          : slot.booked
+          ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
+          : "border-input text-foreground hover:bg-accent"
+      }`}
+      disabled={slot.booked}
+    >
+      {slot.time}
+      {slot.booked && (
+        <span className="absolute -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+          ✓
+        </span>
+      )}
+    </button>
+  ))}
+</div>
                   </div>
 
                   <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 mt-4">

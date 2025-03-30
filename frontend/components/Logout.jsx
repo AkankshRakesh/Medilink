@@ -19,7 +19,7 @@ export default function Logout() {
 
     const callLogoutEndpoint = async (userId) => {
         try {
-            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/logout.php`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/auth/logout.php`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',

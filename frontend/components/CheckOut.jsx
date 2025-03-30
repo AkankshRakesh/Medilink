@@ -76,7 +76,7 @@ function CheckOut() {
 
       try {
         const response = await fetch(
-          `${process.env.NEXT_PUBLIC_BACKEND}/getDoctor.php?user_id=${id}`,
+          `${process.env.NEXT_PUBLIC_BACKEND}/doctorData/getDoctor.php?user_id=${id}`,
           {
             method: "GET",
             credentials: "include",
@@ -118,7 +118,7 @@ function CheckOut() {
       if (!doctorDetails?.specialization) return;
 
       try {
-        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/getTopDoctor.php`, {
+        const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/getTopDoctor.php`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ specialization: doctorDetails.specialization }),
@@ -156,7 +156,7 @@ function CheckOut() {
       setLoading(true);
       setNoDoctorsAvailable(false);
 
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/getTopDoctor.php`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/getTopDoctor.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ specialization: specialty }),

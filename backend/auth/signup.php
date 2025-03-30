@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+include '../db.php';
 
 // Allow cross-origin requests
 header("Access-Control-Allow-Origin: *"); // Use specific domain in production

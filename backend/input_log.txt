@@ -1,0 +1,1 @@
+{"doctorId":10,"patientId":"17","date":"2025-03-30","time":"16:00","paymentId":"pay_QCwcCWmxefiuns","meetLink":"https://meet.google.com/8rfhit8tb7"}
