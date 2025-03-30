@@ -1,0 +1,20 @@
+{
+    "builds": [
+      {
+        "src": "**/*.php",
+        "use": "@railway/php",
+        "config": {
+          "phpVersion": "8.2"
+        }
+      }
+    ],
+    "routes": [
+      {
+        "handle": "filesystem"
+      },
+      {
+        "src": "/(.*)",
+        "dest": "/public/$1"
+      }
+    ]
+  }

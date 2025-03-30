@@ -12,7 +12,6 @@ import { ChevronRight, Filter, ThumbsUp, X } from "lucide-react"
 const filtersData = {
   experience: ["0-5", "6-10", "11+"],
   fees: ["100-500", "500-1000", "1000+"],
-  languages: ["English", "Hindi", "Telugu"],
 }
 
 export default function Doctors() {
@@ -77,10 +76,7 @@ export default function Doctors() {
             return doctor.fee >= min && doctor.fee <= max
           }
         })
-      const languageMatch =
-        selectedFilters.languages.length === 0 ||
-        selectedFilters.languages.some((lang) => doctor.languages.includes(lang))
-      return experienceMatch && feesMatch && languageMatch
+      return experienceMatch && feesMatch
     })
   }
 
