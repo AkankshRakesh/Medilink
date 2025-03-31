@@ -156,7 +156,7 @@ export default function Doctors() {
 
         {/* Main Content */}
         <div className="w-full md:w-3/4">
-          <h1 className="text-2xl font-bold mb-6">Consult General Physicians Online</h1>
+          <h1 className="text-2xl font-bold mb-6">Consult Doctors Online</h1>
 
           {/* Active Filters */}
           {hasActiveFilters && (
