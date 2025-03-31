@@ -8,7 +8,6 @@ import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import Image from "next/image"
 
-// Fallback date formatting function
 const formatDate = (date) => {
   if (!(date instanceof Date)) {
     date = new Date(date)
@@ -24,7 +23,6 @@ const formatDate = (date) => {
 export function BookingList({ bookings, type, onCancelBooking }) {
   const [doctorDetails, setDoctorDetails] = useState({})
 
-  // Fetch doctor details for each patient appointment
   useEffect(() => {
     if (type === "personal") {
       const fetchDoctors = async () => {
@@ -99,7 +97,6 @@ function BookingCard({ booking, type, onCancel, doctorDetails }) {
     }
   }
 
-  // Format the date and time with our fallback function
   const formattedDate = booking.date ? formatDate(booking.date) : "Date not specified"
   const formattedTime = booking.time || "Time not specified"
 

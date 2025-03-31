@@ -1,5 +1,4 @@
 <?php
-// Start the session to access session data
 session_start();
 include 'db.php';
 
@@ -28,13 +27,12 @@ if ($userId) {
             echo json_encode([
             'success' => true,
             'user_id' => $userId,
-            'isDoctor' => $user['isDoctor']  // Replace with actual data from DB
+            'isDoctor' => $user['isDoctor'] 
         ]);
     } else{
         echo json_encode(['success' => false, 'message' => 'User not found']);
     }
 } else {
-    // If no userId is provided
     echo json_encode([
         'success' => false,
         'message' => 'User ID is required'

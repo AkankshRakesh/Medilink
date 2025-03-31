@@ -67,26 +67,22 @@ export const initRazorpay = async () => {
     });
   };
 
-// CORRECT IMPLEMENTATION
 export const processPayment = (order) => {
     return new Promise(async (resolve, reject) => {
       try {
-        // Initialize Razorpay
         const initialized = await initRazorpay();
         if (!initialized) {
           throw new Error("Payment system unavailable");
         }
   
-        // Set up payment options
         const options = {
           key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_yzGAVhIYZJF0BR",
-          amount: order.amount * 100, // Amount in paise
+          amount: order.amount * 100, 
           currency: "INR",
           name: "Medilink",
           description: "Payment Description",
-          order_id: order.razorpay_order_id, // From your backend
+          order_id: order.razorpay_order_id, 
           handler: (response) => {
-            // Payment succeeded
             resolve({
               success: true,
               paymentId: response.razorpay_payment_id,
@@ -101,21 +97,17 @@ export const processPayment = (order) => {
           },
           modal: {
             ondismiss: () => {
-              // User closed the payment modal
               reject(new Error("Payment window closed by user"));
             }
           }
         };
   
-        // Initialize Razorpay instance
         const rzp = new window.Razorpay(options);
         
-        // Handle payment failure
         rzp.on('payment.failed', (response) => {
           reject(new Error(response.error.description || "Payment failed"));
         });
   
-        // Open payment modal
         rzp.open();
   
       } catch (error) {

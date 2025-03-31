@@ -778,3 +778,133 @@ Array
         )
 
 )
+Array
+(
+    [timestamp] => 2025-03-31 07:25:04
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 17
+            [amount] => 1000
+            [meeting_date] => 2024-06-29
+            [meeting_time] => 10
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 07:25:10
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 17
+            [amount] => 1000
+            [meeting_date] => 2025-03-31
+            [meeting_time] => 17:30
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 07:28:34
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 17
+            [amount] => 1000
+            [meeting_date] => 2025-04-04
+            [meeting_time] => 18:00
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 07:29:27
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 17
+            [amount] => 1000
+            [meeting_date] => 2025-04-04
+            [meeting_time] => 18:00
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 07:31:40
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 17
+            [amount] => 1000
+            [meeting_date] => 2025-04-04
+            [meeting_time] => 18:00
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 07:34:08
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 17
+            [amount] => 1000
+            [meeting_date] => 2025-04-04
+            [meeting_time] => 18:00
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 07:35:55
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 17
+            [amount] => 1000
+            [meeting_date] => 2025-04-04
+            [meeting_time] => 18:00
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 07:36:12
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 17
+            [amount] => 1000
+            [meeting_date] => 2025-04-04
+            [meeting_time] => 18:00
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 07:41:14
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 
+            [amount] => 1000
+            [meeting_date] => 2025-03-31
+            [meeting_time] => 15:30
+        )
+
+)
+Array
+(
+    [timestamp] => 2025-03-31 08:29:05
+    [input] => Array
+        (
+            [doctor_id] => 7
+            [patient_id] => 18
+            [amount] => 1300
+            [meeting_date] => 2025-03-31
+            [meeting_time] => 20:00
+        )
+
+)

@@ -1,5 +1,5 @@
 <?php
-require 'db.php'; // Include database connection
+require 'db.php'; 
 
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Methods: POST, OPTIONS");
@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     }
 
     try {
-        // Check OTP in the database with expiration check
         $stmt = $pdo->prepare("SELECT otp, expires_at FROM otptable WHERE email = :email");
         $stmt->execute(['email' => $email]);
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
@@ -41,7 +40,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             if ($currentTime > $expiryTime) {
                 echo json_encode(["status" => "error", "message" => "OTP has expired"]);
             } else {
-                // OTP is correct, delete it
                 $stmt = $pdo->prepare("DELETE FROM otptable WHERE email=?");
                 $stmt->execute([$email]);
 

@@ -49,7 +49,6 @@ export default function ContactUs() {
       [name]: value,
     }))
 
-    // Clear error when user types
     if (errors[name]) {
       setErrors((prev) => ({
         ...prev,

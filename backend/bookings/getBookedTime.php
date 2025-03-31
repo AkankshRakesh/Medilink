@@ -23,7 +23,6 @@ if (!$userId) {
     exit;
 }
 
-// Format function for doctor appointments
 $formatDoctorTime = function($row) {
     return [
         'date' => $row['date'],
@@ -32,7 +31,6 @@ $formatDoctorTime = function($row) {
     ];
 };
 
-// Format function for patient appointments (includes doctorId)
 $formatPatientTime = function($row) {
     return [
         'date' => $row['date'],
@@ -60,14 +58,12 @@ switch ($type) {
         break;
         
     case 3: // Both (default)
-        // Get doctor bookings
         $stmt = $pdo->prepare("SELECT time, date, meetLink FROM bookings 
                              WHERE doctorId = ? AND date >= ?
                              ORDER BY date, time");
         $stmt->execute([$userId, $currentDate]);
         $asDoctor = array_map($formatDoctorTime, $stmt->fetchAll(PDO::FETCH_ASSOC));
         
-        // Get patient bookings (now including doctorId)
         $stmt = $pdo->prepare("SELECT time, date, doctorId, meetLink FROM bookings 
                              WHERE patientId = ? AND date >= ?
                              ORDER BY date, time");

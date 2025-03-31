@@ -2,7 +2,7 @@
 session_start([
     'use_cookies' => true,
     'use_only_cookies' => true,
-    'cookie_secure' => false, // Set to true if using HTTPS
+    'cookie_secure' => false, 
     'cookie_httponly' => true,
 ]);
 header("Access-Control-Allow-Origin: http://localhost:3000");

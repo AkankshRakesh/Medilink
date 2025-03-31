@@ -4,16 +4,14 @@ header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
 
-// Handle OPTIONS request (preflight request)
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
     http_response_code(200);
     exit;
 }
 
-require '../db.php'; // Database connection
+require '../db.php'; 
 
 try {
-    // Get and validate input
     $data = json_decode(file_get_contents("php://input"), true);
     if (json_last_error() !== JSON_ERROR_NONE) {
         throw new Exception("Invalid JSON input");
@@ -33,7 +31,6 @@ try {
 
     $status = 'paid';
 
-    // Update payment status
     $sql = "UPDATE payments SET payment_id = :payment_id, status = :status WHERE order_id = :order_id";
     $stmt = $pdo->prepare($sql);
     
@@ -49,12 +46,10 @@ try {
         throw new Exception("Failed to update order status");
     }
 
-    // Check if any rows were actually updated
     if ($stmt->rowCount() === 0) {
         throw new Exception("No records found with that Order ID");
     }
 
-    // Success response
     echo json_encode([
         "success" => true,
         "message" => "Payment verified successfully",
@@ -69,6 +64,5 @@ try {
         "error" => $e->getMessage()
     ]);
 } finally {
-    // Close connection if needed (PDO doesn't need this usually)
     $pdo = null;
 }

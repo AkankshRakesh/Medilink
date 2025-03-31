@@ -14,7 +14,7 @@ export default function Logout() {
 
     useEffect(() => {
         const userId = localStorage.getItem('userId');
-        setIsUserLoggedIn(!!userId); // Convert userId to boolean
+        setIsUserLoggedIn(!!userId); 
     }, []);
 
     const callLogoutEndpoint = async (userId) => {
@@ -43,7 +43,6 @@ export default function Logout() {
         localStorage.removeItem('username');
         localStorage.removeItem('email');
         setIsUserLoggedIn(false);
-        // window.location.href = '/'; // Redirect to homepage after logout
     };
 
     if (!isUserLoggedIn) {

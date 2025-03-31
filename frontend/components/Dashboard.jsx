@@ -2,7 +2,7 @@
 import { Fugaz_One } from 'next/font/google';
 import React, { useEffect, useState } from 'react';
 import Calendar from './Calendar';
-import Loading from './Loading';
+import Loading from './LoadingSpinner';
 import Login from './Login';
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
@@ -40,7 +40,7 @@ export default function Dashboard() {
         console.log(result);
         if (result.success) {
           setCurrentUser(result);
-          setIsCounsellor(result.isDoctor == 1); // Assuming isDoctor is returned as 1 or 0
+          setIsCounsellor(result.isDoctor == 1); 
           
         } else {
           setCurrentUser(null);

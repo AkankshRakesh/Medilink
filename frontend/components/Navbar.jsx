@@ -16,7 +16,6 @@ export default function Navbar() {
   const [scrolled, setScrolled] = useState(false)
   const pathname = usePathname()
 
-  // Handle scroll effect
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 10)
@@ -25,19 +24,16 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  // Close mobile menu when route changes
   useEffect(() => {
     setIsOpen(false)
   }, [pathname])
 
-  // Function to check if the link is active
   const isActive = (path) => pathname === path
 
   const navLinks = [
     { href: "/doctors", icon: "fa-solid fa-user-doctor", label: "Find Doctors" },
-    { href: "/booking", icon: "fa-solid fa-video", label: "Video Consultation" },
-    { href: "/contact", icon: "fa-solid fa-headset", label: "Contact Us" },
     { href: "/about", icon: "fa-solid fa-user-nurse", label: "About Us" },
+    { href: "/contact", icon: "fa-solid fa-headset", label: "Contact Us" },
   ]
 
   return (

@@ -1,30 +1,26 @@
 <?php
-session_start(); // Start the session
+session_start(); 
 include '../db.php';
 
-// Check if the user is already logged in
 if (isset($_SESSION['user_id'])) {
     echo json_encode(["message" => "User already logged in", "user_id" => $_SESSION['user_id']]);
     exit;
 }
 
-header("Access-Control-Allow-Origin: *"); // Use specific domain in production
-header("Access-Control-Allow-Methods: POST, OPTIONS"); // Allow POST and OPTIONS methods
-header("Access-Control-Allow-Headers: Content-Type"); // Allow Content-Type header
+header("Access-Control-Allow-Origin: *"); 
+header("Access-Control-Allow-Methods: POST, OPTIONS"); 
+header("Access-Control-Allow-Headers: Content-Type"); 
 
-// Handle OPTIONS request (preflight request)
 if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
-    http_response_code(200); // Respond with a successful status
+    http_response_code(200); 
     exit;
 }
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Get data from POST request
     $inputData = json_decode(file_get_contents('php://input'), true);
     $email = $inputData['email'] ?? null;
     $password = $inputData['password'] ?? null;
 
-    // Check if the email exists
     $stmt = $pdo->prepare("SELECT * FROM users WHERE email = :email");
     $stmt->execute(['email' => $email]);
     $user = $stmt->fetch();

@@ -4,11 +4,18 @@ import { useRouter } from "next/navigation"
 import { useState, useEffect } from "react"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
+import { CopyrightIcon, Facebook, Instagram, Linkedin, Mail, Youtube } from 'lucide-react'
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Skeleton } from "@/components/ui/skeleton"
 import { ChevronRight, Filter, ThumbsUp, X } from "lucide-react"
-
+import Link from "next/link"
+import { Fugaz_One } from "next/font/google"
+const fugaz = Fugaz_One({
+    subsets: ["latin"],
+    weight: ["400"],
+    display: "swap",
+  })
 const filtersData = {
   experience: ["0-5", "6-10", "11+"],
   fees: ["100-500", "500-1000", "1000+"],
@@ -84,12 +91,13 @@ export default function Doctors() {
   const hasActiveFilters = Object.values(selectedFilters).some((filters) => filters.length > 0)
 
   return (
+    <>
     <div className="container mx-auto px-4 py-6 max-w-7xl mt-10">
 
       <div className="flex flex-col md:flex-row gap-6">
         {/* Filters Section */}
         <div className="w-full md:w-1/4 shrink-0">
-          <div className="md:sticky md:top-4">
+          <div className="md:sticky md:top-20">
             <Button
               onClick={() => setIsFiltersOpen(!isFiltersOpen)}
               variant="outline"
@@ -198,6 +206,70 @@ export default function Doctors() {
         </div>
       </div>
     </div>
+    <footer className="bg-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
+        <div className="container mx-auto max-w-6xl">
+          {/* Social Media */}
+          <div className="flex items-center justify-center mb-8">
+            <div className="h-px bg-slate-600 flex-1"></div>
+            <div className="flex space-x-6 px-6">
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Facebook">
+                <Facebook size={24} />
+              </a>
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Instagram">
+                <Instagram size={24} />
+              </a>
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="YouTube">
+                <Youtube size={24} />
+              </a>
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="LinkedIn">
+                <Linkedin size={24} />
+              </a>
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Email">
+                <Mail size={24} />
+              </a>
+            </div>
+            <div className="h-px bg-slate-600 flex-1"></div>
+          </div>
+
+          {/* Logo */}
+          <div className="mb-8 text-center">
+            <Link href="/" className={`text-2xl md:text-3xl text-slate-100 ${fugaz.className}`}>
+              Medilink
+            </Link>
+          </div>
+
+          {/* Copyright */}
+          <div className="flex items-center justify-center text-slate-400 text-sm mb-6">
+            <span>Copyright</span>
+            <CopyrightIcon size={14} className="mx-1" />
+            <span>2025 Medilink, Inc</span>
+          </div>
+
+          {/* Links */}
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-slate-300">
+            <a href="#" className="hover:text-white transition-colors">
+              Legal Terms
+            </a>
+            <span className="hidden sm:inline text-slate-500">|</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Privacy Policy
+            </a>
+            <span className="hidden sm:inline text-slate-500">|</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Security
+            </a>
+            <span className="hidden sm:inline text-slate-500">|</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Website Accessibility
+            </a>
+            <span className="hidden sm:inline text-slate-500">|</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Manage Cookies
+            </a>
+          </div>
+        </div>
+      </footer>
+    </>
   )
 }
 

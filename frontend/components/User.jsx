@@ -1,7 +1,7 @@
 "use client"
 import { Fugaz_One } from "next/font/google"
 import { useEffect, useState } from "react"
-import Loading from "./Loading"
+import {LoadingSpinner} from "./LoadingSpinner"
 import { toast } from "react-toastify"
 import { Camera, Star, Users, Clock, MapPin, Award, Briefcase, GraduationCap, DollarSign } from "lucide-react"
 import { BookingList } from "./BookingList"
@@ -53,11 +53,10 @@ export const User = () => {
       const userId = localStorage.getItem("userId")
       if (!userId) return
 
-      // Fetch all appointments for this user (both as doctor and patient)
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/bookings/getBookedTime.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, type: 3 }), // Type 3 gets both
+        body: JSON.stringify({ userId, type: 3 }), 
       })
 
       if (!response.ok) {
@@ -140,7 +139,8 @@ export const User = () => {
       })
 
       if (!response.ok) throw new Error("Failed to add doctor details")
-      toast.success("Doctor details added successfully!", { position: "top-right", autoClose: 3000 })
+      toast.success("Doctor details added successfully!", { position: "top-right", autoClose: 3000 , 
+        onClose: () => window.location.reload()})
       handleCloseModal()
     } catch (error) {
       toast.error("Error adding doctor details. Please try again.", { position: "top-right" })
@@ -229,9 +229,15 @@ export const User = () => {
   }
 
   if (loading) {
-    return <Loading />
+    return <LoadingSpinner size="lg"/>
   }
-
+  const formatTime = (timeString) => {
+    const [hours, minutes] = timeString.split(':');
+    const hours24 = parseInt(hours, 10);
+    const period = hours24 >= 12 ? 'PM' : 'AM';
+    const hours12 = hours24 % 12 || 12; // Convert to 12-hour format
+    return `${hours12}:${minutes} ${period}`;
+  };
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
       <div className="container mx-auto px-4 py-8 md:py-12">
@@ -287,7 +293,7 @@ export const User = () => {
           </div>
 
           <div
-            className={`${isDoctor ? "lg:col-span-2" : ""} bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-700 transform transition-all duration-300 hover:shadow-2xl`}
+            className={`lg:col-span-2 bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-700 transform transition-all duration-300 hover:shadow-2xl`}
           >
             <div className="p-6">
               <h2 className="text-xl font-bold mb-6 flex items-center">
@@ -395,7 +401,7 @@ export const User = () => {
                         <div>
                           <span className="text-xs text-gray-400">Availability</span>
                           <p className="font-medium">
-                            {doctorDetails.availabilityStart} - {doctorDetails.availabilityEnd}
+                            {formatTime(doctorDetails.availabilityStart)} to {formatTime(doctorDetails.availabilityEnd)}
                           </p>
                         </div>
                       </div>
@@ -429,6 +435,7 @@ export const User = () => {
                   </div>
                 </>
               ) : isDoctor ? (
+                <>
                 <div className="flex flex-col items-center justify-center py-12 text-center">
                   <div className="h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 mb-6">
                     <div className="h-full w-full rounded-full bg-gray-800 flex items-center justify-center">
@@ -452,17 +459,22 @@ export const User = () => {
                     <span className="absolute inset-0 bg-white bg-opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
                   </button>
                 </div>
+                <div className="space-y-4">
+                      <h3 className="text-xl font-bold flex items-center">
+                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                          <Clock className="h-5 w-5 text-blue-400" />
+                        </div>
+                        Your Personal Appointments
+                      </h3>
+                      <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
+                        <BookingList bookings={appointments.asPatient} type="personal" />
+                      </div>
+                    </div>
+                </>
               ) : (
                 <div className="space-y-6">
-                  <h3 className="text-xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                    Your Appointments
-                  </h3>
                   <div className="space-y-4">
                     <div className="flex items-center mb-4">
-                      <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
-                        <Clock className="h-5 w-5 text-blue-400" />
-                      </div>
-                      <h4 className="text-lg font-semibold">As Patient</h4>
                     </div>
                     <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
                       <BookingList bookings={appointments.asPatient} type="personal" />
@@ -528,7 +540,7 @@ export const User = () => {
                   <input
                     type="text"
                     name="name"
-                    placeholder="Dr. John Doe"
+                    placeholder="Dr. Akanksh Rakesh"
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                     required
@@ -673,13 +685,23 @@ export const User = () => {
                 <input
                   type="text"
                   name="location"
-                  placeholder="123 Medical Center, City"
+                  placeholder="Lucknow, UP"
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                   required
                 />
               </div>
-
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-1">Biography</label>
+                <input
+                  type="text"
+                  name="biography"
+                  placeholder="Tell us about you"
+                  onChange={handleChange}
+                  className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
+                  required
+                />
+              </div>
               <div className="flex justify-end gap-4 mt-8">
                 <button
                   type="button"
@@ -718,6 +740,7 @@ export const User = () => {
           animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
         }
         .scrollbar-thin::-webkit-scrollbar {
+          display: none;
           width: 6px;
         }
         .scrollbar-thin::-webkit-scrollbar-track {

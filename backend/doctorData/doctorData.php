@@ -1,5 +1,4 @@
 <?php
-// Include the database connection file
 include '../db.php';
 
 header("Access-Control-Allow-Origin: *");
@@ -13,7 +12,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 }
 
 try {
-    // Query to fetch all doctors from the users table where isDoctor = 1
     $stmt = $pdo->prepare("SELECT * FROM doctors");
     $stmt->execute();
     $doctors = $stmt->fetchAll(PDO::FETCH_ASSOC);

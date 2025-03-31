@@ -48,7 +48,7 @@ export default function Login() {
             const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/verifyOtp.php`, { email, otp });
             if (response.data.status === "success") {
                 toast.success('OTP verified successfully!');
-                setOtpSent(false); // Hide OTP input after successful verification
+                setOtpSent(false); 
                 setOtpVerified(true);
             } else {
                 toast.error('Invalid OTP. Please try again.');

@@ -1,6 +1,6 @@
 <?php
-require 'vendor/autoload.php'; // Load PHPMailer
-require 'db.php'; // Include database connection
+require 'vendor/autoload.php'; 
+require 'db.php'; 
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
@@ -13,7 +13,6 @@ function generateOTP() {
     return rand(100000, 999999);
 }
 
-// Read JSON input from the request body
 $data = json_decode(file_get_contents("php://input"), true);
 
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -26,11 +25,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $otp = generateOTP();
     $expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
 
-    // Store OTP in database
     $stmt = $pdo->prepare("INSERT INTO otptable (email, otp, expires_at) VALUES (:email, :otp, :expires_at)");
     $stmt->execute(['email' => $email, 'otp' => $otp, 'expires_at' => $expiry]);
 
-    // Configure PHPMailer
     $mail = new PHPMailer(true);
     try {
         $mail->isSMTP();

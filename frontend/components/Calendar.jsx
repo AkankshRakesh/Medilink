@@ -22,14 +22,10 @@ export default function Calendar(props) {
     const data = completeData?.[selectedYear]?.[numericMonth] || {}
 
     function handleIncrementMonth(val) {
-        // value +1 -1
-        // if we hit the bounds of the months, then we can just adjust the year that is displayed instead
         if (numericMonth + val < 0) {
-            // set month value = 11 and decrement the year
             setSelectedYear(curr => curr - 1)
             setSelectMonth(monthsArr[monthsArr.length - 1])
         } else if (numericMonth + val > 11) {
-            // set month val = 0 and increment the year
             setSelectedYear(curr => curr + 1)
             setSelectMonth(monthsArr[0])
         } else {

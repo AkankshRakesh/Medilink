@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
-$dbname = 'moodl'; // Change to your database name
-$username = 'root'; // Default XAMPP username
-$password = ''; // Default XAMPP password is empty
+$dbname = 'moodl';
+$username = 'root'; 
+$password = ''; 
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

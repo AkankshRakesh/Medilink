@@ -17,7 +17,6 @@ $specialization = $data['specialization'] ?? '';
 
 if (!empty($specialization)) {
     try {
-        // Prepare and execute query
         $stmt = $pdo->prepare("SELECT * FROM doctors WHERE specialization = ? ORDER BY rating DESC LIMIT 2");
         $stmt->execute([$specialization]);
         $doctor = $stmt->fetchAll(PDO::FETCH_ASSOC);

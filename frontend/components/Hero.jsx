@@ -1,5 +1,6 @@
 'use client'
 import { Fugaz_One } from 'next/font/google';
+import { CopyrightIcon, Facebook, Instagram, Linkedin, Mail, Youtube } from 'lucide-react'
 import React from 'react'
 import Button from './Button';
 import Calendar from './Calendar';
@@ -15,6 +16,7 @@ const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Hero() {
     return (
+      <>
         <div className='pb-4 mt-6 flex flex-col'>
             <div className=" bg-[#D4D5E5]">
       {/* Hero Section */}
@@ -178,6 +180,72 @@ export default function Hero() {
               
 
               {/* <Carousel/> */} 
+              
               </div>
+
+              <footer className="bg-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
+        <div className="container mx-auto max-w-6xl">
+          {/* Social Media */}
+          <div className="flex items-center justify-center mb-8">
+            <div className="h-px bg-slate-600 flex-1"></div>
+            <div className="flex space-x-6 px-6">
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Facebook">
+                <Facebook size={24} />
+              </a>
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Instagram">
+                <Instagram size={24} />
+              </a>
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="YouTube">
+                <Youtube size={24} />
+              </a>
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="LinkedIn">
+                <Linkedin size={24} />
+              </a>
+              <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Email">
+                <Mail size={24} />
+              </a>
+            </div>
+            <div className="h-px bg-slate-600 flex-1"></div>
+          </div>
+
+          {/* Logo */}
+          <div className="mb-8 text-center">
+            <Link href="/" className={`text-2xl md:text-3xl text-slate-100 ${fugaz.className}`}>
+              Medilink
+            </Link>
+          </div>
+
+          {/* Copyright */}
+          <div className="flex items-center justify-center text-slate-400 text-sm mb-6">
+            <span>Copyright</span>
+            <CopyrightIcon size={14} className="mx-1" />
+            <span>2025 Medilink, Inc</span>
+          </div>
+
+          {/* Links */}
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-slate-300">
+            <a href="#" className="hover:text-white transition-colors">
+              Legal Terms
+            </a>
+            <span className="hidden sm:inline text-slate-500">|</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Privacy Policy
+            </a>
+            <span className="hidden sm:inline text-slate-500">|</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Security
+            </a>
+            <span className="hidden sm:inline text-slate-500">|</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Website Accessibility
+            </a>
+            <span className="hidden sm:inline text-slate-500">|</span>
+            <a href="#" className="hover:text-white transition-colors">
+              Manage Cookies
+            </a>
+          </div>
+        </div>
+      </footer>
+              </>
     )
 }

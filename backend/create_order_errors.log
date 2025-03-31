@@ -355,3 +355,18 @@ Array
         )
 
 )
+Array
+(
+    [timestamp] => 2025-03-31 07:41:14
+    [error] => Missing required field: patient_id
+    [trace] => #0 {main}
+    [input] => Array
+        (
+            [doctor_id] => 11
+            [patient_id] => 
+            [amount] => 1000
+            [meeting_date] => 2025-03-31
+            [meeting_time] => 15:30
+        )
+
+)
