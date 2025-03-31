@@ -240,7 +240,7 @@ export const User = () => {
   };
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
-      <div className="container mx-auto px-4 py-8 md:py-12">
+      <div className="container mx-auto mt-2 md:mt-0 px-4 py-8 md:py-12">
         <div className="mb-12 text-center">
           <h1 className={`${fugaz.className} text-5xl sm:text-6xl md:text-7xl mb-4`}>
             <span className="bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600">

@@ -75,14 +75,4 @@ export default function Logout() {
     );
     }
 
-    if (pathname === '/contact') {
-        return (
-            <Link href={'/dashboard'}>
-                <h1 className={'text-base sm:text-lg py-2 sm:py-3 textGradient ' + opensans.className}>
-                    Go to dashboard
-                </h1>
-            </Link>
-        );
-    }
-
 }

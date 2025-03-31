@@ -40,7 +40,7 @@ export default function Navbar() {
     <header
       className={cn(
         "fixed top-0 left-0 right-0 z-50 transition-all duration-300",
-        scrolled ? "py-2 bg-white/95 shadow-md backdrop-blur" : "py-4 bg-white/90 backdrop-blur-sm",
+        scrolled ? "py-1 md:py-2 bg-white/95 shadow-md backdrop-blur" : "py-3 md:py-4 bg-white/90 backdrop-blur-sm",
       )}
     >
       <div className="container mx-auto px-4 flex items-center justify-between">
