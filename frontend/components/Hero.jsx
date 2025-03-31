@@ -2,10 +2,7 @@
 import { Fugaz_One } from 'next/font/google';
 import { CopyrightIcon, Facebook, Instagram, Linkedin, Mail, Youtube } from 'lucide-react'
 import React from 'react'
-import Button from './Button';
-import Calendar from './Calendar';
 import Link from 'next/link';
-import CallToAction from './CallToAction';
 import Specialties from './Specialties';
 import FindDoc from './findDoc';
 // import Carousel from './Carousel';
