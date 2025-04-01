@@ -1,6 +1,17 @@
 # Use the official PHP image with Apache
 FROM php:8.0-apache
 
+# Install system dependencies
+RUN apt-get update && apt-get install -y \
+    libpng-dev \
+    libjpeg-dev \
+    libfreetype6-dev \
+    libzip-dev \
+    unzip \
+    git \
+    && docker-php-ext-configure gd --with-freetype --with-jpeg \
+    && docker-php-ext-install gd mysqli zip
+
 # Set the working directory
 WORKDIR /var/www/html
 
@@ -10,9 +21,8 @@ COPY composer.json composer.lock ./
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
-# Install PHP extensions and Composer dependencies
-RUN docker-php-ext-install mysqli && \
-    composer install --no-dev --optimize-autoloader
+# Install Composer dependencies
+RUN composer install --no-dev --optimize-autoloader
 
 # Copy the rest of the application files
 COPY . .
