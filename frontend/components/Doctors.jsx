@@ -62,7 +62,7 @@ export default function Doctors() {
   }
 
   const clearFilters = () => {
-    setSelectedFilters({ experience: [], fees: [], languages: [] })
+    setSelectedFilters({ experience: [], fees: [] })
   }
 
   const filterDoctors = (doctors) => {

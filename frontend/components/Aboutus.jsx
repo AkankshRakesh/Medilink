@@ -19,7 +19,9 @@ const fugaz = Fugaz_One({
   weight: ["400"],
   display: "swap",
 })
-
+import pic1 from "../public/aboutus1.jpeg"
+import pic2 from "../public/aboutus2.avif"
+import Image from "next/image"
 export const Aboutus = () => {
   const testimonials = [
     {
@@ -101,7 +103,7 @@ export const Aboutus = () => {
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
             <div className="w-full md:w-1/2">
               <div className="relative h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden rounded-xl shadow-xl">
-                <img src="aboutus1.jpg" alt="Our mission" className="w-full h-full object-cover" />
+                <Image src={pic1} alt="Our mission" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="w-full md:w-1/2 space-y-6">
@@ -123,7 +125,7 @@ export const Aboutus = () => {
           <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
             <div className="w-full md:w-1/2">
               <div className="relative h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden rounded-xl shadow-xl">
-                <img src="aboutus2.avif" alt="Our story" className="w-full h-full object-cover" />
+                <Image src={pic2} alt="Our story" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="w-full md:w-1/2 space-y-6">

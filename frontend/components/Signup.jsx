@@ -1,12 +1,12 @@
-'use client';
+'use client'
 import { Fugaz_One } from 'next/font/google';
 import React, { useState } from 'react';
-import Button from './Button';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
+import { CheckCircle, Loader2, ArrowLeft, Clock, Users, Shield } from 'lucide-react';
 
-const fugaz = Fugaz_One({ subsets: ['latin'], weight: ['400'] });
+const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
 export default function Signup() {
     const [username, setUsername] = useState('');
@@ -18,8 +18,10 @@ export default function Signup() {
     const [otpVerified, setOtpVerified] = useState(false);
     const [authenticating, setAuthenticating] = useState(false);
     const [loadingOtp, setLoadingOtp] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
 
     const router = useRouter();
+
     async function sendOtp() {
         if (!email) {
             toast.error('Please enter your email first.');
@@ -37,30 +39,7 @@ export default function Signup() {
             setLoadingOtp(false);
         }
     }
-    async function handleSignup(event) {
-        event.preventDefault();
-        if (!username || !email || !password || password.length < 6) {
-            toast('Please fill in all fields (password must be at least 6 characters).');
-            return;
-        }
-        if (!otpVerified) {
-            toast.warning('Please verify your email first.');
-            return;
-        }
-        setAuthenticating(true);
-        try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/auth/signup.php`, { username, email, password, isDoctor: isDoctor ? 1 : 0 }, {
-                headers: { 'Content-Type': 'application/json' },
-            });
-            toast.success(response.data.message);
-            router.push('/login');
-        } catch (error) {
-            console.error('Error:', error.response?.data || error.message);
-            toast.error('Signup failed. Please try again.');
-        } finally {
-            setAuthenticating(false);
-        }
-    }
+
     async function verifyOtp() {
         if (!otp) {
             toast.error('Please enter the OTP.');
@@ -80,90 +59,272 @@ export default function Signup() {
             toast.error('OTP verification failed.');
         }
     }
+
     function youAreVerified() {
-        toast.info('You are verified! Please proceed to submit the form.');
+        toast.info('You are verified! Please proceed to complete your signup.');
+    }
+
+    async function handleSignup(event) {
+        event.preventDefault();
+        if (!username || !email || !password || password.length < 6) {
+            toast('Please fill in all fields (password must be at least 6 characters).');
+            return;
+        }
+        if (!otpVerified) {
+            toast.warning('Please verify your email first.');
+            return;
+        }
+        setAuthenticating(true);
+        try {
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/auth/signup.php`, 
+                { username, email, password, isDoctor: isDoctor ? 1 : 0 }, 
+                {
+                    headers: { 'Content-Type': 'application/json' },
+                }
+            );
+            if(response.data.message == "Email already exists"){
+                toast.info('Email already exists. Please login.', {
+                    autoClose: 3500,
+                    onClose: router.push('/login'),
+                });
+                router.push('/login')
+                return;
+            }
+            toast.success(response.data.message);
+            // router.push('/login');
+        } catch (error) {
+            console.error('Error:', error.response?.data || error.message);
+            toast.error('Signup failed. Please try again.');
+        } finally {
+            setAuthenticating(false);
+        }
     }
 
     return (
-        <div className="flex flex-col flex-1 justify-center items-center gap-4">
-            <h3 className={'text-4xl sm:text-5xl md:text-6xl ' + fugaz.className}>{isDoctor ? 'Doctor Signup' : 'User Signup'}</h3>
-            <p>
-                Join us as a <button onClick={() => setIsDoctor(!isDoctor)} className='text-indigo-600'>
-                        {!isDoctor ? 'Doctor' : 'User'}
-                </button>
-            </p>
-            <form onSubmit={handleSignup} className="w-full max-w-[400px] mx-auto">
-                                    <input
-                                        value={username}
-                                        onChange={(e) => setUsername(e.target.value)}
-                                        className="w-full px-3 duration-200 hover:border-indigo-600 focus:border-indigo-600 py-2 sm:py-3 border border-solid border-indigo-400 rounded-full outline-none"
-                                        placeholder="Username"
-                                        required
-                                        autoComplete="username"
-                                    />
-                                <div className="relative w-full mt-4">
-                                    <input
-                                        value={email}
-                                        onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full px-3 pr-16 duration-200 hover:border-indigo-600 focus:border-indigo-600 py-2 sm:py-3 border border-solid border-indigo-400 rounded-full outline-none"
-                                        placeholder="Email"
-                                        type="email"
-                                        required
-                                        autoComplete="email"
-                                        disabled={otpVerified}
-                                    />
-                                    {!otpSent && !otpVerified && (<button
+        <div className="h-screen w-full bg-white rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
+            {/* Left Column - Info Section */}
+            <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
+                <div>
+                    
+                    <div className="mb-3 md:mb-12">
+                        <h2 className={`${fugaz.className} text-3xl md:text-4xl font-bold mb-6`}>
+                            Join our community today
+                        </h2>
+                        
+                        <div className="space-y-6">
+                            <div className="flex items-center">
+                                <div className="bg-white/20 p-2 rounded-full mr-4">
+                                    <Users className="h-5 w-5" />
+                                </div>
+                                <div>
+                                    <p className="font-medium">Connect with top professionals</p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-center">
+                                <div className="bg-white/20 p-2 rounded-full mr-4">
+                                    <Clock className="h-5 w-5" />
+                                </div>
+                                <div>
+                                    <p className="font-medium">24/7 access to expert advice</p>
+                                </div>
+                            </div>
+                            
+                            <div className="flex items-center">
+                                <div className="bg-white/20 p-2 rounded-full mr-4">
+                                    <Shield className="h-5 w-5" />
+                                </div>
+                                <div>
+                                    <p className="font-medium">Secure and confidential service</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div className="hidden lg:block mt-auto">
+                        <div className="bg-white/10 p-4 rounded-lg">
+                            <p className="text-sm">
+                                "Joining this platform was the best decision I made for my mental health. 
+                                The support I received was exceptional."
+                            </p>
+                            <p className="mt-2 font-medium">— Archita S.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            {/* Right Column - Form Section */}
+            <div className="p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center bg-white">
+                <div className="mx-auto w-full max-w-md">
+                    {/* User Type Toggle */}
+                    <div className="flex justify-center mb-8">
+                        <div className="inline-flex bg-gray-100 rounded-full p-1">
+                            <button 
+                                onClick={() => setIsDoctor(false)} 
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!isDoctor ? 'bg-white shadow-sm text-cyan-600' : 'text-gray-500'}`}
+                            >
+                                Patient
+                            </button>
+                            <button 
+                                onClick={() => setIsDoctor(true)} 
+                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isDoctor ? 'bg-white shadow-sm text-cyan-600' : 'text-gray-500'}`}
+                            >
+                                Doctor
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div className="text-center mb-8">
+                        <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                            Create your account
+                        </h3>
+                        <p className="text-gray-500 text-sm">
+                            Fill in your details to join our community
+                        </p>
+                    </div>
+                    
+                    <form onSubmit={handleSignup} className="space-y-5">
+                        <div className="space-y-1">
+                            <label htmlFor="username" className="text-sm font-medium text-gray-700 block pl-1">
+                                Username
+                            </label>
+                            <input
+                                id="username"
+                                value={username}
+                                onChange={(e) => setUsername(e.target.value)}
+                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                placeholder="Choose a username"
+                                required
+                                autoComplete="username"
+                            />
+                        </div>
+
+                        <div className="space-y-1">
+                            <label htmlFor="email" className="text-sm font-medium text-gray-700 block pl-1">
+                                Email Address
+                            </label>
+                            <div className="relative">
+                                <input
+                                    id="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                    placeholder="Email Address"
+                                    type="email"
+                                    required
+                                    autoComplete="email"
+                                    disabled={otpVerified}
+                                />
+                                {!otpSent && !otpVerified && (
+                                    <button
                                         type="button"
                                         onClick={sendOtp}
-                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-indigo-600 text-white px-3 md:py-2 py-1 rounded-full text-sm"
+                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200"
+                                        disabled={loadingOtp}
                                     >
                                         {loadingOtp ? (
-                            <svg className="animate-spin h-4 w-4 border-t-2 border-white rounded-full" viewBox="0 0 24 24"></svg>
-                        ) : "Send OTP"}
-                                    </button>)}
-                                    {otpVerified && (
-                                        <button
+                                            <Loader2 className="h-4 w-4 animate-spin" />
+                                        ) : "Send OTP"}
+                                    </button>
+                                )}
+                                {otpVerified && (
+                                    <button
                                         type="button"
                                         onClick={youAreVerified}
-                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 text-white px-3 md:py-2 py-1 rounded-full text-sm"
+                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1"
                                     >
-                                        Verified <i className="fa-solid fa-circle-check"></i>
+                                        <span>Verified</span>
+                                        <CheckCircle className="h-4 w-4" />
                                     </button>
-                                    )}
-                                    {otpSent && (
-                                    <div className="flex justify-center mt-4">
-                                        <input
-                                            value={otp}
-                                            onChange={(e) => setOtp(e.target.value)}
-                                            className="w-3/4 px-3 md:px-6 duration-200 hover:border-indigo-600 focus:border-indigo-600 py-2 sm:py-3 border border-solid border-indigo-400 rounded-full outline-none text-center"
-                                            placeholder="Enter OTP"
-                                            type="text"
-                                        />
-                                        <button
-                                            type="button"
-                                            onClick={verifyOtp}
-                                            className="ml-2 bg-green-500 text-white px-8 py-2 rounded-full"
-                                        >
-                                            Verify
-                                        </button>
-                                    </div>
                                 )}
+                            </div>
+                        </div>
+
+                        {otpSent && (
+                            <div className="space-y-1">
+                                <label htmlFor="otp" className="text-sm font-medium text-gray-700 block pl-1">
+                                    Verification Code
+                                </label>
+                                <div className="flex gap-2">
+                                    <input
+                                        id="otp"
+                                        value={otp}
+                                        onChange={(e) => setOtp(e.target.value)}
+                                        className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 text-center tracking-widest"
+                                        placeholder="Enter OTP"
+                                        type="text"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={verifyOtp}
+                                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200"
+                                    >
+                                        Verify
+                                    </button>
                                 </div>
+                            </div>
+                        )}
+
+                        <div className="space-y-1">
+                            <label htmlFor="password" className="text-sm font-medium text-gray-700 block pl-1">
+                                Password
+                            </label>
+                            <div className="relative">
                                 <input
+                                    id="password"
                                     value={password}
                                     onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full mt-4 px-3 duration-200 hover:border-indigo-600 focus:border-indigo-600 py-2 sm:py-3 border border-solid border-indigo-400 rounded-full outline-none"
-                                    placeholder="Password"
-                                    type="password"
+                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                    placeholder="Create a password"
+                                    type={showPassword ? "text" : "password"}
                                     minLength={6}
                                     required
-                                    autoComplete="current-password"
+                                    autoComplete="new-password"
                                 />
-                                <div className="mt-4">
-                                    <Button type="submit" text={authenticating ? 'Submitting' : 'Submit'} full />
-                                </div>
-            </form>
-            <p>Already have an account? <a href="/login" className="text-indigo-600">Login</a></p>
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                >
+                                    {showPassword ? (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
+                                        </svg>
+                                    ) : (
+                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                                        </svg>
+                                    )}
+                                </button>
+                            </div>
+                        </div>
+
+                        <div className="pt-2">
+                            <button 
+                                type="submit" 
+                                className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center"
+                                disabled={authenticating}
+                            >
+                                {authenticating ? (
+                                    <><Loader2 className="h-5 w-5 animate-spin mr-2" /> Creating account...</>
+                                ) : (
+                                    'Sign Up'
+                                )}
+                            </button>
+                        </div>
+                    </form>
+                    
+                    <div>
+                        <p className='text-center mt-5 text-gray-500'>
+                            Already have an account? 
+                            <button className='text-cyan-600 hover:text-cyan-700 ml-2' onClick={() => router.push('/login')}>
+                                Log in
+                            </button>
+                        </p>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
