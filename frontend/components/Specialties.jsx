@@ -59,7 +59,7 @@ const Specialties = () => {
       <h2 className="text-xl font-bold mb-4">Browse by Specialties</h2>
       <div className="grid grid-cols-3 md:grid-cols-7 lg:grid-cols-9 xl:grid-cols-12 ">
         {specialties.map((specialty) => (
-          <Link href={`/doctors`}
+          <Link href={`/doctors?spec=${encodeURIComponent(specialty.name)}`}
             key={specialty.id}
             className="flex flex-col items-center p-2 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
           >

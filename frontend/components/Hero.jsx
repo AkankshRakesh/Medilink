@@ -25,7 +25,7 @@ export default function Hero() {
               Find the right doctor for all your concerns
             </h1>
             <p className="text-lg text-gray-700">
-              Private consultation + Audio call · Starts at just ₹199
+              Private consultation + Audio call · Starts at just ₹249
             </p>
             <Link href="/doctors" className="inline-block">
             <button className="bg-[#4C6FFF] text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors">
@@ -175,8 +175,6 @@ export default function Hero() {
                 </div>
               </div>
               
-
-              {/* <Carousel/> */} 
               
               </div>
 

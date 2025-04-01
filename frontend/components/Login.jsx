@@ -244,9 +244,9 @@ export default function Login() {
                                     <label htmlFor="password" className="text-sm font-medium text-gray-700">
                                         Password
                                     </label>
-                                    <a href="/forgot-password" className="text-sm text-cyan-600 hover:text-cyan-700">
+                                    <p onClick={() => toast.info("Our team has been notified and will get in touch with you soon")} className="text-sm text-cyan-600 hover:text-cyan-700 cursor-pointer">
                                         Forgot password?
-                                    </a>
+                                    </p>
                                 </div>
                                 <div className="relative">
                                     <input

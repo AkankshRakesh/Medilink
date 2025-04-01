@@ -11,12 +11,22 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ChevronRight, Filter, ThumbsUp, X } from "lucide-react"
 import Link from "next/link"
 import { Fugaz_One } from "next/font/google"
+
 const fugaz = Fugaz_One({
-    subsets: ["latin"],
-    weight: ["400"],
-    display: "swap",
-  })
+  subsets: ["latin"],
+  weight: ["400"],
+  display: "swap",
+})
+
 const filtersData = {
+  specialties: [
+    "General Physician",
+    "Dermatology",
+    "Obstetrics & Gynaecology",
+    "Orthopaedics",
+    "Neurology",
+    "Psychiatry",
+  ],
   experience: ["0-5", "6-10", "11+"],
   fees: ["100-500", "500-1000", "1000+"],
 }
@@ -25,6 +35,7 @@ export default function Doctors() {
   const [doctors, setDoctors] = useState([])
   const [loading, setLoading] = useState(true)
   const [selectedFilters, setSelectedFilters] = useState({
+    specialties: [],
     experience: [],
     fees: [],
     languages: [],
@@ -32,25 +43,42 @@ export default function Doctors() {
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
+    
+    // Get query parameters from URL
+    const searchParams = new URLSearchParams(window.location.search);
+    const spec = searchParams.get('spec');
+    const exp = searchParams.get('exp');
+    const fee = searchParams.get('fee');
+    
+    // Set initial filters from URL
+    const initialFilters = {
+      specialties: spec ? [spec] : [],
+      experience: exp ? [exp] : [],
+      fees: fee ? [fee] : [],
+      languages: []
+    };
+    
+    setSelectedFilters(initialFilters);
+  
+    // Fetch all doctors
     fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/doctorData.php`)
       .then((res) => res.json())
       .then((data) => {
-        console.log("Fetched doctors:", data)
         if (data.success && Array.isArray(data.doctors)) {
-          setDoctors(data.doctors)
+          setDoctors(data.doctors);
         } else {
-          setDoctors([])
+          setDoctors([]);
         }
       })
       .catch((err) => {
-        console.error("Fetch error:", err)
-        setDoctors([])
+        console.error("Fetch error:", err);
+        setDoctors([]);
       })
       .finally(() => {
-        setLoading(false)
-      })
-  }, [])
+        setLoading(false);
+      });
+  }, []);
 
   const toggleFilter = (category, value) => {
     setSelectedFilters((prev) => ({
@@ -62,17 +90,29 @@ export default function Doctors() {
   }
 
   const clearFilters = () => {
-    setSelectedFilters({ experience: [], fees: [] })
+    setSelectedFilters({ 
+      specialties: [],
+      experience: [], 
+      fees: [],
+      languages: [] 
+    })
   }
 
   const filterDoctors = (doctors) => {
     return doctors.filter((doctor) => {
+      const specialtyMatch =
+        selectedFilters.specialties.length === 0 ||
+        selectedFilters.specialties.some(specialty => 
+          doctor.specialization.toLowerCase().includes(specialty.toLowerCase())
+        );
+      
       const experienceMatch =
         selectedFilters.experience.length === 0 ||
         selectedFilters.experience.some((range) => {
           const [min, max] = range.split("-").map(Number)
           return doctor.experience >= min && (max ? doctor.experience <= max : true)
         })
+        
       const feesMatch =
         selectedFilters.fees.length === 0 ||
         selectedFilters.fees.some((range) => {
@@ -83,7 +123,8 @@ export default function Doctors() {
             return doctor.fee >= min && doctor.fee <= max
           }
         })
-      return experienceMatch && feesMatch
+        
+      return specialtyMatch && experienceMatch && feesMatch
     })
   }
 
@@ -92,120 +133,119 @@ export default function Doctors() {
 
   return (
     <>
-    <div className="container mx-auto px-4 py-6 max-w-7xl mt-10">
+      <div className="container mx-auto px-4 py-6 max-w-7xl mt-10">
+        <div className="flex flex-col md:flex-row gap-6">
+          {/* Filters Section */}
+          <div className="w-full md:w-1/4 shrink-0">
+            <div className="md:sticky md:top-20">
+              <Button
+                onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+                variant="outline"
+                className="w-full flex items-center justify-between md:hidden mb-4"
+              >
+                <span className="flex items-center">
+                  <Filter className="h-4 w-4 mr-2" />
+                  Filters
+                </span>
+                {hasActiveFilters && (
+                  <Badge variant="secondary" className="ml-2">
+                    {Object.values(selectedFilters).flat().length}
+                  </Badge>
+                )}
+              </Button>
 
-      <div className="flex flex-col md:flex-row gap-6">
-        {/* Filters Section */}
-        <div className="w-full md:w-1/4 shrink-0">
-          <div className="md:sticky md:top-20">
-            <Button
-              onClick={() => setIsFiltersOpen(!isFiltersOpen)}
-              variant="outline"
-              className="w-full flex items-center justify-between md:hidden mb-4"
-            >
-              <span className="flex items-center">
-                <Filter className="h-4 w-4 mr-2" />
-                Filters
-              </span>
-              {hasActiveFilters && (
-                <Badge variant="secondary" className="ml-2">
-                  {Object.values(selectedFilters).flat().length}
-                </Badge>
-              )}
-            </Button>
-
-            <div className={`${isFiltersOpen ? "block" : "hidden"} md:block bg-card rounded-lg border shadow-sm`}>
-              <div className="p-4 border-b">
-                <div className="flex justify-between items-center">
-                  <h2 className="font-semibold text-lg">Filters</h2>
-                  {hasActiveFilters && (
-                    <Button onClick={clearFilters} variant="ghost" size="sm" className="h-8 text-primary">
-                      Clear all
-                    </Button>
-                  )}
-                </div>
-              </div>
-
-              <div className="p-4 space-y-6">
-                {Object.entries(filtersData).map(([category, values]) => (
-                  <div key={category} className="space-y-3">
-                    <h3 className="font-medium capitalize">{category}</h3>
-                    <div className="space-y-2">
-                      {values.map((value) => (
-                        <div key={value} className="flex items-center space-x-2">
-                          <Checkbox
-                            id={`${category}-${value}`}
-                            checked={selectedFilters[category].includes(value)}
-                            onCheckedChange={() => toggleFilter(category, value)}
-                          />
-                          <label
-                            htmlFor={`${category}-${value}`}
-                            className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
-                          >
-                            {value}
-                          </label>
-                        </div>
-                      ))}
-                    </div>
+              <div className={`${isFiltersOpen ? "block" : "hidden"} md:block bg-card rounded-lg border shadow-sm`}>
+                <div className="p-4 border-b">
+                  <div className="flex justify-between items-center">
+                    <h2 className="font-semibold text-lg">Filters</h2>
+                    {hasActiveFilters && (
+                      <Button onClick={clearFilters} variant="ghost" size="sm" className="h-8 text-primary">
+                        Clear all
+                      </Button>
+                    )}
                   </div>
-                ))}
+                </div>
+
+                <div className="p-4 space-y-6">
+                  {Object.entries(filtersData).map(([category, values]) => (
+                    <div key={category} className="space-y-3">
+                      <h3 className="font-medium capitalize">{category}</h3>
+                      <div className="space-y-2">
+                        {values.map((value) => (
+                          <div key={value} className="flex items-center space-x-2">
+                            <Checkbox
+                              id={`${category}-${value}`}
+                              checked={selectedFilters[category].includes(value)}
+                              onCheckedChange={() => toggleFilter(category, value)}
+                            />
+                            <label
+                              htmlFor={`${category}-${value}`}
+                              className="text-sm leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
+                            >
+                              {value}
+                            </label>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  ))}
+                </div>
               </div>
             </div>
           </div>
-        </div>
 
-        {/* Main Content */}
-        <div className="w-full md:w-3/4">
-          <h1 className="text-2xl font-bold mb-6">Consult Doctors Online</h1>
+          {/* Main Content */}
+          <div className="w-full md:w-3/4">
+            <h1 className="text-2xl font-bold mb-6">Consult Doctors Online</h1>
 
-          {/* Active Filters */}
-          {hasActiveFilters && (
-            <div className="flex flex-wrap gap-2 mb-4">
-              {Object.entries(selectedFilters).map(([category, values]) =>
-                values.map((value) => (
-                  <Badge
-                    key={`${category}-${value}`}
-                    variant="secondary"
-                    className="flex items-center gap-1 px-3 py-1.5"
-                  >
-                    <span className="capitalize">{category}:</span> {value}
-                    <X className="h-3 w-3 ml-1 cursor-pointer" onClick={() => toggleFilter(category, value)} />
-                  </Badge>
-                )),
-              )}
-              {hasActiveFilters && (
-                <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8 text-muted-foreground">
-                  Clear all
+            {/* Active Filters */}
+            {hasActiveFilters && (
+              <div className="flex flex-wrap gap-2 mb-4">
+                {Object.entries(selectedFilters).map(([category, values]) =>
+                  values.map((value) => (
+                    <Badge
+                      key={`${category}-${value}`}
+                      variant="secondary"
+                      className="flex items-center gap-1 px-3 py-1.5"
+                    >
+                      <span className="capitalize">{category}:</span> {value}
+                      <X className="h-3 w-3 ml-1 cursor-pointer" onClick={() => toggleFilter(category, value)} />
+                    </Badge>
+                  )),
+                )}
+                {hasActiveFilters && (
+                  <Button variant="ghost" size="sm" onClick={clearFilters} className="h-8 text-muted-foreground">
+                    Clear all
+                  </Button>
+                )}
+              </div>
+            )}
+
+            {/* Loading State */}
+            {loading ? (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {[1, 2, 3, 4].map((i) => (
+                  <DoctorCardSkeleton key={i} />
+                ))}
+              </div>
+            ) : filteredDoctors.length === 0 ? (
+              <div className="text-center py-12 bg-muted/50 rounded-lg">
+                <h3 className="text-xl font-medium mb-2">No doctors found</h3>
+                <p className="text-muted-foreground mb-4">Try adjusting your filters to see more results</p>
+                <Button onClick={clearFilters} variant="outline">
+                  Clear all filters
                 </Button>
-              )}
-            </div>
-          )}
-
-          {/* Loading State */}
-          {loading ? (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {[1, 2, 3, 4].map((i) => (
-                <DoctorCardSkeleton key={i} />
-              ))}
-            </div>
-          ) : filteredDoctors.length === 0 ? (
-            <div className="text-center py-12 bg-muted/50 rounded-lg">
-              <h3 className="text-xl font-medium mb-2">No doctors found</h3>
-              <p className="text-muted-foreground mb-4">Try adjusting your filters to see more results</p>
-              <Button onClick={clearFilters} variant="outline">
-                Clear all filters
-              </Button>
-            </div>
-          ) : (
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-              {filteredDoctors.map((doctor) => (
-                <DoctorCard key={doctor.name} doctor={doctor} />
-              ))}
-            </div>
-          )}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                {filteredDoctors.map((doctor) => (
+                  <DoctorCard key={doctor.name} doctor={doctor} />
+                ))}
+              </div>
+            )}
+          </div>
         </div>
       </div>
-    </div>
     <footer className="bg-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
         <div className="container mx-auto max-w-6xl">
           {/* Social Media */}

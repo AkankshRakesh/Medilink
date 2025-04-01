@@ -1,145 +1,213 @@
-'use client'
-import React, {useState, useMemo} from 'react';
+"use client"
+
+import { useState, useMemo } from "react"
 import {
-    DropdownMenu,
-    DropdownMenuContent,
-    DropdownMenuItem,
-    DropdownMenuLabel,
-    DropdownMenuSeparator,
-    DropdownMenuTrigger,
-} from "./ui/dropdown-menu"
-import { Button } from "./ui/button"
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+import { Button } from "@/components/ui/button"
+import { useRouter } from "next/navigation"
+import { Check, ChevronDown, Stethoscope } from "lucide-react"
+import { cn } from "@/lib/utils"
 
 export default function FindDoc() {
-    const [date, setDate] = useState('');
-    const [selectedSpecialty, setSpecialty] = useState('');
-    const [selectedLanguage, setLang] = useState('');
+  const [selectedExperience, setExperience] = useState("")
+  const [selectedSpecialty, setSpecialty] = useState("")
+  const [selectedFees, setFees] = useState("")
+  const router = useRouter()
 
-    const specialties = [
-        {key: "general_physician", label: "General Physician"},
-        {key: "dermatology", label: "Dermatology"},
-        {key: "gynecology", label: "Obstetrics & Gynaecology"},
-        {key: "orthopedics", label: "Orthopaedics"},
-        {key: "ent", label: "ENT"},
-        {key: "neurology", label: "Neurology"},
-        {key: "cardiology", label: "Cardiology"},
-        {key: "urology", label: "Urology"}
-    ];
+  const specialties = [
+    { key: "General Physician", label: "General Physician" },
+    { key: "Dermatology", label: "Dermatology" },
+    { key: "Obstetrics & Gynaecology", label: "Obstetrics & Gynaecology" },
+    { key: "Orthopaedics", label: "Orthopaedics" },
+    { key: "Neurology", label: "Neurology" },
+    { key: "Psychiatry", label: "Psychiatry" },
+  ]
 
-    const languages = [
-        {key: "english", label: "English"},
-        {key: "hindi", label: "Hindi"},
-        {key: "tamil", label: "Tamil"},
-        {key: "telugu", label: "Telugu"},
-        {key: "malayalam", label: "Malayalam"},
-        {key: "kannada", label: "Kannada"}
-    ];
+  const experienceRanges = [
+    { key: "0-5", label: "0-5 years" },
+    { key: "6-10", label: "6-10 years" },
+    { key: "11+", label: "11+ years" },
+  ]
 
-    const selectedSpecialtyLabel = useMemo(() => {
-        return specialties.find((item) => item.key === selectedSpecialty)?.label || "";
-    }, [selectedSpecialty]);
-    
-    const selectedLanguageLabel = useMemo(() => {
-        return languages.find((item) => item.key === selectedLanguage)?.label || "";
-    }, [selectedLanguage]);
+  const feesRanges = [
+    { key: "100-500", label: "₹100-₹500" },
+    { key: "500-1000", label: "₹500-₹1000" },
+    { key: "1000+", label: "₹1000+" },
+  ]
 
-    const handleSubmit = (event) => {
-        event.preventDefault();
-        console.log('Specialty:', selectedSpecialtyLabel);
-        console.log('Date:', date);
-        console.log('Language:', selectedLanguageLabel);
-    };
+  const selectedSpecialtyLabel = useMemo(() => {
+    return specialties.find((item) => item.key === selectedSpecialty)?.label || ""
+  }, [selectedSpecialty])
 
-    return(
-        <div className="bg-white p-6 md:p-8 rounded-lg shadow-lg mx-4 md:mx-6 -mt-8 mb-8 relative z-10 transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)]">
-            <h1 className="text-2xl md:text-3xl font-bold text-gray-900 flex flex-col md:flex-row items-center gap-2 mb-6">
-                <span className="text-center md:text-left">
-                    <span className="text-blue-500">Minutes Matter!</span> Just 3 Steps away from
-                </span> 
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512" className="w-6 h-6 md:w-8 md:h-8 text-blue-500" fill="currentColor"> 
-                    <path d="M142.4 21.9c5.6 16.8-3.5 34.9-20.2 40.5L96 71.1 96 192c0 53 43 96 96 96s96-43 96-96l0-120.9-26.1-8.7c-16.8-5.6-25.8-23.7-20.2-40.5s23.7-25.8 40.5-20.2l26.1 8.7C334.4 19.1 352 43.5 352 71.1L352 192c0 77.2-54.6 141.6-127.3 156.7C231 404.6 278.4 448 336 448c61.9 0 112-50.1 112-112l0-70.7c-28.3-12.3-48-40.5-48-73.3c0-44.2 35.8-80 80-80s80 35.8 80 80c0 32.8-19.7 61-48 73.3l0 70.7c0 97.2-78.8 176-176 176c-92.9 0-168.9-71.9-175.5-163.1C87.2 334.2 32 269.6 32 192L32 71.1c0-27.5 17.6-52 43.8-60.7l26.1-8.7c16.8-5.6 34.9 3.5 40.5 20.2zM480 224a32 32 0 1 0 0-64 32 32 0 1 0 0 64z"/>
-                </svg>
-            </h1>
-            
-            <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 md:gap-6 items-end">
-                {/* Speciality Dropdown */}
-                <div className="flex flex-col w-full md:w-1/3">
-                    <label className="font-semibold text-gray-800 mb-2 text-sm md:text-base">
-                        Speciality <span className="text-red-500">*</span>
-                    </label>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" className="w-full justify-start text-gray-600 py-4 md:py-6 rounded-lg text-sm md:text-base">
-                                {selectedSpecialtyLabel || "Choose Speciality"}
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                            <DropdownMenuLabel>Specialities</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            {specialties.map((spec) => (
-                                <DropdownMenuItem 
-                                    key={spec.key}
-                                    onClick={() => setSpecialty(spec.key)}
-                                    className="text-sm"
-                                >
-                                    {spec.label}
-                                </DropdownMenuItem>
-                            ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+  const selectedExperienceLabel = useMemo(() => {
+    return experienceRanges.find((item) => item.key === selectedExperience)?.label || ""
+  }, [selectedExperience])
 
-                {/* Language Dropdown */}
-                <div className="flex flex-col w-full md:w-1/3">
-                    <label className="font-semibold text-gray-800 mb-2 text-sm md:text-base">
-                        Languages <span className="text-red-500">*</span>
-                    </label>
-                    <DropdownMenu>
-                        <DropdownMenuTrigger asChild>
-                            <Button variant="outline" className="w-full justify-start py-4 md:py-6 text-gray-600 rounded-lg text-sm md:text-base">
-                                {selectedLanguageLabel || "Choose Language"}
-                            </Button>
-                        </DropdownMenuTrigger>
-                        <DropdownMenuContent className="w-56">
-                            <DropdownMenuLabel>Languages</DropdownMenuLabel>
-                            <DropdownMenuSeparator />
-                            {languages.map((lang) => (
-                                <DropdownMenuItem 
-                                    key={lang.key}
-                                    onClick={() => setLang(lang.key)}
-                                    className="text-sm"
-                                >
-                                    {lang.label}
-                                </DropdownMenuItem>
-                            ))}
-                        </DropdownMenuContent>
-                    </DropdownMenu>
-                </div>
+  const selectedFeesLabel = useMemo(() => {
+    return feesRanges.find((item) => item.key === selectedFees)?.label || ""
+  }, [selectedFees])
 
-                {/* Date Input */}
-                <div className="flex flex-col w-full md:w-1/3">
-                    <label className="font-semibold text-gray-800 mb-2 text-sm md:text-base">
-                        Select Date <span className="text-red-500">*</span>
-                    </label>
-                    <input
-                        type="date"
-                        value={date}
-                        onChange={(event) => setDate(event.target.value)}
-                        className="border border-gray-300 rounded-lg p-2 md:p-3 focus:outline-none hover:bg-gray-50 text-gray-500 text-sm md:text-base h-[42px] md:h-auto"
-                        required
-                    />
-                </div>
+  const handleSubmit = (event) => {
+    event.preventDefault()
+    const params = new URLSearchParams()
+    if (selectedSpecialty) params.append("spec", selectedSpecialty)
+    if (selectedExperience) params.append("exp", selectedExperience)
+    if (selectedFees) params.append("fee", selectedFees)
 
-                {/* Submit Button */}
-                <div className="flex w-full md:w-auto mt-2 md:mt-0">
-                    <Button
-                        type="submit"
-                        className="text-white bg-[#4C6FFF] py-4 md:py-6 px-6 rounded-xl font-semibold w-full md:w-auto text-sm md:text-base"
-                    >
-                        Find Doctors
-                    </Button>
-                </div>
-            </form>
-        </div> 
-    );
+    // Navigate to doctors page with filters
+    router.push(`/doctors?${params.toString()}`)
+  }
+
+  return (
+    <div className="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 lg:p-10 rounded-xl shadow-lg mx-4 md:mx-6 -mt-8 mb-8 relative z-10 border border-blue-100/50 transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)]">
+
+      <div className="flex flex-col md:flex-row items-end justify-between gap-4 mb-8">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-3">
+          <span className="bg-blue-500/10 p-2 rounded-full">
+            <Stethoscope className="w-6 h-6 md:w-7 md:h-7 text-blue-600" />
+          </span>
+          <span>
+            Find Your <span className="text-blue-600">Doctor</span>
+          </span>
+        </h1>
+
+        <p className="text-sm md:text-base lg:text-xl text-gray-600 font-medium">
+          <span className="text-blue-600 font-semibold">Minutes Matter!</span> Just 3 steps away from your consultation
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 md:gap-6 items-end">
+        {/* Speciality Dropdown */}
+        <div className="flex flex-col w-full md:w-1/3">
+          <label className="font-medium text-gray-700 flex items-center mb-2 gap-1 text-sm">
+            Speciality <span className="text-red-500">*</span>
+          </label>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all",
+                  selectedSpecialty && "border-blue-300 bg-blue-50/50 text-blue-700 font-medium",
+                )}
+              >
+                <span className="truncate">{selectedSpecialtyLabel || "Choose Speciality"}</span>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95">
+              <DropdownMenuLabel className="text-blue-600">Specialities</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {specialties.map((spec) => (
+                <DropdownMenuItem
+                  key={spec.key}
+                  onClick={() => setSpecialty(spec.key)}
+                  className={cn(
+                    "flex items-center justify-between py-2 px-3 cursor-pointer rounded-md",
+                    selectedSpecialty === spec.key && "bg-blue-50 text-blue-700 font-medium",
+                  )}
+                >
+                  {spec.label}
+                  {selectedSpecialty === spec.key && <Check className="h-4 w-4 text-blue-600" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {/* Experience Dropdown */}
+        <div className="flex flex-col w-full md:w-1/3">
+          <label className="font-medium text-gray-700 flex items-center gap-1 mb-2 text-sm">
+            Experience <span className="text-red-500">*</span>
+          </label>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all",
+                  selectedExperience && "border-blue-300 bg-blue-50/50 text-blue-700 font-medium ",
+                )}
+              >
+                <span className="truncate">{selectedExperienceLabel || "Choose Experience"}</span>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95">
+              <DropdownMenuLabel className="text-blue-600">Experience Range</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {experienceRanges.map((exp) => (
+                <DropdownMenuItem
+                  key={exp.key}
+                  onClick={() => setExperience(exp.key)}
+                  className={cn(
+                    "flex items-center justify-between py-2 px-3 cursor-pointer rounded-md",
+                    selectedExperience === exp.key && "bg-blue-50 text-blue-700 font-medium",
+                  )}
+                >
+                  {exp.label}
+                  {selectedExperience === exp.key && <Check className="h-4 w-4 text-blue-600" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {/* Fees Dropdown */}
+        <div className="flex flex-col w-full md:w-1/3">
+          <label className="font-medium text-gray-700 flex items-center mb-2 gap-1 text-sm">
+            Fees Range <span className="text-red-500">*</span>
+          </label>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button
+                variant="outline"
+                className={cn(
+                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all",
+                  selectedFees && "border-blue-300 bg-blue-50/50 text-blue-700 font-medium",
+                )}
+              >
+                <span className="truncate">{selectedFeesLabel || "Choose Fees Range"}</span>
+                <ChevronDown className="h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95">
+              <DropdownMenuLabel className="text-blue-600">Fees Range</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              {feesRanges.map((fee) => (
+                <DropdownMenuItem
+                  key={fee.key}
+                  onClick={() => setFees(fee.key)}
+                  className={cn(
+                    "flex items-center justify-between py-2 px-3 cursor-pointer rounded-md",
+                    selectedFees === fee.key && "bg-blue-50 text-blue-700 font-medium",
+                  )}
+                >
+                  {fee.label}
+                  {selectedFees === fee.key && <Check className="h-4 w-4 text-blue-600" />}
+                </DropdownMenuItem>
+              ))}
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+
+        {/* Submit Button */}
+        <div className="flex w-full md:w-1/6 mt-2">
+          <Button
+            type="submit"
+            className="w-full h-12 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white rounded-lg font-medium text-base transition-all duration-300 shadow-md hover:shadow-lg hover:translate-y-[-2px] active:translate-y-[0px]"
+          >
+            Find Doctors
+          </Button>
+        </div>
+      </form>
+    </div>
+  )
 }
+
