@@ -19,8 +19,16 @@ const fugaz = Fugaz_One({
   weight: ["400"],
   display: "swap",
 })
-import pic1 from "../public/aboutus1.jpeg"
-import pic2 from "../public/aboutus2.avif"
+import pic1 from "../public/AboutUsPics/aboutus1.jpeg"
+import pic2 from "../public/AboutUsPics/aboutus2.avif"
+import pic3 from "../public/AboutUsPics/div1.svg"
+import pic4 from "../public/AboutUsPics/div2.svg"
+import pic5 from "../public/AboutUsPics/div3.svg"
+import pic6 from "../public/AboutUsPics/sustainibility.avif"
+import pic7 from "../public/AboutUsPics/wellness.avif"
+import pic8 from "../public/AboutUsPics/care.avif"
+import pic9 from "../public/AboutUsPics/growth.jpg"
+import better from "../public/AboutUsPics/better.jpg"
 import Image from "next/image"
 export const Aboutus = () => {
   const testimonials = [
@@ -158,7 +166,7 @@ export const Aboutus = () => {
             <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
-                  <img src="div1.svg" alt="Global offices" className="max-h-full max-w-full" />
+                  <Image src={pic3} alt="Global offices" className="max-h-full max-w-full" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">15 Global Offices</h3>
               </div>
@@ -168,7 +176,7 @@ export const Aboutus = () => {
             <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
-                  <img src="div2.svg" alt="Doctors" className="max-h-full max-w-full" />
+                  <Image src={pic4} alt="Doctors" className="max-h-full max-w-full" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">20,000+ Doctors</h3>
               </div>
@@ -178,7 +186,7 @@ export const Aboutus = () => {
             <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
-                  <img src="div3.svg" alt="Customers" className="max-h-full max-w-full" />
+                  <Image src={pic5} alt="Customers" className="max-h-full max-w-full" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">Over 10,000 Customers</h3>
               </div>
@@ -267,7 +275,7 @@ export const Aboutus = () => {
             <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
-                  <img src="sustainibility.avif" alt="Sustainability" className="max-h-full max-w-full" />
+                  <Image src={pic6} alt="Sustainability" className="max-h-full max-w-full" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">Sustainability</h3>
               </div>
@@ -277,7 +285,7 @@ export const Aboutus = () => {
             <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
-                  <img src="wellness.avif" alt="Wellness" className="max-h-full max-w-full" />
+                  <Image src={pic7} alt="Wellness" className="max-h-full max-w-full" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">Wellness</h3>
               </div>
@@ -287,7 +295,7 @@ export const Aboutus = () => {
             <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
-                  <img src="care.avif" alt="Compassionate Care" className="max-h-full max-w-full" />
+                  <Image src={pic8} alt="Compassionate Care" className="max-h-full max-w-full" />
                 </div>
                 <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">Compassionate Care</h3>
               </div>
