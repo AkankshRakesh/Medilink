@@ -5,7 +5,7 @@ FROM php:8.0-apache
 WORKDIR /var/www/html
 
 # Copy the composer files
-COPY backend/composer.json backend/composer.lock ./
+COPY composer.json composer.lock ./
 
 # Install Composer
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
@@ -15,7 +15,7 @@ RUN docker-php-ext-install mysqli && \
     composer install --no-dev --optimize-autoloader
 
 # Copy the rest of the application files
-COPY backend/ .
+COPY . .
 
 # Set permissions (optional, adjust as needed)
 RUN chown -R www-data:www-data /var/www/html
@@ -24,4 +24,4 @@ RUN chown -R www-data:www-data /var/www/html
 EXPOSE 80
 
 # Start the Apache server
-CMD ["apache2-foreground"] 
+CMD ["apache2-foreground"]
