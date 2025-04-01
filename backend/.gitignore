@@ -8,7 +8,7 @@
 
 # testing
 /coverage
-
+vendor/
 backend/vendor/google/apiclient/
 
 # next.js
