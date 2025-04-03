@@ -10,6 +10,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
 import { createRazorpayOrder, processPayment } from "@/lib/razorpay"
 import { toast } from "react-toastify"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { LoadingSpinner } from "./LoadingSpinner"
 
 const category = [
@@ -389,7 +390,26 @@ function BookingPage() {
       return null
     }
   }
+  const groupTimeSlots = (slots) => {
+    const morning = slots.filter((slot) => {
+      const hour = Number.parseInt(slot.time.split(":")[0])
+      return hour >= 0 && hour < 12
+    })
 
+    const afternoon = slots.filter((slot) => {
+      const hour = Number.parseInt(slot.time.split(":")[0])
+      return hour >= 12 && hour < 17
+    })
+
+    const evening = slots.filter((slot) => {
+      const hour = Number.parseInt(slot.time.split(":")[0])
+      return hour >= 17 && hour < 24
+    })
+
+    return { morning, afternoon, evening }
+  }
+
+  const groupedTimeSlots = groupTimeSlots(availableTimes)
   if (loading) {
     return (
       <div className="bg-gray-50 min-h-screen mt-6">
@@ -626,22 +646,29 @@ function BookingPage() {
                 <CardContent className="space-y-6">
                   {/* Date selection */}
 
-                  <div className="flex justify-between overflow-x-auto pb-2 gap-2">
-                    {dates.map(({ day, date, fullDate }) => (
-                      <button
-                        key={fullDate}
-                        onClick={() => setSelectedDate(fullDate)}
-                        className={`min-w-[4.5rem] h-16 flex flex-col items-center justify-center rounded-lg transition-all ${
-                          fullDate === selectedDate
-                            ? "bg-primary text-primary-foreground"
-                            : "bg-background border border-input hover:bg-accent hover:text-accent-foreground"
-                        }`}
-                      >
-                        <span className="text-sm font-medium">{day}</span>
-                        <span className="text-lg font-bold">{date}</span>
-                      </button>
-                    ))}
-                  </div>
+                  <div className="flex justify-between items-center overflow-x-auto pb-2">
+  {dates.map(({ day, date, fullDate }, index) => (
+    <>
+      <button
+        key={fullDate}
+        onClick={() => setSelectedDate(fullDate)}
+        className={`min-w-[4.5rem] h-16 flex flex-col items-center justify-center rounded-lg transition-all ${
+          fullDate === selectedDate
+            ? "bg-primary text-primary-foreground"
+            : "bg-background border border-input hover:bg-accent hover:text-accent-foreground"
+        }`}
+      >
+        <span className="text-sm font-medium">{day}</span>
+        <span className="text-lg font-bold">{date}</span>
+      </button>
+      
+      {/* Add separator between dates except after last */}
+      {index < dates.length - 1 && (
+        <div className="h-px w-8 bg-gray-200 mx-1 flex-shrink-0" />
+      )}
+    </>
+  ))}
+</div>
 
                   <div>
                     <div className="flex items-center mb-3">
@@ -655,29 +682,100 @@ function BookingPage() {
                         <p className="mt-3 text-sm text-muted-foreground">Loading available times...</p>
                       </div>
                     ) : (
-                      <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                        {availableTimes.map((slot, index) => (
-                          <button
-                            key={`${slot.time}-${index}`}
-                            onClick={() => !slot.booked && setSelectedTime(slot.time)}
-                            className={`p-2 text-sm rounded-md border transition-all relative ${
-                              slot.time === selectedTime
-                                ? "bg-primary/10 border-primary text-primary font-medium"
-                                : slot.booked
-                                  ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
-                                  : "border-input text-foreground hover:bg-accent"
-                            }`}
-                            disabled={slot.booked}
-                          >
-                            {slot.time}
-                            {slot.booked && (
-                              <span className="absolute -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
-                                ✓
-                              </span>
-                            )}
-                          </button>
-                        ))}
-                      </div>
+                      <Tabs defaultValue="morning" className="w-full">
+                        <TabsList className="grid w-full grid-cols-3 mb-4">
+                          <TabsTrigger value="morning">Morning</TabsTrigger>
+                          <TabsTrigger value="afternoon">Afternoon</TabsTrigger>
+                          <TabsTrigger value="evening">Evening</TabsTrigger>
+                        </TabsList>
+                        <TabsContent value="morning" className="mt-0">
+                          {groupedTimeSlots.morning.length > 0 ? (
+                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                              {groupedTimeSlots.morning.map((slot, index) => (
+                                <button
+                                  key={`${slot.time}-${index}`}
+                                  onClick={() => !slot.booked && setSelectedTime(slot.time)}
+                                  className={`p-2 text-sm rounded-md border transition-all relative ${
+                                    slot.time === selectedTime
+                                      ? "bg-primary/10 border-primary text-primary font-medium"
+                                      : slot.booked
+                                        ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
+                                        : "border-input text-foreground hover:bg-accent"
+                                  }`}
+                                  disabled={slot.booked}
+                                >
+                                  {slot.time}
+                                  {slot.booked && (
+                                    <span className="absolute -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                      ✓
+                                    </span>
+                                  )}
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-center text-muted-foreground py-4">No morning slots available</p>
+                          )}
+                        </TabsContent>
+                        <TabsContent value="afternoon" className="mt-0">
+                          {groupedTimeSlots.afternoon.length > 0 ? (
+                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                              {groupedTimeSlots.afternoon.map((slot, index) => (
+                                <button
+                                  key={`${slot.time}-${index}`}
+                                  onClick={() => !slot.booked && setSelectedTime(slot.time)}
+                                  className={`p-2 text-sm rounded-md border transition-all relative ${
+                                    slot.time === selectedTime
+                                      ? "bg-primary/10 border-primary text-primary font-medium"
+                                      : slot.booked
+                                        ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
+                                        : "border-input text-foreground hover:bg-accent"
+                                  }`}
+                                  disabled={slot.booked}
+                                >
+                                  {slot.time}
+                                  {slot.booked && (
+                                    <span className="absolute -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                      ✓
+                                    </span>
+                                  )}
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-center text-muted-foreground py-4">No afternoon slots available</p>
+                          )}
+                        </TabsContent>
+                        <TabsContent value="evening" className="mt-0">
+                          {groupedTimeSlots.evening.length > 0 ? (
+                            <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
+                              {groupedTimeSlots.evening.map((slot, index) => (
+                                <button
+                                  key={`${slot.time}-${index}`}
+                                  onClick={() => !slot.booked && setSelectedTime(slot.time)}
+                                  className={`p-2 text-sm rounded-md border transition-all relative ${
+                                    slot.time === selectedTime
+                                      ? "bg-primary/10 border-primary text-primary font-medium"
+                                      : slot.booked
+                                        ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
+                                        : "border-input text-foreground hover:bg-accent"
+                                  }`}
+                                  disabled={slot.booked}
+                                >
+                                  {slot.time}
+                                  {slot.booked && (
+                                    <span className="absolute -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                      ✓
+                                    </span>
+                                  )}
+                                </button>
+                              ))}
+                            </div>
+                          ) : (
+                            <p className="text-center text-muted-foreground py-4">No evening slots available</p>
+                          )}
+                        </TabsContent>
+                      </Tabs>
                     )}
                   </div>
 

@@ -58,6 +58,15 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["id"])) {
     if (isset($_SESSION["doctor_$id"])) {
         echo json_encode($_SESSION["doctor_$id"]);
     } else {
+        $stmt = $pdo->prepare("SELECT * FROM doctors WHERE userId = 11");
+        $stmt->execute();
+        $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
+
+        if ($doctor) {
+            echo json_encode(["success" => true, "doctor" => $doctor]);
+        } else {
+            echo json_encode(["success" => false, "message" => "Doctor not found"]);
+        }
         http_response_code(404);
         echo json_encode([
             "error" => "Doctor not found",
