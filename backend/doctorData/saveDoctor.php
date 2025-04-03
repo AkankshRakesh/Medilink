@@ -8,7 +8,8 @@ session_start([
 
 $allowedOrigins = [
     "https://medilink-6v6f.onrender.com",
-    "http://localhost:3000"
+    "http://localhost:3000",
+    "https://moodl-wheat.vercel.app/"
 ];
 
 if (in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
