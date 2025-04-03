@@ -1,7 +1,7 @@
 # Use the official PHP image with Apache
 FROM php:8.0-apache
 
-# Install system dependencies
+# Install system dependencies and PHP extensions
 RUN apt-get update && apt-get install -y \
     libpng-dev \
     libjpeg-dev \
@@ -10,7 +10,7 @@ RUN apt-get update && apt-get install -y \
     unzip \
     git \
     && docker-php-ext-configure gd --with-freetype --with-jpeg \
-    && docker-php-ext-install gd mysqli zip
+    && docker-php-ext-install gd mysqli zip pdo pdo_mysql
 
 # Set the working directory
 WORKDIR /var/www/html
