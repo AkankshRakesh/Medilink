@@ -1,8 +1,13 @@
 <?php
+// $host = 'localhost';
+// $dbname = 'moodl';
+// $username = 'root'; 
+// $password = ''; 
+
 $host = 'sql12.freesqldatabase.com';
 $dbname = 'sql12770743';
 $username = 'sql12770743'; 
-$password = getenv('PASS'); 
+$password = "UBPDqGn3xc";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
