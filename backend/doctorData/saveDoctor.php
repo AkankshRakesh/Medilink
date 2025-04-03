@@ -17,7 +17,10 @@ if (in_array($_SERVER['HTTP_ORIGIN'], $allowedOrigins)) {
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");
-
+if ($_SERVER["REQUEST_METHOD"] === "OPTIONS") {
+    http_response_code(204); // No Content
+    exit;
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $data = json_decode(file_get_contents("php://input"), true);
