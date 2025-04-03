@@ -5,7 +5,7 @@ session_start([
     'cookie_secure' => false, 
     'cookie_httponly' => true,
 ]);
-header("Access-Control-Allow-Origin: http://localhost:3000");
+header("Access-Control-Allow-Origin: https://medilink-6v6f.onrender.com");
 header("Access-Control-Allow-Methods: GET, POST, OPTIONS");
 header("Access-Control-Allow-Headers: Content-Type");
 header("Access-Control-Allow-Credentials: true");

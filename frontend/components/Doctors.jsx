@@ -11,6 +11,7 @@ import { Skeleton } from "@/components/ui/skeleton"
 import { ChevronRight, Filter, ThumbsUp, X } from "lucide-react"
 import Link from "next/link"
 import { Fugaz_One } from "next/font/google"
+import Image from "next/image"
 
 const fugaz = Fugaz_One({
   subsets: ["latin"],
@@ -338,10 +339,13 @@ const DoctorCard = ({ doctor }) => {
         <div className="absolute -bottom-12 left-4">
           <div className="h-24 w-24 rounded-full border-4 border-background overflow-hidden bg-muted">
             {doctor.picture ? (
-              <img
+              <Image
                 src={doctor.picture || "/placeholder.svg"}
                 alt={doctor.name}
-                className="h-full w-full object-cover"
+                width={300} // Set a width that makes sense for your layout
+                height={300} // Set a height that maintains the aspect ratio
+                layout="responsive"
+                className="object-cover"
               />
             ) : (
               <div className="h-full w-full flex items-center justify-center bg-primary/10 text-primary">
