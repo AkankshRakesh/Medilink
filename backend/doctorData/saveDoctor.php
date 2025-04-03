@@ -63,7 +63,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["id"])) {
         $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($doctor) {
-            echo json_encode(["success" => true, "doctor" => $doctor]);
+            echo json_encode(["doctor" => $doctor]);
+            return; 
         } else {
             echo json_encode(["success" => false, "message" => "Doctor not found"]);
         }
