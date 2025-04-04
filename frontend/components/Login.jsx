@@ -20,6 +20,10 @@ export default function Login() {
     const [loadingOtp, setLoadingOtp] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [forgotPass, setForgotPass] = useState(false);
+    const [newPassword, setNewPassword] = useState("")
+    const [confirmPassword, setConfirmPassword] = useState("")
+    const [showConfirmPassword, setShowConfirmPassword] = useState(false)
+    const [resettingPassword, setResettingPassword] = useState(false)
 
     const router = useRouter();
 
@@ -76,16 +80,15 @@ export default function Login() {
         setResettingPassword(true)
         try {
           // Replace with your actual reset password endpoint
-          const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/resetPassword.php`, {
+          const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/auth/resetPassword.php`, {
             email,
             newPassword,
           })
     
           if (response.data.status === "success") {
-            toast.success("Password reset successfully!")
-            setTimeout(() => {
-              router.push("/login")
-            }, 2000)
+            toast.success("Password reset successfully!" , {
+                autoClose: 3500,
+                onClose: () => setForgotPass(!forgotPass)})
           } else {
             toast.error("Failed to reset password. Please try again.")
           }
