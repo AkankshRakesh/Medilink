@@ -477,10 +477,10 @@ function BookingPage() {
                     <Badge
                       key={cat}
                       variant={doctorDetails?.specialization === cat ? "outline" : "outline"}
-                      className={`px-3 py-1 cursor-pointer hover:bg-primary/10 transition-colors ${
+                      className={`px-3 py-1 cursor-pointer  transition-colors ${
                         doctorDetails?.specialization === cat || selectedSpecialty === cat
-                          ? "bg-primary text-primary-foreground"
-                          : ""
+                          ? "bg-primary text-primary-foreground hover:bg-primary/75"
+                          : "hover:bg-primary/10"
                       }`}
                       onClick={() => handleSpecialtyClick(cat)}
                     >
