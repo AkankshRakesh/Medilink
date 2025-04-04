@@ -1,6 +1,4 @@
 <?php
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
 
 session_start([
     'use_cookies' => true,
@@ -50,9 +48,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 }
 
 if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["id"])) {
-    // Debug session contents
-    error_log("Current session: " . print_r($_SESSION, true));
-    error_log("Looking for doctor_" . $_GET["id"]);
     
     $id = $_GET["id"];
     if (isset($_SESSION["doctor_$id"])) {
