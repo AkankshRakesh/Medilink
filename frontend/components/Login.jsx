@@ -621,15 +621,6 @@ export default function Login() {
                                           )}
                                         </div>
                                       </form>
-                            
-                                      <div>
-                                        <p className="text-center mt-5 text-gray-500">
-                                          Remember your password?
-                                          <button className="text-cyan-600 hover:text-cyan-700 ml-2" onClick={() => router.push("/login")}>
-                                            Sign in
-                                          </button>
-                                        </p>
-                                      </div>
                                     </div>
                                   </div>
                                 </div>
