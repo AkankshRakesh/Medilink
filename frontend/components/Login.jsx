@@ -6,6 +6,7 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, Loader2, ArrowLeft, Clock, Users, Shield } from 'lucide-react';
+import ForgotPassword from './ForgotPass';
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
@@ -19,6 +20,7 @@ export default function Login() {
     const [authenticating, setAuthenticating] = useState(false);
     const [loadingOtp, setLoadingOtp] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [forgotPass, setForgotPass] = useState(false);
 
     const router = useRouter();
 
@@ -59,7 +61,42 @@ export default function Login() {
             toast.error('OTP verification failed.');
         }
     }
-
+    async function resetPassword(event) {
+        event.preventDefault()
+    
+        if (!newPassword || newPassword.length < 6) {
+          toast.error("Password must be at least 6 characters long.")
+          return
+        }
+    
+        if (newPassword !== confirmPassword) {
+          toast.error("Passwords do not match.")
+          return
+        }
+    
+        setResettingPassword(true)
+        try {
+          // Replace with your actual reset password endpoint
+          const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/resetPassword.php`, {
+            email,
+            newPassword,
+          })
+    
+          if (response.data.status === "success") {
+            toast.success("Password reset successfully!")
+            setTimeout(() => {
+              router.push("/login")
+            }, 2000)
+          } else {
+            toast.error("Failed to reset password. Please try again.")
+          }
+        } catch (error) {
+          console.error("Password Reset Error:", error.response?.data || error.message)
+          toast.error("Password reset failed. Please try again.")
+        } finally {
+          setResettingPassword(false)
+        }
+      }
     function youAreVerified() {
         toast.info('You are verified! Please proceed to login.');
     }
@@ -106,6 +143,7 @@ export default function Login() {
     }
 
     return (
+        (!forgotPass ? (
             <div className="h-screen w-full bg-white rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
                 {/* Left Column - Info Section */}
                 <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
@@ -244,7 +282,7 @@ export default function Login() {
                                     <label htmlFor="password" className="text-sm font-medium text-gray-700">
                                         Password
                                     </label>
-                                    <p onClick={() => toast.info("Our team has been notified and will get in touch with you soon")} className="text-sm text-cyan-600 hover:text-cyan-700 cursor-pointer">
+                                    <p onClick={() => setForgotPass(!forgotPass)} className="text-sm text-cyan-600 hover:text-cyan-700 cursor-pointer">
                                         Forgot password?
                                     </p>
                                 </div>
@@ -305,5 +343,295 @@ export default function Login() {
                     </div>
                 </div>
             </div>
+                                ) : 
+                            <div className="h-screen w-full bg-white rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
+                                  {/* Left Column - Info Section */}
+                                  <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
+                                    <div>
+                                      <div className="mb-4 md:mb-12">
+                                        <h2 className={`${fugaz.className} text-3xl md:text-4xl font-bold mb-6`}>Reset your password</h2>
+                            
+                                        <div className="space-y-6">
+                                          <div className="flex items-center">
+                                            <div className="bg-white/20 p-2 rounded-full mr-4">
+                                              <Users className="h-5 w-5" />
+                                            </div>
+                                            <div>
+                                              <p className="font-medium">Connect with top doctors</p>
+                                            </div>
+                                          </div>
+                            
+                                          <div className="flex items-center">
+                                            <div className="bg-white/20 p-2 rounded-full mr-4">
+                                              <Clock className="h-5 w-5" />
+                                            </div>
+                                            <div>
+                                              <p className="font-medium">Available 24/7 on any device</p>
+                                            </div>
+                                          </div>
+                            
+                                          <div className="flex items-center">
+                                            <div className="bg-white/20 p-2 rounded-full mr-4">
+                                              <Shield className="h-5 w-5" />
+                                            </div>
+                                            <div>
+                                              <p className="font-medium">Private questions answered within 24 hrs</p>
+                                            </div>
+                                          </div>
+                                        </div>
+                                      </div>
+                            
+                                      <div className="hidden lg:block mt-auto">
+                                        <div className="bg-white/10 p-4 rounded-lg">
+                                          <p className="text-sm">
+                                            "This platform has connected me with counsellors who truly understand my needs. The advice I've received
+                                            has been life-changing."
+                                          </p>
+                                          <p className="mt-2 font-medium">— Akanksh R.</p>
+                                        </div>
+                                      </div>
+                                    </div>
+                                  </div>
+                            
+                                  {/* Right Column - Form Section */}
+                                  <div className="p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center bg-white">
+                                    <div className="mx-auto w-full max-w-md">
+                                      <button
+                                        onClick={() => setForgotPass(!forgotPass)}
+                                        className="flex items-center text-gray-600 hover:text-cyan-600 mb-6 transition-colors"
+                                      >
+                                        <ArrowLeft className="h-4 w-4 mr-1" />
+                                        <span>Back to login</span>
+                                      </button>
+                            
+                                      <div className="text-center mb-8">
+                                        <h3 className="text-2xl font-bold text-gray-800 mb-2">Forgot your password?</h3>
+                                        <p className="text-gray-500 text-sm">No worries, we'll help you reset it</p>
+                                      </div>
+                            
+                                      <form onSubmit={resetPassword} className="space-y-5">
+                                        <div className="space-y-1">
+                                          <label htmlFor="email" className="text-sm font-medium text-gray-700 block pl-1">
+                                            Email Address
+                                          </label>
+                                          <div className="relative">
+                                            <input
+                                              id="email"
+                                              value={email}
+                                              onChange={(e) => setEmail(e.target.value)}
+                                              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                              placeholder="Email Address"
+                                              type="email"
+                                              required
+                                              autoComplete="email"
+                                              disabled={otpVerified}
+                                            />
+                                            {!otpSent && !otpVerified && (
+                                              <button
+                                                type="button"
+                                                onClick={sendOtp}
+                                                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200"
+                                                disabled={loadingOtp}
+                                              >
+                                                {loadingOtp ? <Loader2 className="h-4 w-4 animate-spin" /> : "Send OTP"}
+                                              </button>
+                                            )}
+                                            {otpVerified && (
+                                              <button
+                                                type="button"
+                                                className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1"
+                                              >
+                                                <span>Verified</span>
+                                                <CheckCircle className="h-4 w-4" />
+                                              </button>
+                                            )}
+                                          </div>
+                                        </div>
+                            
+                                        {otpSent && !otpVerified && (
+                                          <div className="space-y-1">
+                                            <label htmlFor="otp" className="text-sm font-medium text-gray-700 block pl-1">
+                                              Verification Code
+                                            </label>
+                                            <div className="flex gap-2">
+                                              <input
+                                                id="otp"
+                                                value={otp}
+                                                onChange={(e) => setOtp(e.target.value)}
+                                                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 text-center tracking-widest"
+                                                placeholder="Enter OTP"
+                                                type="text"
+                                              />
+                                              <button
+                                                type="button"
+                                                onClick={verifyOtp}
+                                                className="bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200"
+                                              >
+                                                Verify
+                                              </button>
+                                            </div>
+                                          </div>
+                                        )}
+                            
+                                        {otpVerified && (
+                                          <>
+                                            <div className="space-y-1">
+                                              <label htmlFor="newPassword" className="text-sm font-medium text-gray-700 block pl-1">
+                                                New Password
+                                              </label>
+                                              <div className="relative">
+                                                <input
+                                                  id="newPassword"
+                                                  value={newPassword}
+                                                  onChange={(e) => setNewPassword(e.target.value)}
+                                                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                                  placeholder="New Password"
+                                                  type={showPassword ? "text" : "password"}
+                                                  minLength={6}
+                                                  required
+                                                />
+                                                <button
+                                                  type="button"
+                                                  onClick={() => setShowPassword(!showPassword)}
+                                                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                >
+                                                  {showPassword ? (
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      className="h-5 w-5"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                      stroke="currentColor"
+                                                    >
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                                                      />
+                                                    </svg>
+                                                  ) : (
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      className="h-5 w-5"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                      stroke="currentColor"
+                                                    >
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                      />
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                                      />
+                                                    </svg>
+                                                  )}
+                                                </button>
+                                              </div>
+                                            </div>
+                            
+                                            <div className="space-y-1">
+                                              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 block pl-1">
+                                                Confirm Password
+                                              </label>
+                                              <div className="relative">
+                                                <input
+                                                  id="confirmPassword"
+                                                  value={confirmPassword}
+                                                  onChange={(e) => setConfirmPassword(e.target.value)}
+                                                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                                  placeholder="Confirm Password"
+                                                  type={showConfirmPassword ? "text" : "password"}
+                                                  minLength={6}
+                                                  required
+                                                />
+                                                <button
+                                                  type="button"
+                                                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                                                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                >
+                                                  {showConfirmPassword ? (
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      className="h-5 w-5"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                      stroke="currentColor"
+                                                    >
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                                                      />
+                                                    </svg>
+                                                  ) : (
+                                                    <svg
+                                                      xmlns="http://www.w3.org/2000/svg"
+                                                      className="h-5 w-5"
+                                                      fill="none"
+                                                      viewBox="0 0 24 24"
+                                                      stroke="currentColor"
+                                                    >
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                      />
+                                                      <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth={2}
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                                      />
+                                                    </svg>
+                                                  )}
+                                                </button>
+                                              </div>
+                                            </div>
+                                          </>
+                                        )}
+                            
+                                        <div className="pt-2">
+                                          {!otpVerified ? (
+                                            <p className="text-sm text-gray-500 text-center">Please verify your email to continue</p>
+                                          ) : (
+                                            <button
+                                              type="submit"
+                                              className="w-full bg-cyan-500 hover:bg-cyan-600 text-white font-medium py-3 px-4 rounded-lg transition-all duration-200 flex items-center justify-center"
+                                              disabled={resettingPassword}
+                                            >
+                                              {resettingPassword ? (
+                                                <>
+                                                  <Loader2 className="h-5 w-5 animate-spin mr-2" /> Resetting password...
+                                                </>
+                                              ) : (
+                                                "Reset Password"
+                                              )}
+                                            </button>
+                                          )}
+                                        </div>
+                                      </form>
+                            
+                                      <div>
+                                        <p className="text-center mt-5 text-gray-500">
+                                          Remember your password?
+                                          <button className="text-cyan-600 hover:text-cyan-700 ml-2" onClick={() => router.push("/login")}>
+                                            Sign in
+                                          </button>
+                                        </p>
+                                      </div>
+                                    </div>
+                                  </div>
+                                </div>
+                            
+                            )
     );
 }

@@ -53,8 +53,8 @@ if ($_SERVER["REQUEST_METHOD"] === "GET" && isset($_GET["id"])) {
     if (isset($_SESSION["doctor_$id"])) {
         echo json_encode($_SESSION["doctor_$id"]);
     } else {
-        $stmt = $pdo->prepare("SELECT * FROM doctors WHERE userId = 11");
-        $stmt->execute();
+        $stmt = $pdo->prepare("SELECT * FROM doctors WHERE userId = :userId");
+        $stmt->execute(['userId' => 11]);
         $doctor = $stmt->fetch(PDO::FETCH_ASSOC);
 
         if ($doctor) {
