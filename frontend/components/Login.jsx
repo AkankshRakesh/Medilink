@@ -351,7 +351,7 @@ export default function Login() {
                                   <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
                                     <div>
                                       <div className="mb-4 md:mb-12">
-                                        <h2 className={`${fugaz.className} text-3xl md:text-4xl font-bold mb-6`}>Reset your password</h2>
+                                        <h2 className={`${fugaz.className} text-3xl md:text-4xl font-bold mb-6`}>Expert advice from top doctors</h2>
                             
                                         <div className="space-y-6">
                                           <div className="flex items-center">
