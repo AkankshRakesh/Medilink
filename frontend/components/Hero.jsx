@@ -8,6 +8,7 @@ import FindDoc from './findDoc';
 // import Carousel from './Carousel';
 
 import Spline from '@splinetool/react-spline';
+import Image from 'next/image';
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
@@ -63,9 +64,11 @@ export default function Hero() {
 
           {/* Right Image */}
           <div className="flex-1 relative h-[620px] block md:hidden z-10">
-            <img
+            <Image
               src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
               alt="Mobile View"
+              width={500}
+              height={500}
               className="w-full h-full object-cover rounded-xl shadow-xl"
             />
           </div>
