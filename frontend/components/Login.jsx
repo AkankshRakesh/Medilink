@@ -6,7 +6,6 @@ import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useRouter } from 'next/navigation';
 import { CheckCircle, Loader2, ArrowLeft, Clock, Users, Shield } from 'lucide-react';
-import ForgotPassword from './ForgotPass';
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 
