@@ -13,6 +13,8 @@ $allowedOrigins = [
     "https://moodl-wheat.vercel.app"
 ];
 
+include "../db.php";
+
 header("Access-Control-Allow-Credentials: true");
 header("Content-Type: application/json");
 
