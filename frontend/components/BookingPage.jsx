@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 import { useSearchParams } from "next/navigation"
 import { Calendar, Mail, PhoneCall, Smartphone, Star, Clock, User, ChevronUp, ChevronDown } from "lucide-react"
 import { Button } from "@/components/ui/button"
@@ -648,25 +648,24 @@ function BookingPage() {
 
                   <div className="flex justify-between items-center overflow-x-auto pb-2">
   {dates.map(({ day, date, fullDate }, index) => (
-    <>
-      <button
-        key={fullDate}
-        onClick={() => setSelectedDate(fullDate)}
-        className={`min-w-[4.5rem] h-16 flex flex-col items-center justify-center rounded-lg transition-all ${
-          fullDate === selectedDate
-            ? "bg-primary text-primary-foreground"
-            : "bg-background border border-input hover:bg-accent hover:text-accent-foreground"
-        }`}
-      >
-        <span className="text-sm font-medium">{day}</span>
-        <span className="text-lg font-bold">{date}</span>
-      </button>
-      
-      {/* Add separator between dates except after last */}
-      {index < dates.length - 1 && (
-        <div className="h-px w-8 bg-gray-200 mx-1 flex-shrink-0" />
-      )}
-    </>
+    <React.Fragment key={fullDate}>
+    <button
+      onClick={() => setSelectedDate(fullDate)}
+      className={`min-w-[4.5rem] h-16 flex flex-col items-center justify-center rounded-lg transition-all ${
+        fullDate === selectedDate
+          ? "bg-primary text-primary-foreground"
+          : "bg-background border border-input hover:bg-accent hover:text-accent-foreground"
+      }`}
+    >
+      <span className="text-sm font-medium">{day}</span>
+      <span className="text-lg font-bold">{date}</span>
+    </button>
+    
+    {/* Add separator between dates except after last */}
+    {index < dates.length - 1 && (
+      <div className="h-px w-8 bg-gray-200 mx-1 flex-shrink-0" />
+    )}
+  </React.Fragment>
   ))}
 </div>
 
