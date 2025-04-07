@@ -25,8 +25,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $otp = generateOTP();
     $expiry = date('Y-m-d H:i:s', strtotime('+10 minutes'));
 
-    $stmt = $pdo->prepare("INSERT INTO otptable (email, otp, expires_at) VALUES (:email, :otp, :expires_at)");
-    $stmt->execute(['email' => $email, 'otp' => $otp, 'expires_at' => $expiry]);
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM otptable WHERE email = :email");
+    $stmt->execute(['email' => $email]);
+    $emailExists = $stmt->fetchColumn();
+
+    if ($emailExists) {
+        $stmt = $pdo->prepare("UPDATE otptable SET otp = :otp, expires_at = :expires_at WHERE email = :email");
+        $stmt->execute(['email' => $email, 'otp' => $otp, 'expires_at' => $expiry]);
+    } else {
+        $stmt = $pdo->prepare("INSERT INTO otptable (email, otp, expires_at) VALUES (:email, :otp, :expires_at)");
+        $stmt->execute(['email' => $email, 'otp' => $otp, 'expires_at' => $expiry]);
+    }
 
     $mail = new PHPMailer(true);
     try {
