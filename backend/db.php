@@ -5,9 +5,9 @@
 // $password = ''; 
 
 $host = 'sql12.freesqldatabase.com';
-$dbname = 'sql12770743';
-$username = 'sql12770743'; 
-$password = "UBPDqGn3xc";
+$dbname = 'sql12771973';
+$username = 'sql12771973'; 
+$password = "H3S3Kie3Bz";
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);
