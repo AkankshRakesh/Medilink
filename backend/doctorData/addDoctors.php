@@ -1,5 +1,5 @@
 <?php
-include 'db.php';
+include '../db.php';
 
 header("Access-Control-Allow-Origin: *"); 
 header("Access-Control-Allow-Methods: POST, OPTIONS"); 
@@ -23,6 +23,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $availabilityStart = $data['availabilityStart'];
     $availabilityEnd = $data['availabilityEnd'];
     $location = $data['location'];
+
+    $specialties = [
+        "General Physician", "Dermatology", "Obstetrics & Gynaecology", "Orthopaedics",
+        "ENT", "Neurology", "Cardiology", "Urology", "Gastroenterology/GI medicine",
+        "Psychiatry", "Paediatrics", "Pulmonology/Respiratory", "Endocrinology",
+        "Nephrology", "Neurosurgery", "Rheumatology", "Ophthalmology",
+        "Surgical Gastroenterology", "Infectious Disease", "General & Laparoscopic Surgery",
+        "Psychology", "Medical Oncology", "Diabetology", "Dentist"
+    ];
+    
+    function getClosestSpecialty($input, $specialties) {
+        $closest = null;
+        $highestSimilarity = 0;
+    
+        foreach ($specialties as $spec) {
+            similar_text(strtolower($input), strtolower($spec), $percent);
+            if ($percent > $highestSimilarity) {
+                $highestSimilarity = $percent;
+                $closest = $spec;
+            }
+        }
+    
+        return $closest;
+    }
+    
+    $specialization = getClosestSpecialty($specialization, $specialties);
+    
+
 
     $sql = "INSERT INTO doctors (userId, name,picture, experience, biography, specialization, qualification, rating, patients, fee, availabilityStart, availabilityEnd, location) 
             VALUES (:userId, :name, :picture, :experience, :biography, :specialization, :qualification, :rating, :patients, :fee, :availabilityStart, :availabilityEnd, :location)";

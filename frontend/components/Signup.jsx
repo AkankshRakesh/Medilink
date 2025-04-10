@@ -91,7 +91,7 @@ export default function Signup() {
                 return;
             }
             toast.success(response.data.message);
-            // router.push('/login');
+            router.push('/login');
         } catch (error) {
             console.error('Error:', error.response?.data || error.message);
             toast.error('Signup failed. Please try again.');

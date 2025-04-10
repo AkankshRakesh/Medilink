@@ -17,7 +17,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 
 $data = json_decode(file_get_contents("php://input"), true);
 
-// Validate required fields
 $requiredFields = ['doctorId', 'patientId', 'date', 'time'];
 foreach ($requiredFields as $field) {
     if (empty($data[$field])) {
@@ -28,7 +27,6 @@ foreach ($requiredFields as $field) {
 }
 
 try {
-    // Get doctor and patient details
     $doctorStmt = $pdo->prepare("SELECT  email FROM users WHERE id = :doctorId");
     $doctorStmt->execute(['doctorId' => $data['doctorId']]);
     $doctor = $doctorStmt->fetch(PDO::FETCH_ASSOC);
@@ -41,7 +39,6 @@ try {
         throw new Exception("Could not find doctor or patient records");
     }
 
-    // Insert booking
     $bookingStmt = $pdo->prepare("INSERT INTO bookings 
         (doctorId, patientId, date, time, paymentId, meetLink) 
         VALUES (:doctorId, :patientId, :date, :time, :paymentId, :meetLink)");
@@ -57,13 +54,11 @@ try {
     
     $bookingId = $pdo->lastInsertId();
     
-    // Send email notifications if meetLink exists
     $emailsSent = false;
     if (!empty($data['meetLink'])) {
         $dateTime = new DateTime("{$data['date']} {$data['time']}");
         $formattedDateTime = $dateTime->format('F j, Y \a\t g:i A');
         
-        // Email to patient
         $patientSubject = "Your Appointment with {$data['doctorName']}";
         $patientBody = "
             <h2>Appointment Confirmation</h2>
@@ -77,7 +72,6 @@ try {
             <p>Medilink Team</p>
         ";
         
-        // Email to doctor
         $doctorSubject = "New Appointment with {$patient['username']}";
         $doctorBody = "
             <h2>New Appointment Scheduled</h2>
@@ -90,10 +84,8 @@ try {
             <p>Medilink Team</p>
         ";
         
-        // Send emails using your existing SMTP configuration
         $mailer = new PHPMailer(true);
         try {
-            // Configure mailer (using your OTP email settings)
             $mailer->isSMTP();
             $mailer->Host = 'smtp-relay.brevo.com';
             $mailer->SMTPAuth = true;
@@ -104,14 +96,12 @@ try {
             $mailer->setFrom('akankshrakesh@gmail.com', 'Medilink');
             $mailer->isHTML(true);
             
-            // Send to patient
             $mailer->clearAddresses();
             $mailer->addAddress($patient['email'], $patient['username']);
             $mailer->Subject = $patientSubject;
             $mailer->Body = $patientBody;
             $mailer->send();
             
-            // Send to doctor
             $mailer->clearAddresses();
             $mailer->addAddress($doctor['email'], $data['doctorName']);
             $mailer->Subject = $doctorSubject;
@@ -120,7 +110,6 @@ try {
             
             $emailsSent = true;
         } catch (Exception $e) {
-            // Log email error but don't fail the booking
             error_log("Email sending failed: " . $e->getMessage());
         }
     }

@@ -24,6 +24,40 @@ export const User = () => {
     asDoctor: [],
     asPatient: [],
   })
+
+  const specialties = [
+  { id: 1, name: "General Physician", shortName: "General Physician", imagePath: "/Specs/general.webp" },
+  { id: 2, name: "Dermatology", shortName: "Dermatology", imagePath: "/Specs/derma.webp" },
+  { id: 3, name: "Obstetrics & Gynaecology", shortName: "Obs & Gyn", imagePath: "/Specs/obsgyn.webp" },
+  { id: 4, name: "Orthopaedics", shortName: "Orthopaedics", imagePath: "/Specs/ortho.webp" },
+  { id: 5, name: "ENT", shortName: "ENT", imagePath: "/Specs/ent.webp" },
+  { id: 6, name: "Neurology", shortName: "Neurology", imagePath: "/Specs/neuro.webp" },
+  { id: 7, name: "Cardiology", shortName: "Cardiology", imagePath: "/Specs/cardio.webp" },
+  { id: 8, name: "Urology", shortName: "Urology", imagePath: "/Specs/uro.webp" },
+  { id: 9, name: "Gastroenterology/GI medicine", shortName: "Gastro", imagePath: "/Specs/gastro.webp" },
+  { id: 10, name: "Psychiatry", shortName: "Psychiatry", imagePath: "/Specs/psychi.webp" },
+  { id: 11, name: "Paediatrics", shortName: "Paediatrics", imagePath: "/Specs/paedi.webp" },
+  { id: 12, name: "Pulmonology/Respiratory", shortName: "Pulmonology", imagePath: "/Specs/respi.webp" },
+  { id: 13, name: "Endocrinology", shortName: "Endocrinology", imagePath: "/Specs/endo.webp" },
+  { id: 14, name: "Nephrology", shortName: "Nephrology", imagePath: "/Specs/nephro.webp" },
+  { id: 15, name: "Neurosurgery", shortName: "Neurosurgery", imagePath: "/Specs/neurosurg.webp" },
+  { id: 16, name: "Rheumatology", shortName: "Rheumatology", imagePath: "/Specs/rheu.webp" },
+  { id: 17, name: "Ophthalmology", shortName: "Ophthalmology", imagePath: "/Specs/oph.webp" },
+  { id: 18, name: "Surgical Gastroenterology", shortName: "Surgical Gastro", imagePath: "/Specs/gastrosurg.webp" },
+  { id: 19, name: "Infectious Disease", shortName: "Infectious Disease", imagePath: "/Specs/infect.webp" },
+  { id: 20, name: "General & Laparoscopic Surgery", shortName: "General Surgery", imagePath: "/Specs/lap.webp" },
+  { id: 21, name: "Psychology", shortName: "Psychology", imagePath: "/Specs/psycho.webp" },
+  { id: 22, name: "Medical Oncology", shortName: "Oncology", imagePath: "/Specs/onco.webp" },
+  { id: 23, name: "Diabetology", shortName: "Diabetology", imagePath: "/Specs/diab.webp" },
+  { id: 24, name: "Dentist", shortName: "Dentist", imagePath: "/Specs/dent.webp" },
+]
+const [searchTerm, setSearchTerm] = useState("");
+const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+const filteredSpecialties = specialties.filter(specialty =>
+  specialty.shortName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  specialty.name.toLowerCase().includes(searchTerm.toLowerCase())
+);
   const [formData, setFormData] = useState({
     userId: 0,
     name: "",
@@ -130,7 +164,7 @@ export const User = () => {
     }
 
     try {
-      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/addDoctors.php`, {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/addDoctors.php`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -478,12 +512,6 @@ export const User = () => {
                     </div>
                     <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
                       <BookingList bookings={appointments.asPatient} type="personal" />
-                      {appointments.asPatient?.length === 0 && (
-                        <div className="text-center py-8 text-gray-400">
-                          <Clock className="h-12 w-12 mx-auto mb-3 opacity-50" />
-                          <p>No appointments scheduled yet</p>
-                        </div>
-                      )}
                     </div>
                   </div>
                 </div>
@@ -560,17 +588,56 @@ export const User = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-                <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">Specialization</label>
-                  <input
-                    type="text"
-                    name="specialization"
-                    placeholder="Cardiology"
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
-                    required
-                  />
-                </div>
+              <div className="relative">
+  <label className="block text-sm font-medium text-gray-300 mb-1">Specialization</label>
+  <div className="relative">
+    <input
+      type="text"
+      placeholder="Search specializations..."
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+      onFocus={() => setIsDropdownOpen(true)}
+      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+    />
+    {isDropdownOpen && (
+      <div className="absolute z-10 mt-1 w-full max-h-60 overflow-auto scrollbar-thin bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+        {filteredSpecialties.length > 0 ? (
+          filteredSpecialties.map((specialty) => (
+            <div
+              key={specialty.id}
+              className="px-4 py-3 hover:bg-blue-500 hover:text-white cursor-pointer flex items-center"
+              onClick={() => {
+                setFormData({...formData, specialization: specialty.name});
+                setSearchTerm(specialty.name);
+                setIsDropdownOpen(false);
+              }}
+            >
+              <img 
+                src={specialty.imagePath} 
+                alt={specialty.name} 
+                className="w-8 h-8 object-cover rounded-full bg-gray-200 p-1 mr-3"
+                onError={(e) => {
+                  e.target.src = '/placeholder.svg';
+                }}
+              />
+              <div>
+                <div className="font-medium">{specialty.name}</div>
+                <div className="text-xs text-gray-400">{specialty.shortName}</div>
+              </div>
+            </div>
+          ))
+        ) : (
+          <div className="px-4 py-3 text-gray-400">No specializations found</div>
+        )}
+      </div>
+    )}
+  </div>
+  <input
+    type="hidden"
+    name="specialization"
+    value={formData.specialization}
+  />
+</div>
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">Qualification</label>
                   <input

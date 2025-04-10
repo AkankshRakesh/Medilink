@@ -3,7 +3,6 @@ import Image from "next/image"
 import Link from "next/link"
 
 
-// Create a single array of specialties with image paths instead of importing each image
 const specialties = [
   { id: 1, name: "General Physician", shortName: "General Physician", imagePath: "/Specs/general.webp" },
   { id: 2, name: "Dermatology", shortName: "Dermatology", imagePath: "/Specs/derma.webp" },
