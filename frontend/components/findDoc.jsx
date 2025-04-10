@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useState, useMemo, useEffect } from "react"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,21 +13,14 @@ import { Button } from "@/components/ui/button"
 import { useRouter } from "next/navigation"
 import { Check, ChevronDown, Stethoscope } from "lucide-react"
 import { cn } from "@/lib/utils"
+import { toast } from "react-toastify"
 
 export default function FindDoc() {
   const [selectedExperience, setExperience] = useState("")
   const [selectedSpecialty, setSpecialty] = useState("")
   const [selectedFees, setFees] = useState("")
+  const [specialties, setSpecialties] = useState([]) // Change to state
   const router = useRouter()
-
-  const specialties = [
-    { key: "General Physician", label: "General Physician" },
-    { key: "Dermatology", label: "Dermatology" },
-    { key: "Obstetrics & Gynaecology", label: "Obstetrics & Gynaecology" },
-    { key: "Orthopaedics", label: "Orthopaedics" },
-    { key: "Neurology", label: "Neurology" },
-    { key: "Psychiatry", label: "Psychiatry" },
-  ]
 
   const experienceRanges = [
     { key: "0-5", label: "0-5 years" },
@@ -43,7 +36,7 @@ export default function FindDoc() {
 
   const selectedSpecialtyLabel = useMemo(() => {
     return specialties.find((item) => item.key === selectedSpecialty)?.label || ""
-  }, [selectedSpecialty])
+  }, [selectedSpecialty, specialties])
 
   const selectedExperienceLabel = useMemo(() => {
     return experienceRanges.find((item) => item.key === selectedExperience)?.label || ""
@@ -64,6 +57,25 @@ export default function FindDoc() {
     router.push(`/doctors?${params.toString()}`)
   }
 
+  useEffect(() => {
+    fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/fetchSpecializations.php`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.specializations)) {
+          const formattedSpecialties = data.specializations.map((spec) => ({
+            key: spec,
+            label: spec,
+          }))
+          setSpecialties(formattedSpecialties) // Update state
+        } else {
+          toast.error("Failed to fetch specializations")
+        }
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        toast.error("Failed to fetch specializations")
+      })
+  }, [])
   return (
     <div className="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 lg:p-10 rounded-xl shadow-lg mx-4 md:mx-6 -mt-8 mb-8 relative z-10 border border-blue-100/50 transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)]">
 

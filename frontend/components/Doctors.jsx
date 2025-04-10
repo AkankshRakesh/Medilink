@@ -21,12 +21,6 @@ const fugaz = Fugaz_One({
 
 const filtersData = {
   specialties: [
-    "General Physician",
-    "Dermatology",
-    "Obstetrics & Gynaecology",
-    "Orthopaedics",
-    "Neurology",
-    "Psychiatry",
   ],
   experience: ["0-5", "6-10", "11+"],
   fees: ["100-500", "500-1000", "1000+"],
@@ -35,6 +29,7 @@ const filtersData = {
 export default function Doctors() {
   const [doctors, setDoctors] = useState([])
   const [loading, setLoading] = useState(true)
+  const [specialties, setSpecialties] = useState([])
   const [selectedFilters, setSelectedFilters] = useState({
     specialties: [],
     experience: [],
@@ -75,6 +70,23 @@ export default function Doctors() {
       .catch((err) => {
         console.error("Fetch error:", err);
         setDoctors([]);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
+      fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/fetchSpecializations.php`)
+      .then((res) => res.json())
+      .then((data) => {
+        if (data.success && Array.isArray(data.specializations)) {
+          filtersData.specialties = data.specializations;
+          setSpecialties(filtersData.specialties);
+        } else {
+          setSpecialties([]);
+        }
+      })
+      .catch((err) => {
+        console.error("Fetch error:", err);
+        setSpecialties([]);
       })
       .finally(() => {
         setLoading(false);
@@ -207,7 +219,7 @@ export default function Doctors() {
                     <Badge
                       key={`${category}-${value}`}
                       variant="secondary"
-                      className="flex items-center gap-1 px-3 py-1.5"
+                      className="flex items-center gap-1 px-3 py-1.5" 
                     >
                       <span className="capitalize">{category}:</span> {value}
                       <X className="h-3 w-3 ml-1 cursor-pointer" onClick={() => toggleFilter(category, value)} />
@@ -327,11 +339,14 @@ const DoctorCard = ({ doctor }) => {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(doctor),
       credentials: "include",
-    })
-    console.log("sent data: ", doctor)
-    const { id } = await response.json()
-    router.push(`/booking?id=${id}`)
-  }
+    });
+    console.log("sent data: ", doctor);
+    const { id } = await response.json();
+    router.push(`/booking?id=${id}`);
+  };
+
+  // Calculate the rating percentage
+  const ratingPercentage = doctor.rating * 20; // Convert rating (1-5) to percentage (0-100)
 
   return (
     <Card className="overflow-hidden">
@@ -368,7 +383,7 @@ const DoctorCard = ({ doctor }) => {
           <div className="text-right">
             <div className="flex items-center text-green-600 text-sm font-medium">
               <ThumbsUp className="h-3.5 w-3.5 mr-1" />
-              <span>{doctor.rating}%</span>
+              <span>{ratingPercentage}%</span> {/* Display rating as percentage */}
             </div>
             <p className="text-xs text-muted-foreground">{doctor.patients}+ Patients</p>
           </div>
@@ -400,8 +415,8 @@ const DoctorCard = ({ doctor }) => {
         </Button>
       </CardFooter>
     </Card>
-  )
-}
+  );
+};
 
 const DoctorCardSkeleton = () => (
   <Card className="overflow-hidden">

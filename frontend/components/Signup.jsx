@@ -46,7 +46,7 @@ export default function Signup() {
             return;
         }
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/verifyOtp.php`, { email, otp });
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/auth/verifyOtp.php`, { email, otp });
             if (response.data.status === "success") {
                 toast.success('OTP verified successfully!');
                 setOtpSent(false); 

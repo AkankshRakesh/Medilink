@@ -51,7 +51,7 @@ export default function Login() {
             return;
         }
         try {
-            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/verifyOtp.php`, { email, otp });
+            const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/auth/verifyOtp.php`, { email, otp });
             if (response.data.status === "success") {
                 toast.success('OTP verified successfully!');
                 setOtpSent(false); 
@@ -134,7 +134,7 @@ export default function Login() {
                 localStorage.setItem('userId', response.data.user_id);
                 localStorage.setItem('username', response.data.username);
                 localStorage.setItem('email', email);
-                router.push('/');
+                window.location.href = '/';
             }
         } catch (error) {
             console.error('Error:', error.response?.data || error.message);
