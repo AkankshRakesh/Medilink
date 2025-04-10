@@ -75,7 +75,7 @@ try {
         $doctorSubject = "New Appointment with {$patient['username']}";
         $doctorBody = "
             <h2>New Appointment Scheduled</h2>
-            <p>Dear Dr. {$data['doctorName']},</p>
+            <p>Dear {$data['doctorName']},</p>
             <p>You have a new appointment with {$patient['username']} scheduled for:</p>
             <p><strong>{$formattedDateTime}</strong></p>
             <p>Meeting Link: <a href='{$data['meetLink']}'>{$data['meetLink']}</a></p>

@@ -391,23 +391,28 @@ function BookingPage() {
     }
   }
   const groupTimeSlots = (slots) => {
-    const morning = slots.filter((slot) => {
-      const hour = Number.parseInt(slot.time.split(":")[0])
-      return hour >= 0 && hour < 12
-    })
-
-    const afternoon = slots.filter((slot) => {
-      const hour = Number.parseInt(slot.time.split(":")[0])
-      return hour >= 12 && hour < 17
-    })
-
-    const evening = slots.filter((slot) => {
-      const hour = Number.parseInt(slot.time.split(":")[0])
-      return hour >= 17 && hour < 24
-    })
-
-    return { morning, afternoon, evening }
-  }
+    const getHour = (timeStr) => {
+      return parseInt(timeStr.split(":")[0], 10); // handles "19:00:00.000000"
+    };
+  
+    const morning = slots.filter(slot => {
+      const hour = getHour(slot.time);
+      return hour >= 0 && hour < 12;
+    });
+  
+    const afternoon = slots.filter(slot => {
+      const hour = getHour(slot.time);
+      return hour >= 12 && hour < 17;
+    });
+  
+    const evening = slots.filter(slot => {
+      const hour = getHour(slot.time);
+      return hour >= 17 && hour < 24;
+    });
+  
+    return { morning, afternoon, evening };
+  };
+  
 
   const groupedTimeSlots = groupTimeSlots(availableTimes)
   if (loading) {
