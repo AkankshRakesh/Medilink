@@ -311,13 +311,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="text-center mt-12 relative z-10">
-            <Link href="/doctors">
-              <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                Consult a Doctor Now
-              </button>
-            </Link>
-          </div>
+          
          
           
         </div>
@@ -350,7 +344,13 @@ export default function Hero() {
 </div>
               
               </div>
-              
+              <div className="text-center mt-10 mb-10">
+            <Link href="/doctors">
+              <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                Consult a Doctor Now
+              </button>
+            </Link>
+          </div>
 
               <footer className="bg-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
         <div className="container mx-auto max-w-6xl">
