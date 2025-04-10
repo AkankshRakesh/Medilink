@@ -293,7 +293,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 														<tr>
 															<td class="pad" style="padding-bottom:20px;padding-left:20px;padding-right:20px;padding-top:10px;">
 																<div style="color:#f5f0ec;direction:ltr;font-family:'Cormorant Garamond', 'Times New Roman', Times, serif;font-size:16px;font-weight:400;letter-spacing:0px;line-height:1.5;text-align:center;mso-line-height-alt:24px;">
-																	<p style="margin: 0;">Medilink | 123 Healthcare Street, Medical City, Country<br>Post Code HC12 34MD</p>
+																	<p style="margin: 0;">Medilink | Delhi<br>India</p>
 																</div>
 															</td>
 														</tr>
