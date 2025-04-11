@@ -18,9 +18,9 @@ const images = [
   "/Docs_headshots/img3.png",
   "/Docs_headshots/img4.png",
   "/Docs_headshots/img5.png",
-  "/Docs_headshots/img6.png",
+  "/Docs_headshots/img6.jpg",
   "/Docs_headshots/img7.png",
-  "/Docs_headshots/img8.png",
+  "/Docs_headshots/img8.jpg",
 ];
 
 
