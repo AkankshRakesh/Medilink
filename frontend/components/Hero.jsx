@@ -1,18 +1,67 @@
 'use client'
 import { Fugaz_One } from 'next/font/google';
 import { CopyrightIcon, Facebook, Instagram, Linkedin, Mail, Youtube } from 'lucide-react'
-import React from 'react'
+import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Specialties from './Specialties';
 import FindDoc from './findDoc';
-// import Carousel from './Carousel';
-
+import Card from "@/components/Card";
+import { animate, motion, useMotionValue } from "framer-motion";
+import useMeasure from "react-use-measure";
 import Spline from '@splinetool/react-spline';
 import Image from 'next/image';
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
+const images = [
+  "/Docs_headshots/img1.png",
+  "/Docs_headshots/img2.png",
+  "/Docs_headshots/img3.png",
+  "/Docs_headshots/img4.png",
+  "/Docs_headshots/img5.png",
+  "/Docs_headshots/img6.png",
+  "/Docs_headshots/img7.png",
+  "/Docs_headshots/img8.png",
+];
+
 
 export default function Hero() {
+  const FAST_DURATION = 25;
+  const SLOW_DURATION = 75;
+
+  const [duration, setDuration] = useState(FAST_DURATION);
+  const [ref, { width }] = useMeasure();
+
+  const xTranslation = useMotionValue(0);
+
+  const [mustFinish, setMustFinish] = useState(false);
+  const [rerender, setRerender] = useState(false);
+
+  useEffect(() => {
+    let controls;
+    let finalPosition = -width / 2 - 8;
+
+    if (mustFinish) {
+      controls = animate(xTranslation, [xTranslation.get(), finalPosition], {
+        ease: "linear",
+        duration: duration * (1 - xTranslation.get() / finalPosition),
+        onComplete: () => {
+          setMustFinish(false);
+          setRerender(!rerender);
+        },
+      });
+    } else {
+      controls = animate(xTranslation, [0, finalPosition], {
+        ease: "linear",
+        duration: duration,
+        repeat: Infinity,
+        repeatType: "loop",
+        repeatDelay: 0,
+      });
+    }
+
+    return controls?.stop;
+  }, [rerender, xTranslation, duration, width]);
+
     return (
       <>
         <div className=' mt-6 flex flex-col'>
@@ -262,17 +311,46 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="text-center mt-12 relative z-10">
+          
+         
+          
+        </div>
+
+    {/* New Carousel Section */}
+
+          <div className="relative z-10 text-center mt-12">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 inline-block text-transparent bg-clip-text">
+            Get Connected with Doctors across the World            </h2>
+            <div className="h-1 w-20 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto mt-4 rounded-full"></div>
+          </div>
+<div className="relative py-8 overflow-hidden ">
+  <motion.div
+    className="flex gap-4"
+    style={{ x: xTranslation }}
+    ref={ref}
+    onHoverStart={() => {
+      setMustFinish(true);
+      setDuration(SLOW_DURATION);
+    }}
+    onHoverEnd={() => {
+      setMustFinish(true);
+      setDuration(FAST_DURATION);
+    }}
+  >
+    {[...images, ...images].map((item, idx) => (
+      <Card image={item} key={idx} />
+    ))}
+  </motion.div>
+</div>
+              
+              </div>
+              <div className="text-center mt-10 mb-10">
             <Link href="/doctors">
               <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
                 Consult a Doctor Now
               </button>
             </Link>
           </div>
-        </div>
-              
-              
-              </div>
 
               <footer className="bg-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
         <div className="container mx-auto max-w-6xl">
