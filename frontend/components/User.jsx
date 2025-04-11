@@ -24,7 +24,7 @@ export const User = () => {
     asDoctor: [],
     asPatient: [],
   })
-
+  const [saveDocloading, setSaveDocLoading] = useState(false);
   const specialties = [
   { id: 1, name: "General Physician", shortName: "General Physician", imagePath: "/Specs/general.webp" },
   { id: 2, name: "Dermatology", shortName: "Dermatology", imagePath: "/Specs/derma.webp" },
@@ -58,20 +58,43 @@ const filteredSpecialties = specialties.filter(specialty =>
   specialty.shortName.toLowerCase().includes(searchTerm.toLowerCase()) ||
   specialty.name.toLowerCase().includes(searchTerm.toLowerCase())
 );
-  const [formData, setFormData] = useState({
-    userId: 0,
-    name: "",
-    experience: "",
-    specialization: "",
-    picture: image,
-    qualification: "",
-    rating: "",
-    patients: "",
-    fee: "",
-    availabilityStart: "",
-    availabilityEnd: "",
-    location: "",
-  })
+const [formData, setFormData] = useState({
+  userId: 0,
+  name: "",
+  experience: "",
+  specialization: "",
+  picture: image,
+  qualification: "",
+  rating: "",
+  patients: "",
+  fee: "",
+  availabilityStart: "",
+  availabilityEnd: "",
+  location: "",
+})
+const handleEditDetails = () => {
+  if (doctorDetails) {
+    setFormData({
+      userId: doctorDetails.userId || userId,
+      name: doctorDetails.name || "",
+      experience: doctorDetails.experience || "",
+      specialization: doctorDetails.specialization || "",
+      picture: doctorDetails.picture || null,
+      qualification: doctorDetails.qualification || "",
+      rating: doctorDetails.rating || "",
+      patients: doctorDetails.patients || "",
+      fee: doctorDetails.fee || "",
+      availabilityStart: doctorDetails.availabilityStart || "09:00",
+      availabilityEnd: doctorDetails.availabilityEnd || "17:00",
+      location: doctorDetails.location || "",
+      biography: doctorDetails.biography || ""
+    });
+    setImagePreview(doctorDetails.picture || null);
+    setImage(null); // Reset the image state to avoid conflicts
+  }
+  setIsModalOpen(true);
+};
+  
 
   useEffect(() => {
     if (userId) {
@@ -154,16 +177,17 @@ const filteredSpecialties = specialties.filter(specialty =>
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-
+    console.log(formData);
     const imageUrl = await uploadImageToCloudinary()
-    if (!imageUrl) return
+    if (!imageUrl && !doctorDetails) return
 
     const updatedFormData = {
       ...formData,
-      picture: imageUrl,
+      picture: doctorDetails.picture || imageUrl,
     }
-
+    console.log(updatedFormData);
     try {
+      setSaveDocLoading(true)
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/addDoctors.php`, {
         method: "POST",
         headers: {
@@ -171,7 +195,7 @@ const filteredSpecialties = specialties.filter(specialty =>
         },
         body: JSON.stringify(updatedFormData),
       })
-
+      setSaveDocLoading(false)
       if (!response.ok) throw new Error("Failed to add doctor details")
       toast.success("Doctor details added successfully!", { position: "top-right", autoClose: 3000 , 
         onClose: () => window.location.reload()})
@@ -339,10 +363,19 @@ const filteredSpecialties = specialties.filter(specialty =>
 
               {isDoctor && doctorDetails ? (
                 <>
-                
+                <div className="flex flex-col md:flex-row justify-between md:items-center">
                 <h3 className="text-2xl mb-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
                         {doctorDetails.name}
                       </h3>
+                      <div className="flex mb-4">
+                <button
+                  onClick={handleEditDetails}
+                  className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg transition duration-300"
+                >
+                  Edit Details
+                </button>
+              </div>
+              </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div className="space-y-4">
 
@@ -568,6 +601,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                   <input
                     type="text"
                     name="name"
+                    value={formData.name}
                     placeholder="Dr. Akanksh Rakesh"
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
@@ -579,6 +613,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                   <input
                     type="number"
                     name="experience"
+                    value={formData.experience}
                     placeholder="10"
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
@@ -643,6 +678,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                   <input
                     type="text"
                     name="qualification"
+                    value={formData.qualification}
                     placeholder="MBBS, MD"
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
@@ -658,6 +694,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                     type="number"
                     name="rating"
                     placeholder="4.5"
+                    value={formData.rating}
                     min="1"
                     max="5"
                     step="0.1"
@@ -672,6 +709,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                     type="number"
                     name="patients"
                     placeholder="1000"
+                    value={formData.patients}
                     onChange={handleChange}
                     className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                     required
@@ -685,6 +723,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                   type="number"
                   name="fee"
                   placeholder="1500"
+                  value={formData.fee}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                   required
@@ -699,6 +738,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                     <input
                       type="time"
                       name="availabilityStart"
+                      value={formData.availabilityStart}
                       onChange={handleChange}
                       className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                       required
@@ -709,6 +749,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                     <input
                       type="time"
                       name="availabilityEnd"
+                      value={formData.availabilityEnd}
                       onChange={handleChange}
                       className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                       required
@@ -724,6 +765,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                     <input
                       type="file"
                       accept="image/*"
+                      
                       onChange={handleImageChange}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
@@ -753,6 +795,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                   type="text"
                   name="location"
                   placeholder="Lucknow, UP"
+                  value={formData.location}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                   required
@@ -764,6 +807,7 @@ const filteredSpecialties = specialties.filter(specialty =>
                   type="text"
                   name="biography"
                   placeholder="Tell us about you"
+                  value={formData.biography}
                   onChange={handleChange}
                   className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
                   required
@@ -779,9 +823,9 @@ const filteredSpecialties = specialties.filter(specialty =>
                 </button>
                 <button
                   type="submit"
-                  className="group relative px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg transition-all hover:shadow-blue-500/20 overflow-hidden"
+                  className={`group relative px-6 py-3 bg-gradient-to-r ${saveDocloading ? 'disabled cursor-not-allowed' : ''} from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg transition-all hover:shadow-blue-500/20 overflow-hidden`}
                 >
-                  <span className="relative z-10 flex items-center">Save Details</span>
+                  <span className="relative z-10 flex items-center">{!saveDocloading ?  'Save Details' : <LoadingSpinner/>}</span>
                   <span className="absolute inset-0 bg-white bg-opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
                 </button>
               </div>
