@@ -4,10 +4,10 @@
 // $username = 'root'; 
 // $password = ''; 
 
-$host = 'sql12.freesqldatabase.com';
-$dbname = 'sql12771973';
-$username = 'sql12771973'; 
-$password = "H3S3Kie3Bz";
+$host = getenv('HOST');
+$dbname = getenv('DBNAME');
+$username = getenv('USERNAME');
+$password = getenv('PASSWORD');
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$dbname", $username, $password);

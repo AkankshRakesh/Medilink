@@ -869,4 +869,3 @@ const handleEditDetails = () => {
     </div>
   )
 }
-
