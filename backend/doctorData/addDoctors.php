@@ -22,7 +22,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $picture = $data['picture'] ?? '';
     $specialization = $data['specialization'] ?? '';
     $qualification = $data['qualification'] ?? '';
-    $rating = $data['rating'] ?? '';
     $patients = $data['patients'] ?? '';
     $fee = $data['fee'] ?? '';
     $availabilityStart = $data['availabilityStart'] ?? '';
@@ -69,7 +68,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 biography = :biography,
                 specialization = :specialization,
                 qualification = :qualification,
-                rating = :rating,
                 patients = :patients,
                 fee = :fee,
                 availabilityStart = :availabilityStart,
@@ -79,11 +77,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $sql = "INSERT INTO doctors 
                 (userId, name, picture, experience, biography, specialization, 
-                 qualification, rating, patients, fee, availabilityStart, 
+                 qualification,  patients, fee, availabilityStart, 
                  availabilityEnd, location) 
                 VALUES 
                 (:userId, :name, :picture, :experience, :biography, :specialization, 
-                 :qualification, :rating, :patients, :fee, :availabilityStart, 
+                 :qualification, :patients, :fee, :availabilityStart, 
                  :availabilityEnd, :location)";
     }
 
@@ -96,7 +94,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->bindParam(':biography', $biography);
     $stmt->bindParam(':specialization', $specialization);
     $stmt->bindParam(':qualification', $qualification);
-    $stmt->bindParam(':rating', $rating);
     $stmt->bindParam(':patients', $patients);
     $stmt->bindParam(':fee', $fee);
     $stmt->bindParam(':availabilityStart', $availabilityStart);

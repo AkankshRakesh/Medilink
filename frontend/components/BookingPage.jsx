@@ -543,8 +543,13 @@ function BookingPage() {
                           <p className="font-semibold text-foreground">{firstDoctorChoice.name}</p>
                           <p className="text-sm text-muted-foreground">{firstDoctorChoice.specialization}</p>
                           <div className="flex items-center mt-1">
-                            <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            {firstDoctorChoice.rating ? (
+                              <>
+                              <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                             <span className="text-sm font-medium ml-1">{firstDoctorChoice.rating}</span>
+                            </>) : (
+                              <span className="text-sm font-medium text-green-500">Newly joined</span>
+                            )}
                           </div>
                         </div>
                       </div>
@@ -573,8 +578,13 @@ function BookingPage() {
                               <p className="font-semibold text-foreground">{secondDoctorChoice.name}</p>
                               <p className="text-sm text-muted-foreground">{secondDoctorChoice.specialization}</p>
                               <div className="flex items-center mt-1">
-                                <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                                <span className="text-sm font-medium ml-1">{secondDoctorChoice.rating}</span>
+                              {secondDoctorChoice.rating ? (
+                              <>
+                              <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <span className="text-sm font-medium ml-1">{secondDoctorChoice.rating}</span>
+                            </>) : (
+                              <span className="text-sm font-medium text-green-500">Newly joined</span>
+                            )}
                               </div>
                             </div>
                           </div>
@@ -602,8 +612,13 @@ function BookingPage() {
                                 <p className="font-semibold text-foreground">{thirdDoctorChoice.name}</p>
                                 <p className="text-sm text-muted-foreground">{thirdDoctorChoice.specialization}</p>
                                 <div className="flex items-center mt-1">
-                                  <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
-                                  <span className="text-sm font-medium ml-1">{thirdDoctorChoice.rating}</span>
+                                {thirdDoctorChoice.rating ? (
+                              <>
+                              <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <span className="text-sm font-medium ml-1">{thirdDoctorChoice.rating}</span>
+                            </>) : (
+                              <span className="text-sm font-medium text-green-500">Newly joined</span>
+                            )}
                                 </div>
                               </div>
                             </div>
@@ -695,27 +710,46 @@ function BookingPage() {
                         <TabsContent value="morning" className="mt-0">
                           {groupedTimeSlots.morning.length > 0 ? (
                             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                              {groupedTimeSlots.morning.map((slot, index) => (
-                                <button
-                                  key={`${slot.time}-${index}`}
-                                  onClick={() => !slot.booked && setSelectedTime(slot.time)}
-                                  className={`p-2 text-sm rounded-md border transition-all relative ${
-                                    slot.time === selectedTime
-                                      ? "bg-primary/10 border-primary text-primary font-medium"
-                                      : slot.booked
-                                        ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
-                                        : "border-input text-foreground hover:bg-accent"
-                                  }`}
-                                  disabled={slot.booked}
-                                >
-                                  {slot.time}
-                                  {slot.booked && (
-                                    <span className="absolute -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
-                                      ✓
-                                    </span>
-                                  )}
-                                </button>
-                              ))}
+                              {groupedTimeSlots.morning.map((slot, index) => {
+  const now = new Date();
+  const isToday = selectedDate === now.toISOString().split("T")[0];
+  const [hours, minutes] = slot.time.split(":").map(Number);
+  const slotTime = new Date();
+  slotTime.setHours(hours, minutes, 0, 0);
+  const isPastTime = isToday && slotTime < now;
+
+  return (
+    <button
+      key={`${slot.time}-${index}`}
+      onClick={() => !slot.booked && !isPastTime && setSelectedTime(slot.time)}
+      className={`p-2 text-sm rounded-md border transition-all relative ${
+        slot.time === selectedTime
+          ? "bg-primary/10 border-primary text-primary font-medium"
+          : slot.booked || isPastTime
+          ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
+          : "border-input text-foreground hover:bg-accent"
+      }`}
+      disabled={slot.booked || isPastTime}
+    >
+      {slot.time}
+      {slot.booked && (
+        <>
+        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+          Booked
+        </span>
+        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+        ✓
+        </span>
+        </>
+      )}
+      {isPastTime && !slot.booked && (
+        <span className="absolute -top-1 -right-1 bg-gray-300 text-gray-800 text-xs px-1 rounded-full">
+         
+        </span>
+      )}
+    </button>
+  );
+})}
                             </div>
                           ) : (
                             <p className="text-center text-muted-foreground py-4">No morning slots available</p>
@@ -724,27 +758,46 @@ function BookingPage() {
                         <TabsContent value="afternoon" className="mt-0">
                           {groupedTimeSlots.afternoon.length > 0 ? (
                             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                              {groupedTimeSlots.afternoon.map((slot, index) => (
-                                <button
-                                  key={`${slot.time}-${index}`}
-                                  onClick={() => !slot.booked && setSelectedTime(slot.time)}
-                                  className={`p-2 text-sm rounded-md border transition-all relative ${
-                                    slot.time === selectedTime
-                                      ? "bg-primary/10 border-primary text-primary font-medium"
-                                      : slot.booked
-                                        ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
-                                        : "border-input text-foreground hover:bg-accent"
-                                  }`}
-                                  disabled={slot.booked}
-                                >
-                                  {slot.time}
-                                  {slot.booked && (
-                                    <span className="absolute -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
-                                      ✓
-                                    </span>
-                                  )}
-                                </button>
-                              ))}
+                              {groupedTimeSlots.afternoon.map((slot, index) => {
+  const now = new Date();
+  const isToday = selectedDate === now.toISOString().split("T")[0];
+  const [hours, minutes] = slot.time.split(":").map(Number);
+  const slotTime = new Date();
+  slotTime.setHours(hours, minutes, 0, 0);
+  const isPastTime = isToday && slotTime < now;
+
+  return (
+    <button
+      key={`${slot.time}-${index}`}
+      onClick={() => !slot.booked && !isPastTime && setSelectedTime(slot.time)}
+      className={`p-2 text-sm rounded-md border transition-all relative ${
+        slot.time === selectedTime
+          ? "bg-primary/10 border-primary text-primary font-medium"
+          : slot.booked || isPastTime
+          ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
+          : "border-input text-foreground hover:bg-accent"
+      }`}
+      disabled={slot.booked || isPastTime}
+    >
+      {slot.time}
+      {slot.booked && (
+        <>
+        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+          Booked
+        </span>
+        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+        ✓
+        </span>
+        </>
+      )}
+      {isPastTime && !slot.booked && (
+        <span className="absolute -top-1 -right-1 bg-gray-300 text-gray-800 text-xs px-1 rounded-full">
+         
+        </span>
+      )}
+    </button>
+  );
+})}
                             </div>
                           ) : (
                             <p className="text-center text-muted-foreground py-4">No afternoon slots available</p>
@@ -753,27 +806,46 @@ function BookingPage() {
                         <TabsContent value="evening" className="mt-0">
                           {groupedTimeSlots.evening.length > 0 ? (
                             <div className="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2">
-                              {groupedTimeSlots.evening.map((slot, index) => (
-                                <button
-                                  key={`${slot.time}-${index}`}
-                                  onClick={() => !slot.booked && setSelectedTime(slot.time)}
-                                  className={`p-2 text-sm rounded-md border transition-all relative ${
-                                    slot.time === selectedTime
-                                      ? "bg-primary/10 border-primary text-primary font-medium"
-                                      : slot.booked
-                                        ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
-                                        : "border-input text-foreground hover:bg-accent"
-                                  }`}
-                                  disabled={slot.booked}
-                                >
-                                  {slot.time}
-                                  {slot.booked && (
-                                    <span className="absolute -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
-                                      ✓
-                                    </span>
-                                  )}
-                                </button>
-                              ))}
+                              {groupedTimeSlots.evening.map((slot, index) => {
+  const now = new Date();
+  const isToday = selectedDate === now.toISOString().split("T")[0];
+  const [hours, minutes] = slot.time.split(":").map(Number);
+  const slotTime = new Date();
+  slotTime.setHours(hours, minutes, 0, 0);
+  const isPastTime = isToday && slotTime < now;
+
+  return (
+    <button
+      key={`${slot.time}-${index}`}
+      onClick={() => !slot.booked && !isPastTime && setSelectedTime(slot.time)}
+      className={`p-2 text-sm rounded-md border transition-all relative ${
+        slot.time === selectedTime
+          ? "bg-primary/10 border-primary text-primary font-medium"
+          : slot.booked || isPastTime
+          ? "bg-gray-100 border-gray-300 text-gray-500 cursor-not-allowed"
+          : "border-input text-foreground hover:bg-accent"
+      }`}
+      disabled={slot.booked || isPastTime}
+    >
+      {slot.time}
+      {slot.booked && (
+        <>
+        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+          Booked
+        </span>
+        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+        ✓
+        </span>
+        </>
+      )}
+      {isPastTime && !slot.booked && (
+        <span className="absolute -top-1 -right-1 bg-gray-300 text-gray-800 text-xs px-1 rounded-full">
+         
+        </span>
+      )}
+    </button>
+  );
+})}
                             </div>
                           ) : (
                             <p className="text-center text-muted-foreground py-4">No evening slots available</p>
@@ -827,8 +899,13 @@ function BookingPage() {
                       <p className="text-muted-foreground">{doctorDetails.specialization}</p>
 
                       <div className="flex items-center mt-2">
-                        <Star className="h-5 w-5 text-yellow-500 fill-yellow-500" />
-                        <span className="font-medium ml-1">{doctorDetails.rating}</span>
+                      {doctorDetails.rating ? (
+                              <>
+                              <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
+                            <span className="text-sm font-medium ml-1">{doctorDetails.rating}</span>
+                            </>) : (
+                              <span className="text-sm font-medium text-green-500">Newly joined</span>
+                            )}
                       </div>
 
                       <div className="flex gap-4 mt-4">

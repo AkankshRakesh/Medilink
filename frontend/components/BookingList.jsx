@@ -101,7 +101,7 @@ export function BookingList({ bookings, type, onCancelBooking, onRateBooking }) 
           <div className="space-y-4">
             {upcomingBookings.map((booking) => (
               <BookingCard
-                key={`upcoming-${booking.id}`}
+                key={`upcoming-${booking.time}`}
                 booking={booking}
                 type={type}
                 onCancel={onCancelBooking}
@@ -115,22 +115,23 @@ export function BookingList({ bookings, type, onCancelBooking, onRateBooking }) 
       {/* Past Appointments Section */}
       {pastBookings.length > 0 && (
         <div>
-          <div className="flex items-center justify-between mb-4">
-            <h3 className="text-lg font-medium">Past Appointments</h3>
-            <Button
-              variant="ghost"
-              size="sm"
-              onClick={() => setShowPastBookings(!showPastBookings)}
-            >
-              {showPastBookings ? 'Hide' : 'Show'} Past Appointments
-            </Button>
-          </div>
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 mb-4">
+  <h3 className="text-base sm:text-lg font-medium">Past Appointments</h3>
+  <Button
+    variant="secondary"
+    size="sm"
+    className="w-full sm:w-auto px-3"
+    onClick={() => setShowPastBookings(!showPastBookings)}
+  >
+    {showPastBookings ? 'Hide' : 'Show'} Past Appointments
+  </Button>
+</div>
           
           {showPastBookings && (
             <div className="space-y-4">
               {pastBookings.map((booking) => (
                 <BookingCard
-                  key={`past-${booking.id}`}
+                  key={`past-${booking.time}`}
                   booking={booking}
                   type={type}
                   onCancel={onCancelBooking}

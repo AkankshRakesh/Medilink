@@ -52,7 +52,10 @@ export const User = () => {
 
       const data = await response.json()
       if (data.success) {
-        toast.success("Rating submitted successfully!")
+        toast.success("Rating submitted successfully!", {
+          autoClose: 3500,
+          onClose: () => window.location.reload(),
+        })
         // Update the appointments to mark this as rated
         // setAppointments(prev => ({
         //   ...prev,
@@ -110,12 +113,12 @@ export const User = () => {
     specialization: "",
     picture: image,
     qualification: "",
-    rating: "",
     patients: "",
     fee: "",
     availabilityStart: "",
     availabilityEnd: "",
     location: "",
+    biography: ""
   })
   const handleEditDetails = () => {
     if (doctorDetails) {
@@ -126,7 +129,6 @@ export const User = () => {
         specialization: doctorDetails.specialization || "",
         picture: doctorDetails.picture || null,
         qualification: doctorDetails.qualification || "",
-        rating: doctorDetails.rating || "",
         patients: doctorDetails.patients || "",
         fee: doctorDetails.fee || "",
         availabilityStart: doctorDetails.availabilityStart || "09:00",
@@ -227,7 +229,7 @@ export const User = () => {
 
     const updatedFormData = {
       ...formData,
-      picture: doctorDetails.picture || imageUrl,
+      picture: imageUrl || doctorDetails?.picture ,
     }
     console.log(updatedFormData)
     try {
@@ -355,7 +357,7 @@ export const User = () => {
           <div className="h-1 w-32 mx-auto bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full"></div>
         </div>
 
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
+        <div className="grid gap-8 lg:grid-cols-3 max-w-7xl mx-auto">
           <div className="lg:sticky lg:top-24 lg:self-start">
             <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-700 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
               <div className="h-32 bg-gradient-to-r from-blue-600 to-purple-600 relative">
@@ -470,7 +472,7 @@ export const User = () => {
                         </div>
                         <div>
                           <span className="text-xs text-gray-400">Rating</span>
-                          <div className="flex items-center">
+                          {doctorDetails.rating > 0 ? (<div className="flex items-center">
                             <span className="font-medium mr-2">{doctorDetails.rating}</span>
                             <div className="flex">
                               {[...Array(5)].map((_, i) => (
@@ -480,7 +482,11 @@ export const User = () => {
                                 />
                               ))}
                             </div>
-                          </div>
+                          </div>) : (
+                            <div>
+                              <p className="text-gray-400 italic">Yet to get a patient</p>
+                            </div>
+                          )}
                         </div>
                       </div>
 
@@ -731,21 +737,6 @@ export const User = () => {
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label className="block text-sm font-medium text-gray-300 mb-1">Rating (out of 5)</label>
-                  <input
-                    type="number"
-                    name="rating"
-                    placeholder="4.5"
-                    value={formData.rating}
-                    min="1"
-                    max="5"
-                    step="0.1"
-                    onChange={handleChange}
-                    className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all hover:border-gray-500"
-                    required
-                  />
-                </div>
-                <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">Patients Treated</label>
                   <input
                     type="number"
@@ -757,9 +748,7 @@ export const User = () => {
                     required
                   />
                 </div>
-              </div>
-
-              <div>
+                <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">Consultation Fee (₹)</label>
                 <input
                   type="number"
@@ -771,6 +760,9 @@ export const User = () => {
                   required
                 />
               </div>
+              </div>
+
+              
 
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-1">Availability Hours</label>

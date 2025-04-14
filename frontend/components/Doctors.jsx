@@ -37,7 +37,7 @@ export default function Doctors() {
     languages: [],
   })
   const [isFiltersOpen, setIsFiltersOpen] = useState(false)
-
+  // console.log(doctors)
   useEffect(() => {
     setLoading(true);
     
@@ -252,7 +252,7 @@ export default function Doctors() {
             ) : (
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 {filteredDoctors.map((doctor) => (
-                  <DoctorCard key={doctor.name} doctor={doctor} />
+                  <DoctorCard key={doctor.id} doctor={doctor} />
                 ))}
               </div>
             )}
@@ -382,8 +382,12 @@ const DoctorCard = ({ doctor }) => {
           </div>
           <div className="text-right">
             <div className="flex items-center text-green-600 text-sm font-medium">
-              <ThumbsUp className="h-3.5 w-3.5 mr-1" />
-              <span>{ratingPercentage}%</span> {/* Display rating as percentage */}
+              
+              {ratingPercentage != 0 ? (<>
+                <ThumbsUp className="h-3.5 w-3.5 mr-1" />
+                <span>{ratingPercentage}%</span>
+                </>
+            ) : "Recently Joined"}
             </div>
             <p className="text-xs text-muted-foreground">{doctor.patients}+ Patients</p>
           </div>
