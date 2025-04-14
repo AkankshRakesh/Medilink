@@ -1,6 +1,6 @@
 "use client"
 
-import { Calendar } from "lucide-react"
+import { Calendar, Star } from "lucide-react"
 import Link from "next/link"
 import { useMemo, useEffect, useState } from "react"
 import { Badge } from "@/components/ui/badge"
@@ -20,8 +20,9 @@ const formatDate = (date) => {
   })
 }
 
-export function BookingList({ bookings, type, onCancelBooking }) {
+export function BookingList({ bookings, type, onCancelBooking, onRateBooking }) {
   const [doctorDetails, setDoctorDetails] = useState({})
+  const [showPastBookings, setShowPastBookings] = useState(false)
 
   useEffect(() => {
     if (type === "personal") {
@@ -52,53 +53,115 @@ export function BookingList({ bookings, type, onCancelBooking }) {
     }
   }, [bookings, type])
 
-  const filteredBookings = useMemo(() => {
+  const { upcomingBookings, pastBookings } = useMemo(() => {
     if (!Array.isArray(bookings)) {
       console.error("Bookings is not an array:", bookings)
-      return []
+      return { upcomingBookings: [], pastBookings: [] }
     }
 
-    return bookings
-      .filter((booking) => {
-        if (!booking?.date || !booking?.time) return false
-        const bookingDateTime = new Date(`${booking.date}T${booking.time}`)
-        return bookingDateTime >= new Date()
-      })
-      .sort((a, b) => {
+    const now = new Date()
+    const upcoming = []
+    const past = []
+
+    bookings.forEach((booking) => {
+      if (!booking?.date || !booking?.time) return
+      
+      const bookingDateTime = new Date(`${booking.date}T${booking.time}`)
+      if (bookingDateTime >= now) {
+        upcoming.push(booking)
+      } else {
+        past.push(booking)
+      }
+    })
+
+    return {
+      upcomingBookings: upcoming.sort((a, b) => {
         const dateA = new Date(`${a.date}T${a.time}`)
         const dateB = new Date(`${b.date}T${b.time}`)
         return dateA - dateB
+      }),
+      pastBookings: past.sort((a, b) => {
+        const dateA = new Date(`${a.date}T${a.time}`)
+        const dateB = new Date(`${b.date}T${b.time}`)
+        return dateB - dateA
       })
+    }
   }, [bookings])
 
-  if (filteredBookings.length === 0) {
+  if (upcomingBookings.length === 0 && pastBookings.length === 0) {
     return <EmptyBookingState type={type} />
   }
 
   return (
-    <div className="space-y-4">
-      {filteredBookings.map((booking) => (
-        <BookingCard
-          key={`${type}-${booking.date}-${booking.time}-${booking.doctorId || booking.patientId}`}
-          booking={booking}
-          type={type}
-          onCancel={onCancelBooking}
-          doctorDetails={type === "personal" ? doctorDetails[booking.doctorId] : null}
-        />
-      ))}
+    <div className="space-y-8">
+      {/* Upcoming Appointments Section */}
+      {upcomingBookings.length > 0 && (
+        <div>
+          <h3 className="text-lg font-medium mb-4">Upcoming Appointments</h3>
+          <div className="space-y-4">
+            {upcomingBookings.map((booking) => (
+              <BookingCard
+                key={`upcoming-${booking.id}`}
+                booking={booking}
+                type={type}
+                onCancel={onCancelBooking}
+                doctorDetails={type === "personal" ? doctorDetails[booking.doctorId] : null}
+              />
+            ))}
+          </div>
+        </div>
+      )}
+
+      {/* Past Appointments Section */}
+      {pastBookings.length > 0 && (
+        <div>
+          <div className="flex items-center justify-between mb-4">
+            <h3 className="text-lg font-medium">Past Appointments</h3>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => setShowPastBookings(!showPastBookings)}
+            >
+              {showPastBookings ? 'Hide' : 'Show'} Past Appointments
+            </Button>
+          </div>
+          
+          {showPastBookings && (
+            <div className="space-y-4">
+              {pastBookings.map((booking) => (
+                <BookingCard
+                  key={`past-${booking.id}`}
+                  booking={booking}
+                  type={type}
+                  onCancel={onCancelBooking}
+                  onRate={onRateBooking}
+                  doctorDetails={type === "personal" ? doctorDetails[booking.doctorId] : null}
+                />
+              ))}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
 
-function BookingCard({ booking, type, onCancel, doctorDetails }) {
+function BookingCard({ booking, type, onCancel, onRate, doctorDetails }) {
   const handleCancel = () => {
     if (onCancel && window.confirm("Are you sure you want to cancel this appointment?")) {
       onCancel(booking.id)
     }
   }
 
+  const handleRate = () => {
+    if (onRate) {
+      onRate(booking)
+    }
+  }
+
   const formattedDate = booking.date ? formatDate(booking.date) : "Date not specified"
   const formattedTime = booking.time || "Time not specified"
+  const isPastBooking = new Date(`${booking.date}T${booking.time}`) < new Date()
 
   return (
     <Card className="hover:shadow-md transition-shadow">
@@ -164,18 +227,20 @@ function BookingCard({ booking, type, onCancel, doctorDetails }) {
         </div>
       </CardContent>
 
-      {booking.status !== "cancelled" && onCancel && (
-        <CardFooter className="pt-0">
+      {isPastBooking && (<CardFooter className="flex flex-wrap gap-2 pt-0">
+
+        {type === "personal" && isPastBooking && !booking.isRated && onRate && (
           <Button
             variant="outline"
             size="sm"
-            onClick={handleCancel}
-            className="text-destructive hover:bg-destructive/10 w-full sm:w-auto"
+            onClick={handleRate}
+            className="text-yellow-600 hover:bg-yellow-50"
           >
-            Cancel Appointment
+            <Star className="h-4 w-4 mr-2" />
+            Rate Appointment
           </Button>
-        </CardFooter>
-      )}
+        )}
+      </CardFooter>)}
     </Card>
   )
 }
@@ -199,4 +264,3 @@ function EmptyBookingState({ type }) {
     </div>
   )
 }
-

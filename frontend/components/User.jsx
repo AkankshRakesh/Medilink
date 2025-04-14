@@ -1,7 +1,7 @@
 "use client"
 import { Fugaz_One } from "next/font/google"
 import { useEffect, useState } from "react"
-import {LoadingSpinner} from "./LoadingSpinner"
+import { LoadingSpinner } from "./LoadingSpinner"
 import { toast } from "react-toastify"
 import { Camera, Star, Users, Clock, MapPin, Award, Briefcase, GraduationCap, DollarSign } from "lucide-react"
 import { BookingList } from "./BookingList"
@@ -24,77 +24,121 @@ export const User = () => {
     asDoctor: [],
     asPatient: [],
   })
-  const [saveDocloading, setSaveDocLoading] = useState(false);
-  const specialties = [
-  { id: 1, name: "General Physician", shortName: "General Physician", imagePath: "/Specs/general.webp" },
-  { id: 2, name: "Dermatology", shortName: "Dermatology", imagePath: "/Specs/derma.webp" },
-  { id: 3, name: "Obstetrics & Gynaecology", shortName: "Obs & Gyn", imagePath: "/Specs/obsgyn.webp" },
-  { id: 4, name: "Orthopaedics", shortName: "Orthopaedics", imagePath: "/Specs/ortho.webp" },
-  { id: 5, name: "ENT", shortName: "ENT", imagePath: "/Specs/ent.webp" },
-  { id: 6, name: "Neurology", shortName: "Neurology", imagePath: "/Specs/neuro.webp" },
-  { id: 7, name: "Cardiology", shortName: "Cardiology", imagePath: "/Specs/cardio.webp" },
-  { id: 8, name: "Urology", shortName: "Urology", imagePath: "/Specs/uro.webp" },
-  { id: 9, name: "Gastroenterology/GI medicine", shortName: "Gastro", imagePath: "/Specs/gastro.webp" },
-  { id: 10, name: "Psychiatry", shortName: "Psychiatry", imagePath: "/Specs/psychi.webp" },
-  { id: 11, name: "Paediatrics", shortName: "Paediatrics", imagePath: "/Specs/paedi.webp" },
-  { id: 12, name: "Pulmonology/Respiratory", shortName: "Pulmonology", imagePath: "/Specs/respi.webp" },
-  { id: 13, name: "Endocrinology", shortName: "Endocrinology", imagePath: "/Specs/endo.webp" },
-  { id: 14, name: "Nephrology", shortName: "Nephrology", imagePath: "/Specs/nephro.webp" },
-  { id: 15, name: "Neurosurgery", shortName: "Neurosurgery", imagePath: "/Specs/neurosurg.webp" },
-  { id: 16, name: "Rheumatology", shortName: "Rheumatology", imagePath: "/Specs/rheu.webp" },
-  { id: 17, name: "Ophthalmology", shortName: "Ophthalmology", imagePath: "/Specs/oph.webp" },
-  { id: 18, name: "Surgical Gastroenterology", shortName: "Surgical Gastro", imagePath: "/Specs/gastrosurg.webp" },
-  { id: 19, name: "Infectious Disease", shortName: "Infectious Disease", imagePath: "/Specs/infect.webp" },
-  { id: 20, name: "General & Laparoscopic Surgery", shortName: "General Surgery", imagePath: "/Specs/lap.webp" },
-  { id: 21, name: "Psychology", shortName: "Psychology", imagePath: "/Specs/psycho.webp" },
-  { id: 22, name: "Medical Oncology", shortName: "Oncology", imagePath: "/Specs/onco.webp" },
-  { id: 23, name: "Diabetology", shortName: "Diabetology", imagePath: "/Specs/diab.webp" },
-  { id: 24, name: "Dentist", shortName: "Dentist", imagePath: "/Specs/dent.webp" },
-]
-const [searchTerm, setSearchTerm] = useState("");
-const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-
-const filteredSpecialties = specialties.filter(specialty =>
-  specialty.shortName.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  specialty.name.toLowerCase().includes(searchTerm.toLowerCase())
-);
-const [formData, setFormData] = useState({
-  userId: 0,
-  name: "",
-  experience: "",
-  specialization: "",
-  picture: image,
-  qualification: "",
-  rating: "",
-  patients: "",
-  fee: "",
-  availabilityStart: "",
-  availabilityEnd: "",
-  location: "",
-})
-const handleEditDetails = () => {
-  if (doctorDetails) {
-    setFormData({
-      userId: doctorDetails.userId || userId,
-      name: doctorDetails.name || "",
-      experience: doctorDetails.experience || "",
-      specialization: doctorDetails.specialization || "",
-      picture: doctorDetails.picture || null,
-      qualification: doctorDetails.qualification || "",
-      rating: doctorDetails.rating || "",
-      patients: doctorDetails.patients || "",
-      fee: doctorDetails.fee || "",
-      availabilityStart: doctorDetails.availabilityStart || "09:00",
-      availabilityEnd: doctorDetails.availabilityEnd || "17:00",
-      location: doctorDetails.location || "",
-      biography: doctorDetails.biography || ""
-    });
-    setImagePreview(doctorDetails.picture || null);
-    setImage(null); // Reset the image state to avoid conflicts
+  const [isRatingModalOpen, setIsRatingModalOpen] = useState(false)
+  const [selectedBooking, setSelectedBooking] = useState(null)
+  const [rating, setRating] = useState(0)
+  const handleOpenRatingModal = (booking) => {
+    setSelectedBooking(booking)
+    setRating(0) // Reset rating when opening modal
+    setIsRatingModalOpen(true)
   }
-  setIsModalOpen(true);
-};
-  
+
+  const handleRatingSubmit = async (e) => {
+    e.preventDefault()
+    try {
+      console.log(userId, rating, selectedBooking)
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/bookings/submitRating.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          doctorId: selectedBooking.doctorId,
+          rating: rating,
+          date: selectedBooking.date,
+          time: selectedBooking.time,
+        }),
+      })
+
+      if (!response.ok) throw new Error("Failed to submit rating")
+
+      const data = await response.json()
+      if (data.success) {
+        toast.success("Rating submitted successfully!")
+        // Update the appointments to mark this as rated
+        // setAppointments(prev => ({
+        //   ...prev,
+        //   asPatient: prev.asPatient.map(app =>
+        //     app.id === selectedBooking.id ? { ...app, isRated: true } : app
+        //   )
+        // }));
+        setIsRatingModalOpen(false)
+      } else {
+        throw new Error(data.message || "Failed to submit rating")
+      }
+    } catch (error) {
+      toast.error(error.message)
+    }
+  }
+  const [saveDocloading, setSaveDocLoading] = useState(false)
+  const specialties = [
+    { id: 1, name: "General Physician", shortName: "General Physician", imagePath: "/Specs/general.webp" },
+    { id: 2, name: "Dermatology", shortName: "Dermatology", imagePath: "/Specs/derma.webp" },
+    { id: 3, name: "Obstetrics & Gynaecology", shortName: "Obs & Gyn", imagePath: "/Specs/obsgyn.webp" },
+    { id: 4, name: "Orthopaedics", shortName: "Orthopaedics", imagePath: "/Specs/ortho.webp" },
+    { id: 5, name: "ENT", shortName: "ENT", imagePath: "/Specs/ent.webp" },
+    { id: 6, name: "Neurology", shortName: "Neurology", imagePath: "/Specs/neuro.webp" },
+    { id: 7, name: "Cardiology", shortName: "Cardiology", imagePath: "/Specs/cardio.webp" },
+    { id: 8, name: "Urology", shortName: "Urology", imagePath: "/Specs/uro.webp" },
+    { id: 9, name: "Gastroenterology/GI medicine", shortName: "Gastro", imagePath: "/Specs/gastro.webp" },
+    { id: 10, name: "Psychiatry", shortName: "Psychiatry", imagePath: "/Specs/psychi.webp" },
+    { id: 11, name: "Paediatrics", shortName: "Paediatrics", imagePath: "/Specs/paedi.webp" },
+    { id: 12, name: "Pulmonology/Respiratory", shortName: "Pulmonology", imagePath: "/Specs/respi.webp" },
+    { id: 13, name: "Endocrinology", shortName: "Endocrinology", imagePath: "/Specs/endo.webp" },
+    { id: 14, name: "Nephrology", shortName: "Nephrology", imagePath: "/Specs/nephro.webp" },
+    { id: 15, name: "Neurosurgery", shortName: "Neurosurgery", imagePath: "/Specs/neurosurg.webp" },
+    { id: 16, name: "Rheumatology", shortName: "Rheumatology", imagePath: "/Specs/rheu.webp" },
+    { id: 17, name: "Ophthalmology", shortName: "Ophthalmology", imagePath: "/Specs/oph.webp" },
+    { id: 18, name: "Surgical Gastroenterology", shortName: "Surgical Gastro", imagePath: "/Specs/gastrosurg.webp" },
+    { id: 19, name: "Infectious Disease", shortName: "Infectious Disease", imagePath: "/Specs/infect.webp" },
+    { id: 20, name: "General & Laparoscopic Surgery", shortName: "General Surgery", imagePath: "/Specs/lap.webp" },
+    { id: 21, name: "Psychology", shortName: "Psychology", imagePath: "/Specs/psycho.webp" },
+    { id: 22, name: "Medical Oncology", shortName: "Oncology", imagePath: "/Specs/onco.webp" },
+    { id: 23, name: "Diabetology", shortName: "Diabetology", imagePath: "/Specs/diab.webp" },
+    { id: 24, name: "Dentist", shortName: "Dentist", imagePath: "/Specs/dent.webp" },
+  ]
+  const [searchTerm, setSearchTerm] = useState("")
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false)
+
+  const filteredSpecialties = specialties.filter(
+    (specialty) =>
+      specialty.shortName.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      specialty.name.toLowerCase().includes(searchTerm.toLowerCase()),
+  )
+  const [formData, setFormData] = useState({
+    userId: 0,
+    name: "",
+    experience: "",
+    specialization: "",
+    picture: image,
+    qualification: "",
+    rating: "",
+    patients: "",
+    fee: "",
+    availabilityStart: "",
+    availabilityEnd: "",
+    location: "",
+  })
+  const handleEditDetails = () => {
+    if (doctorDetails) {
+      setFormData({
+        userId: doctorDetails.userId || userId,
+        name: doctorDetails.name || "",
+        experience: doctorDetails.experience || "",
+        specialization: doctorDetails.specialization || "",
+        picture: doctorDetails.picture || null,
+        qualification: doctorDetails.qualification || "",
+        rating: doctorDetails.rating || "",
+        patients: doctorDetails.patients || "",
+        fee: doctorDetails.fee || "",
+        availabilityStart: doctorDetails.availabilityStart || "09:00",
+        availabilityEnd: doctorDetails.availabilityEnd || "17:00",
+        location: doctorDetails.location || "",
+        biography: doctorDetails.biography || "",
+      })
+      setImagePreview(doctorDetails.picture || null)
+      setImage(null) // Reset the image state to avoid conflicts
+    }
+    setIsModalOpen(true)
+  }
 
   useEffect(() => {
     if (userId) {
@@ -113,7 +157,7 @@ const handleEditDetails = () => {
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/bookings/getBookedTime.php`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ userId, type: 3 }), 
+        body: JSON.stringify({ userId, type: 3 }),
       })
 
       if (!response.ok) {
@@ -177,7 +221,7 @@ const handleEditDetails = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log(formData);
+    console.log(formData)
     const imageUrl = await uploadImageToCloudinary()
     if (!imageUrl && !doctorDetails) return
 
@@ -185,7 +229,7 @@ const handleEditDetails = () => {
       ...formData,
       picture: doctorDetails.picture || imageUrl,
     }
-    console.log(updatedFormData);
+    console.log(updatedFormData)
     try {
       setSaveDocLoading(true)
       const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/addDoctors.php`, {
@@ -197,8 +241,11 @@ const handleEditDetails = () => {
       })
       setSaveDocLoading(false)
       if (!response.ok) throw new Error("Failed to add doctor details")
-      toast.success("Doctor details added successfully!", { position: "top-right", autoClose: 3000 , 
-        onClose: () => window.location.reload()})
+      toast.success("Doctor details added successfully!", {
+        position: "top-right",
+        autoClose: 3000,
+        onClose: () => window.location.reload(),
+      })
       handleCloseModal()
     } catch (error) {
       toast.error("Error adding doctor details. Please try again.", { position: "top-right" })
@@ -287,15 +334,15 @@ const handleEditDetails = () => {
   }
 
   if (loading) {
-    return <LoadingSpinner size="lg"/>
+    return <LoadingSpinner size="lg" />
   }
   const formatTime = (timeString) => {
-    const [hours, minutes] = timeString.split(':');
-    const hours24 = parseInt(hours, 10);
-    const period = hours24 >= 12 ? 'PM' : 'AM';
-    const hours12 = hours24 % 12 || 12; // Convert to 12-hour format
-    return `${hours12}:${minutes} ${period}`;
-  };
+    const [hours, minutes] = timeString.split(":")
+    const hours24 = Number.parseInt(hours, 10)
+    const period = hours24 >= 12 ? "PM" : "AM"
+    const hours12 = hours24 % 12 || 12 // Convert to 12-hour format
+    return `${hours12}:${minutes} ${period}`
+  }
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-900 to-gray-800 text-white">
       <div className="container mx-auto mt-2 md:mt-0 px-4 py-8 md:py-12">
@@ -306,48 +353,45 @@ const handleEditDetails = () => {
             </span>
           </h1>
           <div className="h-1 w-32 mx-auto bg-gradient-to-r from-cyan-400 via-blue-500 to-purple-600 rounded-full"></div>
-          
         </div>
 
         <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-3 max-w-7xl mx-auto">
-        <div className="lg:sticky lg:top-24 lg:self-start">
-        <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-700 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
-            <div className="h-32 bg-gradient-to-r from-blue-600 to-purple-600 relative">
-              <div
-                className="absolute inset-0 opacity-30"
-              ></div>
-            </div>
-            <div className="px-6 py-8 -mt-16">
-              <div className="relative mb-6">
-                <div className="h-32 w-32 mx-auto rounded-full overflow-hidden border-4 border-gray-800 shadow-lg bg-gray-700">
-                  <img
-                    src={
-                      imagePreview ||
-                      `https://ui-avatars.com/api/?name=${(username || "A").charAt(0)}&background=random&color=fff&size=200`
-                    }
-                    alt="Profile"
-                    className="h-full w-full object-cover"
-                    onError={(e) =>
-                      (e.currentTarget.src = `https://ui-avatars.com/api/?name=${username.charAt(0) || "U"}&background=random&color=fff&size=200`)
-                    }
-                  />
-                </div>
-                {isDoctor && doctorDetails && (
-                  <div className="absolute -bottom-2 -right-2 bg-blue-500 rounded-full p-1.5 border-2 border-gray-800">
-                    <Briefcase className="h-4 w-4 text-white" />
+          <div className="lg:sticky lg:top-24 lg:self-start">
+            <div className="bg-gray-800 bg-opacity-50 backdrop-blur-sm rounded-2xl shadow-xl overflow-hidden border border-gray-700 transform transition-all duration-300 hover:scale-[1.02] hover:shadow-2xl">
+              <div className="h-32 bg-gradient-to-r from-blue-600 to-purple-600 relative">
+                <div className="absolute inset-0 opacity-30"></div>
+              </div>
+              <div className="px-6 py-8 -mt-16">
+                <div className="relative mb-6">
+                  <div className="h-32 w-32 mx-auto rounded-full overflow-hidden border-4 border-gray-800 shadow-lg bg-gray-700">
+                    <img
+                      src={
+                        imagePreview ||
+                        `https://ui-avatars.com/api/?name=${(username || "A").charAt(0)}&background=random&color=fff&size=200`
+                      }
+                      alt="Profile"
+                      className="h-full w-full object-cover"
+                      onError={(e) =>
+                        (e.currentTarget.src = `https://ui-avatars.com/api/?name=${username.charAt(0) || "U"}&background=random&color=fff&size=200`)
+                      }
+                    />
                   </div>
-                )}
-              </div>
-              <div className="text-center">
-                <h3 className="text-2xl font-bold mb-1">{username}</h3>
-                <p className="text-blue-400 mb-3">{email}</p>
-                <div className="flex items-center justify-center text-sm text-gray-400 bg-gray-800 bg-opacity-50 py-2 px-3 rounded-full">
-                  <Clock className="h-4 w-4 mr-1" />
-                  <span>Last login: {new Date(time).toLocaleString()}</span>
+                  {isDoctor && doctorDetails && (
+                    <div className="absolute -bottom-2 -right-2 bg-blue-500 rounded-full p-1.5 border-2 border-gray-800">
+                      <Briefcase className="h-4 w-4 text-white" />
+                    </div>
+                  )}
+                </div>
+                <div className="text-center">
+                  <h3 className="text-2xl font-bold mb-1">{username}</h3>
+                  <p className="text-blue-400 mb-3">{email}</p>
+                  <div className="flex items-center justify-center text-sm text-gray-400 bg-gray-800 bg-opacity-50 py-2 px-3 rounded-full">
+                    <Clock className="h-4 w-4 mr-1" />
+                    <span>Last login: {new Date(time).toLocaleString()}</span>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
           </div>
 
           <div
@@ -363,22 +407,21 @@ const handleEditDetails = () => {
 
               {isDoctor && doctorDetails ? (
                 <>
-                <div className="flex flex-col md:flex-row justify-between md:items-center">
-                <h3 className="text-2xl mb-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
-                        {doctorDetails.name}
-                      </h3>
-                      <div className="flex mb-4">
-                <button
-                  onClick={handleEditDetails}
-                  className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg transition duration-300"
-                >
-                  Edit Details
-                </button>
-              </div>
-              </div>
+                  <div className="flex flex-col md:flex-row justify-between md:items-center">
+                    <h3 className="text-2xl mb-4 font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                      {doctorDetails.name}
+                    </h3>
+                    <div className="flex mb-4">
+                      <button
+                        onClick={handleEditDetails}
+                        className="px-4 py-2 bg-yellow-500 hover:bg-yellow-600 text-white font-semibold rounded-lg transition duration-300"
+                      >
+                        Edit Details
+                      </button>
+                    </div>
+                  </div>
                   <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div className="space-y-4">
-
                       <div className="bg-gray-700 bg-opacity-40 rounded-lg p-3 flex items-center">
                         <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
                           <Briefcase className="h-5 w-5 text-blue-400" />
@@ -496,53 +539,56 @@ const handleEditDetails = () => {
                         Your Personal Appointments
                       </h3>
                       <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
-                        <BookingList bookings={appointments.asPatient} type="personal" />
+                        <BookingList
+                          bookings={appointments.asPatient}
+                          type="personal"
+                          onRateBooking={handleOpenRatingModal}
+                        />
                       </div>
                     </div>
                   </div>
                 </>
               ) : isDoctor ? (
                 <>
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 mb-6">
-                    <div className="h-full w-full rounded-full bg-gray-800 flex items-center justify-center">
-                      <Briefcase className="h-12 w-12 text-blue-400" />
-                    </div>
-                  </div>
-                  <h3 className="text-2xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
-                    Complete Your Profile
-                  </h3>
-                  <p className="text-lg mb-8 text-gray-300 max-w-md">
-                    Add your professional details to help patients find you and book appointments.
-                  </p>
-                  <button
-                    onClick={handleAddDetails}
-                    className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg transition duration-300 transform hover:scale-105 overflow-hidden"
-                  >
-                    <span className="relative z-10 flex items-center">
-                      <Briefcase className="h-5 w-5 mr-2" />
-                      Add Your Details
-                    </span>
-                    <span className="absolute inset-0 bg-white bg-opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
-                  </button>
-                </div>
-                <div className="space-y-4">
-                      <h3 className="text-xl font-bold flex items-center">
-                        <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
-                          <Clock className="h-5 w-5 text-blue-400" />
-                        </div>
-                        Your Personal Appointments
-                      </h3>
-                      <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
-                        <BookingList bookings={appointments.asPatient} type="personal" />
+                  <div className="flex flex-col items-center justify-center py-12 text-center">
+                    <div className="h-24 w-24 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 p-1 mb-6">
+                      <div className="h-full w-full rounded-full bg-gray-800 flex items-center justify-center">
+                        <Briefcase className="h-12 w-12 text-blue-400" />
                       </div>
                     </div>
+                    <h3 className="text-2xl font-bold mb-2 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500">
+                      Complete Your Profile
+                    </h3>
+                    <p className="text-lg mb-8 text-gray-300 max-w-md">
+                      Add your professional details to help patients find you and book appointments.
+                    </p>
+                    <button
+                      onClick={handleAddDetails}
+                      className="group relative px-8 py-4 bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-semibold rounded-lg shadow-lg transition duration-300 transform hover:scale-105 overflow-hidden"
+                    >
+                      <span className="relative z-10 flex items-center">
+                        <Briefcase className="h-5 w-5 mr-2" />
+                        Add Your Details
+                      </span>
+                      <span className="absolute inset-0 bg-white bg-opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
+                    </button>
+                  </div>
+                  <div className="space-y-4">
+                    <h3 className="text-xl font-bold flex items-center">
+                      <div className="bg-blue-500 bg-opacity-20 p-2 rounded-lg mr-3">
+                        <Clock className="h-5 w-5 text-blue-400" />
+                      </div>
+                      Your Personal Appointments
+                    </h3>
+                    <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
+                      <BookingList bookings={appointments.asPatient} type="personal" />
+                    </div>
+                  </div>
                 </>
               ) : (
                 <div className="space-y-6">
                   <div className="space-y-4">
-                    <div className="flex items-center mb-4">
-                    </div>
+                    <div className="flex items-center mb-4"></div>
                     <div className="bg-gray-700 bg-opacity-30 rounded-xl p-4">
                       <BookingList bookings={appointments.asPatient} type="personal" />
                     </div>
@@ -623,56 +669,52 @@ const handleEditDetails = () => {
               </div>
 
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-              <div className="relative">
-  <label className="block text-sm font-medium text-gray-300 mb-1">Specialization</label>
-  <div className="relative">
-    <input
-      type="text"
-      placeholder="Search specializations..."
-      value={searchTerm}
-      onChange={(e) => setSearchTerm(e.target.value)}
-      onFocus={() => setIsDropdownOpen(true)}
-      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-    />
-    {isDropdownOpen && (
-      <div className="absolute z-10 mt-1 w-full max-h-60 overflow-auto scrollbar-thin bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
-        {filteredSpecialties.length > 0 ? (
-          filteredSpecialties.map((specialty) => (
-            <div
-              key={specialty.id}
-              className="px-4 py-3 hover:bg-blue-500 hover:text-white cursor-pointer flex items-center"
-              onClick={() => {
-                setFormData({...formData, specialization: specialty.name});
-                setSearchTerm(specialty.name);
-                setIsDropdownOpen(false);
-              }}
-            >
-              <img 
-                src={specialty.imagePath} 
-                alt={specialty.name} 
-                className="w-8 h-8 object-cover rounded-full bg-gray-200 p-1 mr-3"
-                onError={(e) => {
-                  e.target.src = '/placeholder.svg';
-                }}
-              />
-              <div>
-                <div className="font-medium">{specialty.name}</div>
-                <div className="text-xs text-gray-400">{specialty.shortName}</div>
-              </div>
-            </div>
-          ))
-        ) : (
-          <div className="px-4 py-3 text-gray-400">No specializations found</div>
-        )}
-      </div>
-    )}
-  </div>
-  <input
-    type="hidden"
-    name="specialization"
-    value={formData.specialization}
-  />
-</div>
+                <div className="relative">
+                  <label className="block text-sm font-medium text-gray-300 mb-1">Specialization</label>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Search specializations..."
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      onFocus={() => setIsDropdownOpen(true)}
+                      className="w-full px-4 py-3 bg-gray-700 border border-gray-600 rounded-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    />
+                    {isDropdownOpen && (
+                      <div className="absolute z-10 mt-1 w-full max-h-60 overflow-auto scrollbar-thin bg-gray-800 border border-gray-700 rounded-lg shadow-lg">
+                        {filteredSpecialties.length > 0 ? (
+                          filteredSpecialties.map((specialty) => (
+                            <div
+                              key={specialty.id}
+                              className="px-4 py-3 hover:bg-blue-500 hover:text-white cursor-pointer flex items-center"
+                              onClick={() => {
+                                setFormData({ ...formData, specialization: specialty.name })
+                                setSearchTerm(specialty.name)
+                                setIsDropdownOpen(false)
+                              }}
+                            >
+                              <img
+                                src={specialty.imagePath || "/placeholder.svg"}
+                                alt={specialty.name}
+                                className="w-8 h-8 object-cover rounded-full bg-gray-200 p-1 mr-3"
+                                onError={(e) => {
+                                  e.target.src = "/placeholder.svg"
+                                }}
+                              />
+                              <div>
+                                <div className="font-medium">{specialty.name}</div>
+                                <div className="text-xs text-gray-400">{specialty.shortName}</div>
+                              </div>
+                            </div>
+                          ))
+                        ) : (
+                          <div className="px-4 py-3 text-gray-400">No specializations found</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <input type="hidden" name="specialization" value={formData.specialization} />
+                </div>
                 <div>
                   <label className="block text-sm font-medium text-gray-300 mb-1">Qualification</label>
                   <input
@@ -765,7 +807,6 @@ const handleEditDetails = () => {
                     <input
                       type="file"
                       accept="image/*"
-                      
                       onChange={handleImageChange}
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10"
                     />
@@ -823,13 +864,117 @@ const handleEditDetails = () => {
                 </button>
                 <button
                   type="submit"
-                  className={`group relative px-6 py-3 bg-gradient-to-r ${saveDocloading ? 'disabled cursor-not-allowed' : ''} from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg transition-all hover:shadow-blue-500/20 overflow-hidden`}
+                  className={`group relative px-6 py-3 bg-gradient-to-r ${saveDocloading ? "disabled cursor-not-allowed" : ""} from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg transition-all hover:shadow-blue-500/20 overflow-hidden`}
                 >
-                  <span className="relative z-10 flex items-center">{!saveDocloading ?  'Save Details' : <LoadingSpinner/>}</span>
+                  <span className="relative z-10 flex items-center">
+                    {!saveDocloading ? "Save Details" : <LoadingSpinner />}
+                  </span>
                   <span className="absolute inset-0 bg-white bg-opacity-20 transform -translate-x-full group-hover:translate-x-0 transition-transform duration-300"></span>
                 </button>
               </div>
             </form>
+          </div>
+        </div>
+      )}
+      {isRatingModalOpen && (
+        <div
+          className="fixed inset-0 bg-black bg-opacity-70 backdrop-blur-sm flex justify-center items-center z-50 animate-[fadeIn_0.2s_ease-out]"
+          onClick={() => setIsRatingModalOpen(false)}
+        >
+          <div
+            className="bg-gray-800 p-6 rounded-xl shadow-2xl w-11/12 max-w-md border border-gray-700 relative animate-[scaleIn_0.3s_ease-out]"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-blue-500 to-purple-600"></div>
+            <div className="flex justify-between items-center mb-6">
+              <h2 className="text-xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">
+                Rate Your Experience
+              </h2>
+              <button
+                onClick={() => setIsRatingModalOpen(false)}
+                className="h-8 w-8 rounded-full bg-gray-700 hover:bg-gray-600 flex items-center justify-center transition-colors hover:rotate-90 duration-300"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="18"
+                  height="18"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <line x1="18" y1="6" x2="6" y2="18"></line>
+                  <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+              </button>
+            </div>
+
+            {selectedBooking && (
+              <form onSubmit={handleRatingSubmit} className="space-y-6">
+                <div className="text-center">
+                  <div className="mb-4 bg-gray-700 bg-opacity-40 rounded-lg p-4">
+                    <p className="text-gray-300">Appointment on</p>
+                    <div className="font-bold text-lg text-gray-400 mt-1">
+                      {selectedBooking.date} at {selectedBooking.time}
+                    </div>
+                  </div>
+
+                  <p className="mb-3 text-lg">How was your experience?</p>
+
+                  <div className="flex justify-center gap-2 mb-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        type="button"
+                        key={star}
+                        onClick={() => setRating(star)}
+                        className="relative transition-all duration-200 focus:outline-none"
+                      >
+                        <Star
+                          className={`w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 ${
+                            star <= rating
+                              ? "text-yellow-400 fill-yellow-400 scale-110 drop-shadow-[0_0_8px_rgba(250,204,21,0.5)]"
+                              : "text-gray-500"
+                          }`}
+                        />
+                        <span className="sr-only">Rate {star} stars</span>
+                      </button>
+                    ))}
+                  </div>
+
+                  <div className="text-sm font-medium mt-2 h-6">
+                    {rating === 1 && <p className="text-red-400">Poor</p>}
+                    {rating === 2 && <p className="text-orange-400">Fair</p>}
+                    {rating === 3 && <p className="text-yellow-400">Good</p>}
+                    {rating === 4 && <p className="text-lime-400">Very Good</p>}
+                    {rating === 5 && <p className="text-green-400">Excellent</p>}
+                  </div>
+                </div>
+
+                <div className="flex justify-center gap-4 pt-2">
+                  <button
+                    type="button"
+                    onClick={() => setIsRatingModalOpen(false)}
+                    className="px-5 py-2.5 border border-gray-600 rounded-lg text-gray-300 hover:bg-gray-700 hover:text-white transition-colors"
+                  >
+                    Cancel
+                  </button>
+                  <button
+                    type="submit"
+                    disabled={rating === 0}
+                    className={`group relative px-5 py-2.5 rounded-lg font-medium transition-all duration-300 ${
+                      rating === 0
+                        ? "bg-gray-600 text-gray-400 cursor-not-allowed"
+                        : "bg-gradient-to-r from-blue-500 to-purple-600 hover:from-blue-600 hover:to-purple-700 text-white shadow-lg hover:shadow-blue-500/20"
+                    }`}
+                  >
+                    <span className="relative z-10">Submit Rating</span>
+                    
+                  </button>
+                </div>
+              </form>
+            )}
           </div>
         </div>
       )}
