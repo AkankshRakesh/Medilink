@@ -328,21 +328,28 @@ export default function Doctors() {
 
 const DoctorCard = ({ doctor }) => {
   const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
 
   const checkout = (doctor) => {
     router.push(`/checkout?id=${doctor.userId}&fee=${doctor.fee}`);
   };
 
   const handleConsultClick = async () => {
-    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/saveDoctor.php`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(doctor),
-      credentials: "include",
-    });
-    console.log("sent data: ", doctor);
-    const { id } = await response.json();
-    router.push(`/booking?id=${id}`);
+    setIsLoading(true);
+    try {
+      const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND}/doctorData/saveDoctor.php`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(doctor),
+        credentials: "include",
+      });
+      console.log("sent data: ", doctor);
+      const { id } = await response.json();
+      router.push(`/booking?id=${id}`);
+    } catch (error) {
+      console.error("Error:", error);
+      setIsLoading(false);
+    }
   };
 
   // Calculate the rating percentage
@@ -357,8 +364,8 @@ const DoctorCard = ({ doctor }) => {
               <Image
                 src={doctor.picture || "/placeholder.svg"}
                 alt={doctor.name}
-                width={300} // Set a width that makes sense for your layout
-                height={300} // Set a height that maintains the aspect ratio
+                width={300}
+                height={300}
                 layout="responsive"
                 className="object-cover"
               />
@@ -382,12 +389,12 @@ const DoctorCard = ({ doctor }) => {
           </div>
           <div className="text-right">
             <div className="flex items-center text-green-600 text-sm font-medium">
-              
-              {ratingPercentage != 0 ? (<>
-                <ThumbsUp className="h-3.5 w-3.5 mr-1" />
-                <span>{ratingPercentage}%</span>
+              {ratingPercentage != 0 ? (
+                <>
+                  <ThumbsUp className="h-3.5 w-3.5 mr-1" />
+                  <span>{ratingPercentage}%</span>
                 </>
-            ) : "Recently Joined"}
+              ) : "Recently Joined"}
             </div>
             <p className="text-xs text-muted-foreground">{doctor.patients}+ Patients</p>
           </div>
@@ -414,8 +421,18 @@ const DoctorCard = ({ doctor }) => {
           <p className="text-lg font-bold">₹{doctor.fee}</p>
           <p className="text-xs text-muted-foreground">{doctor.availability}</p>
         </div>
-        <Button onClick={handleConsultClick} className="px-6">
-          Digital Consult
+        <Button onClick={handleConsultClick} className="px-6" disabled={isLoading}>
+          {isLoading ? (
+            <div className="flex items-center">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              Loading...
+            </div>
+          ) : (
+            "Digital Consult"
+          )}
         </Button>
       </CardFooter>
     </Card>
@@ -453,4 +470,3 @@ const DoctorCardSkeleton = () => (
     </CardFooter>
   </Card>
 )
-
