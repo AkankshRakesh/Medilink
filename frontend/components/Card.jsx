@@ -28,7 +28,7 @@ export default function Card({ image }) {
               animate={{ y: 0 }}
               exit={{ y: 10 }}
             >
-            <a href="/"><i class=" bg-slate-900 text-slate-50 w-cover h-fit rounded-xl fa-solid fa-star-of-life"></i> Consult Now</a>
+            <a href="/"><i className=" bg-slate-900 text-slate-50 w-cover h-fit rounded-xl fa-solid fa-star-of-life"></i> Consult Now</a>
             </motion.h1>
           </motion.div>
         )}
