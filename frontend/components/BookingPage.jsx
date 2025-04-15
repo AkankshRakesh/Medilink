@@ -543,7 +543,7 @@ function BookingPage() {
                           <p className="font-semibold text-foreground">{firstDoctorChoice.name}</p>
                           <p className="text-sm text-muted-foreground">{firstDoctorChoice.specialization}</p>
                           <div className="flex items-center mt-1">
-                            {firstDoctorChoice.rating ? (
+                            {firstDoctorChoice.rating != 0 ? (
                               <>
                               <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                             <span className="text-sm font-medium ml-1">{firstDoctorChoice.rating}</span>
@@ -578,7 +578,7 @@ function BookingPage() {
                               <p className="font-semibold text-foreground">{secondDoctorChoice.name}</p>
                               <p className="text-sm text-muted-foreground">{secondDoctorChoice.specialization}</p>
                               <div className="flex items-center mt-1">
-                              {secondDoctorChoice.rating ? (
+                              {secondDoctorChoice.rating != 0 ? (
                               <>
                               <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                             <span className="text-sm font-medium ml-1">{secondDoctorChoice.rating}</span>
@@ -612,7 +612,7 @@ function BookingPage() {
                                 <p className="font-semibold text-foreground">{thirdDoctorChoice.name}</p>
                                 <p className="text-sm text-muted-foreground">{thirdDoctorChoice.specialization}</p>
                                 <div className="flex items-center mt-1">
-                                {thirdDoctorChoice.rating ? (
+                                {thirdDoctorChoice.rating != 0 ? (
                               <>
                               <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                             <span className="text-sm font-medium ml-1">{thirdDoctorChoice.rating}</span>
@@ -899,7 +899,7 @@ function BookingPage() {
                       <p className="text-muted-foreground">{doctorDetails.specialization}</p>
 
                       <div className="flex items-center mt-2">
-                      {doctorDetails.rating ? (
+                      {doctorDetails.rating != 0 ? (
                               <>
                               <Star className="h-4 w-4 text-yellow-500 fill-yellow-500" />
                             <span className="text-sm font-medium ml-1">{doctorDetails.rating}</span>
