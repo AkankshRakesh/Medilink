@@ -660,11 +660,6 @@ function BookingPage() {
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
                                 <p className="font-semibold text-lg text-foreground">{secondDoctorChoice.name}</p>
-                                {doctorDetails?.id === secondDoctorChoice.id && (
-                                  <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                                    Selected
-                                  </Badge>
-                                )}
                               </div>
                               <p className="text-sm text-muted-foreground">{secondDoctorChoice.specialization}</p>
                               <div className="flex items-center mt-1.5">
@@ -715,11 +710,6 @@ function BookingPage() {
                               <div className="flex-1">
                                 <div className="flex items-center justify-between">
                                   <p className="font-semibold text-lg text-foreground">{thirdDoctorChoice.name}</p>
-                                  {doctorDetails?.id === thirdDoctorChoice.id && (
-                                    <Badge variant="outline" className="bg-primary/10 text-primary border-primary/20">
-                                      Selected
-                                    </Badge>
-                                  )}
                                 </div>
                                 <p className="text-sm text-muted-foreground">{thirdDoctorChoice.specialization}</p>
                                 <div className="flex items-center mt-1.5">
