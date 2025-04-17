@@ -299,12 +299,16 @@ export default function Hero() {
             </div>
           </div>
         </div>
+
+
         <div className="relative z-10 text-center mt-16">
         <h2 className="text-2xl  md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 inline-block text-transparent bg-clip-text">
           Get connected with Doctors across the Globe
             </h2>
             <div className="h-1 w-20 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto mt-4 rounded-full"></div>
           </div>
+          
+
         <div className="ml-[-5rem] w-full mx-auto mb-0">
   <ComposableMap
     className="text-center font-sans text-lg"
@@ -336,12 +340,14 @@ export default function Hero() {
   </ComposableMap>
 </div>
 
+
 <div className="relative z-10 text-center mt-16">
         <h2 className="text-2xl  md:text-4xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 inline-block text-transparent bg-clip-text">
           Get treated from the convenience of your Home
             </h2>
             <div className="h-1 w-20 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto mt-4 rounded-full"></div>
           </div>
+
 
 <div className="relative py-8 overflow-hidden dark:bg-slate-900">
   <motion.div
@@ -362,6 +368,7 @@ export default function Hero() {
     ))}
   </motion.div>
 </div>
+
 
 <div className="text-center mt-10 mb-10">
             <Link href="/doctors">
