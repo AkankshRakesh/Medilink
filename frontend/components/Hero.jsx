@@ -10,7 +10,9 @@ import { animate, motion, useMotionValue } from "framer-motion";
 import useMeasure from "react-use-measure";
 import Spline from '@splinetool/react-spline';
 import Image from 'next/image';
-import WorldMap from "@/components/ui/world-map";
+// import MapChart from "./MapChart";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 const images = [
@@ -297,6 +299,37 @@ export default function Hero() {
             </div>
           </div>
         </div>
+
+        <div className="ml-[-5rem] w-full mx-auto">
+  <ComposableMap
+    className="text-center font-sans text-lg"
+  >
+    <Geographies geography="/features.json">
+      {({ geographies }) =>
+        geographies.map((geo) => (
+          <Geography
+            key={geo.rsmKey}
+            geography={geo}
+            style={{
+              default: {
+                fill: "#2a354d", // Updated to match the theme
+                outline: "none",
+              },
+              hover: {
+                fill: "#4C6FFF", // Blue matching the site's theme
+                outline: "none",
+              },
+              pressed: {
+                fill: "#4C6FFF", // Blue matching the site's theme
+                outline: "none",
+              },
+            }}
+          />
+        ))
+      }
+    </Geographies>
+  </ComposableMap>
+</div>
 
 <div className="relative py-8 overflow-hidden dark:bg-slate-900">
   <motion.div
