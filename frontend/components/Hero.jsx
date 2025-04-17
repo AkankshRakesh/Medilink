@@ -10,7 +10,7 @@ import { animate, motion, useMotionValue } from "framer-motion";
 import useMeasure from "react-use-measure";
 import Spline from '@splinetool/react-spline';
 import Image from 'next/image';
-// import MapChart from "./MapChart";
+
 import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
 
