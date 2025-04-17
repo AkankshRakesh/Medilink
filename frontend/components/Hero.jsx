@@ -65,49 +65,49 @@ export default function Hero() {
 
     return (
       <>
-        <div className=' mt-6 flex flex-col'>
-            <div className=" bg-[#D4D5E5]">
+        <div className='mt-6 flex flex-col dark:bg-gray-900'>
+            <div className="bg-[#D4D5E5] ">
       {/* Hero Section */}
       <div className="px-6 pb-16 pt-12 lg:p-10 py-0">
         <div className="flex flex-col lg:flex-row items-center gap-12">
           {/* Left Content */}
           <div className="flex-1 space-y-6">
-            <h1 className="text-4xl md:text-5xl font-bold text-gray-900 leading-tight">
+            <h1 className="text-4xl md:text-5xl font-bold text-gray-900  leading-tight">
               Find the right doctor for all your concerns
             </h1>
-            <p className="text-lg text-gray-700">
+            <p className="text-lg text-gray-700 ">
               Private consultation + Audio call · Starts at just ₹249
             </p>
             <Link href="/doctors" className="inline-block">
-            <button className="bg-[#4C6FFF] text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors">
+            <button className="bg-[#4C6FFF] text-white px-8 py-3 rounded-lg font-medium hover:bg-blue-600 transition-colors ">
               Consult Now
             </button>
             </Link>
 
             <div className="flex gap-6 pt-4">
               <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-5 h-5 text-gray-700 " viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
                   <circle cx="9" cy="7" r="4" />
                   <polyline points="16 11 18 13 22 9" />
                 </svg>
-                <span className="text-sm text-gray-700">Verified Doctors</span>
+                <span className="text-sm text-gray-700 ">Verified Doctors</span>
               </div>
               <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-5 h-5 text-gray-700 " viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
                   <polyline points="14 2 14 8 20 8" />
                   <line x1="16" y1="13" x2="8" y2="13" />
                   <line x1="16" y1="17" x2="8" y2="17" />
                   <line x1="10" y1="9" x2="8" y2="9" />
                 </svg>
-                <span className="text-sm text-gray-700">Digital Prescription</span>
+                <span className="text-sm text-gray-700 ">Digital Prescription</span>
               </div>
               <div className="flex items-center gap-2">
-                <svg className="w-5 h-5 text-gray-700" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <svg className="w-5 h-5 text-gray-700 " viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3" />
                 </svg>
-                <span className="text-sm text-gray-700">Free Followups</span>
+                <span className="text-sm text-gray-700 ">Free Followups</span>
               </div>
             </div>
           </div>
@@ -126,7 +126,7 @@ export default function Hero() {
         <Spline
           className="w-auto h-auto"
           scene="https://prod.spline.design/DsttbXsriKDBQQMr/scene.splinecode"/>
-        <div className="absolute bottom-0 left-0 w-full h-14 bg-[#D4D5E5] z-10"></div>
+        <div className="absolute bottom-0 left-0 w-full h-14 bg-[#D4D5E5]  z-10"></div>
       </div>
         </div>
       </div>
@@ -134,7 +134,7 @@ export default function Hero() {
 
             <FindDoc/>
             <Specialties/>
-            <div className=" grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 mt-4 bg-gray-900  p-8">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-8 mt-4 bg-gray-900 p-8 dark:bg-gray-800">
                   <div className="text-center">
                     <div className="text-white text-2xl font-bold">2,00,000+</div>
                     <div className="text-gray-400 text-sm">Happy Users</div>
@@ -153,10 +153,8 @@ export default function Hero() {
                   </div>
                 </div>
 
-
-
-                <div className="relative py-12 mt-8">
-          <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 opacity-70"></div>
+                <div className="relative py-12 mt-8 dark:bg-gray-900">
+          <div className="absolute inset-0 bg-gradient-to-r from-blue-50 to-indigo-50 opacity-70 dark:from-gray-800 dark:to-gray-800"></div>
           <div className="relative z-10 text-center mb-12">
             <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 inline-block text-transparent bg-clip-text">
               Benefits of Online Consultation
@@ -166,10 +164,10 @@ export default function Hero() {
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 px-4 sm:px-8 md:px-12 lg:px-16 relative z-10">
          
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 flex flex-col h-full transform hover:-translate-y-1">
-              <div className="rounded-full bg-blue-100 w-14 h-14 flex items-center justify-center mb-5">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 dark:border-gray-700 flex flex-col h-full transform hover:-translate-y-1">
+              <div className="rounded-full bg-blue-100 dark:bg-blue-900/30 w-14 h-14 flex items-center justify-center mb-5">
                 <svg
-                  className="w-7 h-7 text-blue-600"
+                  className="w-7 h-7 text-blue-600 dark:text-blue-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -183,18 +181,18 @@ export default function Hero() {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">24/7 Doctor Access</h3>
-              <p className="text-gray-600 leading-relaxed flex-grow">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">24/7 Doctor Access</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed flex-grow">
                 Connect instantly with specialists around the clock or schedule video consultations with your preferred
                 doctor.
               </p>
             </div>
 
             
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 flex flex-col h-full transform hover:-translate-y-1">
-              <div className="rounded-full bg-indigo-100 w-14 h-14 flex items-center justify-center mb-5">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 dark:border-gray-700 flex flex-col h-full transform hover:-translate-y-1">
+              <div className="rounded-full bg-indigo-100 dark:bg-indigo-900/30 w-14 h-14 flex items-center justify-center mb-5">
                 <svg
-                  className="w-7 h-7 text-indigo-600"
+                  className="w-7 h-7 text-indigo-600 dark:text-indigo-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -208,17 +206,17 @@ export default function Hero() {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Quick & Convenient</h3>
-              <p className="text-gray-600 leading-relaxed flex-grow">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Quick & Convenient</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed flex-grow">
                 Start an instant consultation within 2 minutes or join scheduled video appointments from the comfort of
                 your home.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 flex flex-col h-full transform hover:-translate-y-1">
-              <div className="rounded-full bg-blue-100 w-14 h-14 flex items-center justify-center mb-5">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 dark:border-gray-700 flex flex-col h-full transform hover:-translate-y-1">
+              <div className="rounded-full bg-blue-100 dark:bg-blue-900/30 w-14 h-14 flex items-center justify-center mb-5">
                 <svg
-                  className="w-7 h-7 text-blue-600"
+                  className="w-7 h-7 text-blue-600 dark:text-blue-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -232,17 +230,17 @@ export default function Hero() {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Private & Secure</h3>
-              <p className="text-gray-600 leading-relaxed flex-grow">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Private & Secure</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed flex-grow">
                 Rest assured that all consultations are fully private, encrypted, and comply with healthcare security
                 standards.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 flex flex-col h-full transform hover:-translate-y-1">
-              <div className="rounded-full bg-indigo-100 w-14 h-14 flex items-center justify-center mb-5">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 dark:border-gray-700 flex flex-col h-full transform hover:-translate-y-1">
+              <div className="rounded-full bg-indigo-100 dark:bg-indigo-900/30 w-14 h-14 flex items-center justify-center mb-5">
                 <svg
-                  className="w-7 h-7 text-indigo-600"
+                  className="w-7 h-7 text-indigo-600 dark:text-indigo-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -256,17 +254,17 @@ export default function Hero() {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Digital Prescriptions</h3>
-              <p className="text-gray-600 leading-relaxed flex-grow">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Digital Prescriptions</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed flex-grow">
                 Receive legally valid digital prescriptions directly to your device, ready to use at your preferred
                 pharmacy.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 flex flex-col h-full transform hover:-translate-y-1">
-              <div className="rounded-full bg-blue-100 w-14 h-14 flex items-center justify-center mb-5">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 dark:border-gray-700 flex flex-col h-full transform hover:-translate-y-1">
+              <div className="rounded-full bg-blue-100 dark:bg-blue-900/30 w-14 h-14 flex items-center justify-center mb-5">
                 <svg
-                  className="w-7 h-7 text-blue-600"
+                  className="w-7 h-7 text-blue-600 dark:text-blue-400"
                   fill="none"
                   stroke="currentColor"
                   viewBox="0 0 24 24"
@@ -280,109 +278,27 @@ export default function Hero() {
                   ></path>
                 </svg>
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Free Follow-ups</h3>
-              <p className="text-gray-600 leading-relaxed flex-grow">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Free Follow-ups</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed flex-grow">
                 Enjoy complimentary 7-day follow-up consultations to address any concerns or questions about your
                 treatment.
               </p>
             </div>
 
-            <div className="bg-white rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 flex flex-col h-full transform hover:-translate-y-1">
-              <div className="rounded-full bg-indigo-100 w-14 h-14 flex items-center justify-center mb-5">
-                <svg
-                  className="w-7 h-7 text-indigo-600"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M11.933 12.8a1 1 0 000-1.6L6.6 7.2A1 1 0 005 8v8a1 1 0 001.6.8l5.333-4zM19.933 12.8a1 1 0 000-1.6l-5.333-4A1 1 0 0013 8v8a1 1 0 001.6.8l5.333-4z"
-                  ></path>
-                </svg>
+            <div className="bg-white dark:bg-gray-800 rounded-2xl p-6 shadow-sm hover:shadow-xl transition-all duration-300 border border-blue-50 dark:border-gray-700 flex flex-col h-full transform hover:-translate-y-1">
+              <div className="rounded-full bg-indigo-100 dark:bg-indigo-900/30 w-14 h-14 flex items-center justify-center mb-5">
+                
               </div>
-              <h3 className="text-xl font-semibold text-gray-800 mb-2">Instant Access</h3>
-              <p className="text-gray-600 leading-relaxed flex-grow">
+              <h3 className="text-xl font-semibold text-gray-800 dark:text-white mb-2">Instant Access</h3>
+              <p className="text-gray-600 dark:text-gray-300 leading-relaxed flex-grow">
                 Skip the waiting room and connect with certified healthcare professionals in minutes, anytime and
                 anywhere.
               </p>
             </div>
           </div>
-
-          
-         
-          
         </div>
-        <div className=" py-40 dark:bg-black bg-white w-full">
-      <div className="max-w-7xl mx-auto text-center">
-        <p className="font-bold text-xl md:text-4xl dark:text-white text-blue-600">
-          Remote{" "}
-          <span className="text-neutral-400">
-            {"Connectivity".split("").map((word, idx) => (
-              <motion.span
-                key={idx}
-                className="inline-block"
-                initial={{ x: -10, opacity: 0 }}
-                animate={{ x: 0, opacity: 1 }}
-                transition={{ duration: 0.5, delay: idx * 0.04 }}
-              >
-                {word}
-              </motion.span>
-            ))}
-          </span>
-        </p>
-        <p className="text-sm md:text-lg text-neutral-500 max-w-2xl mx-auto py-4">
-          Break free from traditional boundaries. Connect from anywhere, at the
-          comfort of your own home.
-        </p>
-      </div>
-      <WorldMap
-        dots={[
-          {
-            start: {
-              lat: 64.2008,
-              lng: -149.4937,
-            }, // Alaska (Fairbanks)
-            end: {
-              lat: 34.0522,
-              lng: -118.2437,
-            }, // Los Angeles
-          },
-          {
-            start: { lat: 64.2008, lng: -149.4937 }, // Alaska (Fairbanks)
-            end: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
-          },
-          {
-            start: { lat: -15.7975, lng: -47.8919 }, // Brazil (Brasília)
-            end: { lat: 38.7223, lng: -9.1393 }, // Lisbon
-          },
-          {
-            start: { lat: 51.5074, lng: -0.1278 }, // London
-            end: { lat: 28.6139, lng: 77.209 }, // New Delhi
-          },
-          {
-            start: { lat: 28.6139, lng: 77.209 }, // New Delhi
-            end: { lat: 43.1332, lng: 131.9113 }, // Vladivostok
-          },
-          {
-            start: { lat: 28.6139, lng: 77.209 }, // New Delhi
-            end: { lat: -1.2921, lng: 36.8219 }, // Nairobi
-          },
-        ]}
-      />
-    </div>
 
-    {/* New Carousel Section */}
-
-          <div className="relative z-10 text-center mt-12">
-            <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 inline-block text-transparent bg-clip-text">
-            Get Connected with Doctors across the World            </h2>
-            <div className="h-1 w-20 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto mt-4 rounded-full"></div>
-          </div>
-<div className="relative py-8 overflow-hidden ">
+<div className="relative py-8 overflow-hidden dark:bg-slate-900">
   <motion.div
     className="flex gap-4"
     style={{ x: xTranslation }}
@@ -403,19 +319,12 @@ export default function Hero() {
 </div>
               
               </div>
-              <div className="text-center mt-10 mb-10">
-            <Link href="/doctors">
-              <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
-                Consult a Doctor Now
-              </button>
-            </Link>
-          </div>
 
-              <footer className="bg-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
+              <footer className="bg-slate-800 dark:bg-black py-12 px-4 sm:px-6 lg:px-8 mt-auto">
         <div className="container mx-auto max-w-6xl">
           {/* Social Media */}
           <div className="flex items-center justify-center mb-8">
-            <div className="h-px bg-slate-600 flex-1"></div>
+            <div className="h-px bg-slate-600 dark:bg-gray-700 flex-1"></div>
             <div className="flex space-x-6 px-6">
               <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Facebook">
                 <Facebook size={24} />
@@ -433,41 +342,41 @@ export default function Hero() {
                 <Mail size={24} />
               </a>
             </div>
-            <div className="h-px bg-slate-600 flex-1"></div>
+            <div className="h-px bg-slate-600 dark:bg-gray-700 flex-1"></div>
           </div>
 
           {/* Logo */}
           <div className="mb-8 text-center">
-            <Link href="/" className={`text-2xl md:text-3xl text-slate-100 ${fugaz.className}`}>
+            <Link href="/" className={`text-2xl md:text-3xl text-slate-100 dark:text-white ${fugaz.className}`}>
               Medilink
             </Link>
           </div>
 
           {/* Copyright */}
-          <div className="flex items-center justify-center text-slate-400 text-sm mb-6">
+          <div className="flex items-center justify-center text-slate-400 dark:text-gray-400 text-sm mb-6">
             <span>Copyright</span>
             <CopyrightIcon size={14} className="mx-1" />
             <span>2025 Medilink, Inc</span>
           </div>
 
           {/* Links */}
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-slate-300">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-slate-300 dark:text-gray-400">
             <a href="#" className="hover:text-white transition-colors">
               Legal Terms
             </a>
-            <span className="hidden sm:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-500 dark:text-gray-600">|</span>
             <a href="#" className="hover:text-white transition-colors">
               Privacy Policy
             </a>
-            <span className="hidden sm:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-500 dark:text-gray-600">|</span>
             <a href="#" className="hover:text-white transition-colors">
               Security
             </a>
-            <span className="hidden sm:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-500 dark:text-gray-600">|</span>
             <a href="#" className="hover:text-white transition-colors">
               Website Accessibility
             </a>
-            <span className="hidden sm:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-500 dark:text-gray-600">|</span>
             <a href="#" className="hover:text-white transition-colors">
               Manage Cookies
             </a>

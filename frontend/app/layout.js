@@ -5,6 +5,7 @@ import Head from "./head";
 import { ToastContainer } from "react-toastify";
 import Logout from "@/components/Logout";
 import Navbar from "@/components/Navbar";
+import { ThemeProvider } from "next-themes";
 
 const opensans = Open_Sans({ subsets: ["latin"] });
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
@@ -33,12 +34,19 @@ export default function RootLayout({ children }) {
   )
 
   return (
-    <html lang="en">
-      <Head />
+    <html lang="en" suppressHydrationWarning>
+      <head>
+            <link rel="icon" href="pills-solid.svg" sizes="any" />
+            <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" integrity="sha512-SnH5WK+bZxgPHs44uWIX+LLJAJ9/2PkPKZ5QiAj6Ta86w+fsb2TkcmfRyVX3pBnMFcV7oQPJkl9QevSCWr3W6A==" crossOrigin="anonymous" referrerPolicy="no-referrer" />
+        </head>
         <body className={'w-full mx-auto text-sm sm:text-base min-h-screen flex flex-col text-slate-800 overflow-y-scroll no-scrollbar ' + opensans.className}>
+          
+      <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
           <Navbar />
           <ToastContainer />
           {children}
+          
+      </ThemeProvider>
         </body>
     </html>
   );

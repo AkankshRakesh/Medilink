@@ -101,204 +101,176 @@ export default function Signup() {
     }
 
     return (
-        <div className="h-screen w-full bg-white rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
-            {/* Left Column - Info Section */}
-            <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
-                <div>
-                    
-                    <div className="mb-3 md:mb-12">
-                        <h2 className={`${fugaz.className} text-3xl md:text-4xl font-bold mb-6`}>
-                            Join our community today
-                        </h2>
-                        
-                        <div className="space-y-6">
-                            <div className="flex items-center">
-                                <div className="bg-white/20 p-2 rounded-full mr-4">
-                                    <Users className="h-5 w-5" />
-                                </div>
-                                <div>
-                                    <p className="font-medium">Connect with top professionals</p>
-                                </div>
-                            </div>
-                            
-                            <div className="flex items-center">
-                                <div className="bg-white/20 p-2 rounded-full mr-4">
-                                    <Clock className="h-5 w-5" />
-                                </div>
-                                <div>
-                                    <p className="font-medium">24/7 access to expert advice</p>
-                                </div>
-                            </div>
-                            
-                            <div className="flex items-center">
-                                <div className="bg-white/20 p-2 rounded-full mr-4">
-                                    <Shield className="h-5 w-5" />
-                                </div>
-                                <div>
-                                    <p className="font-medium">Secure and confidential service</p>
-                                </div>
-                            </div>
-                        </div>
+        <div className="h-screen w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
+          {/* Left Column */}
+          <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
+            <div>
+              <div className="mb-3 md:mb-12">
+                <h2 className={`${fugaz.className} text-3xl md:text-4xl font-bold mb-6`}>
+                  Join our community today
+                </h2>
+                <div className="space-y-6">
+                  <div className="flex items-center">
+                    <div className="bg-white/20 p-2 rounded-full mr-4">
+                      <Users className="h-5 w-5" />
                     </div>
-                    
-                    <div className="hidden lg:block mt-auto">
-                        <div className="bg-white/10 p-4 rounded-lg">
-                            <p className="text-sm">
-                                "Joining this platform was the best decision I made for my mental health. 
-                                The support I received was exceptional."
-                            </p>
-                            <p className="mt-2 font-medium">— Archita S.</p>
-                        </div>
+                    <p className="font-medium">Connect with top professionals</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="bg-white/20 p-2 rounded-full mr-4">
+                      <Clock className="h-5 w-5" />
                     </div>
+                    <p className="font-medium">24/7 access to expert advice</p>
+                  </div>
+                  <div className="flex items-center">
+                    <div className="bg-white/20 p-2 rounded-full mr-4">
+                      <Shield className="h-5 w-5" />
+                    </div>
+                    <p className="font-medium">Secure and confidential service</p>
+                  </div>
                 </div>
+              </div>
+              <div className="hidden lg:block mt-auto">
+                <div className="bg-white/10 p-4 rounded-lg">
+                  <p className="text-sm">
+                    "Joining this platform was the best decision I made for my mental health. 
+                    The support I received was exceptional."
+                  </p>
+                  <p className="mt-2 font-medium">— Archita S.</p>
+                </div>
+              </div>
             </div>
-            
-            {/* Right Column - Form Section */}
-            <div className="p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center bg-white">
-                <div className="mx-auto w-full max-w-md">
-                    {/* User Type Toggle */}
-                    <div className="flex justify-center mb-8">
-                        <div className="inline-flex bg-gray-100 rounded-full p-1">
-                            <button 
-                                onClick={() => setIsDoctor(false)} 
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!isDoctor ? 'bg-white shadow-sm text-cyan-600' : 'text-gray-500'}`}
-                            >
-                                Patient
-                            </button>
-                            <button 
-                                onClick={() => setIsDoctor(true)} 
-                                className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isDoctor ? 'bg-white shadow-sm text-cyan-600' : 'text-gray-500'}`}
-                            >
-                                Doctor
-                            </button>
-                        </div>
+          </div>
+    
+          {/* Right Column */}
+          <div className="p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center bg-white dark:bg-gray-900">
+            <div className="mx-auto w-full max-w-md">
+              <div className="flex justify-center mb-8">
+                <div className="inline-flex bg-gray-100 dark:bg-gray-800 rounded-full p-1">
+                  <button 
+                    onClick={() => setIsDoctor(false)} 
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${!isDoctor ? 'bg-white dark:bg-gray-700 shadow-sm text-cyan-600' : 'text-gray-500 dark:text-gray-300'}`}
+                  >
+                    Patient
+                  </button>
+                  <button 
+                    onClick={() => setIsDoctor(true)} 
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${isDoctor ? 'bg-white dark:bg-gray-700 shadow-sm text-cyan-600' : 'text-gray-500 dark:text-gray-300'}`}
+                  >
+                    Doctor
+                  </button>
+                </div>
+              </div>
+    
+              <div className="text-center mb-8">
+                <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
+                  Create your account
+                </h3>
+                <p className="text-gray-500 dark:text-gray-400 text-sm">
+                  Fill in your details to join our community
+                </p>
+              </div>
+    
+              <form onSubmit={handleSignup} className="space-y-5">
+                <div className="space-y-1">
+                  <label htmlFor="username" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
+                    Username
+                  </label>
+                  <input
+                    id="username"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                    placeholder="Choose a username"
+                    required
+                    autoComplete="username"
+                  />
+                </div>
+    
+                <div className="space-y-1">
+                  <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
+                    Email Address
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                      placeholder="Email Address"
+                      type="email"
+                      required
+                      autoComplete="email"
+                      disabled={otpVerified}
+                    />
+                    {!otpSent && !otpVerified && (
+                      <button
+                        type="button"
+                        onClick={sendOtp}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200"
+                        disabled={loadingOtp}
+                      >
+                        {loadingOtp ? (
+                          <Loader2 className="h-4 w-4 animate-spin" />
+                        ) : "Send OTP"}
+                      </button>
+                    )}
+                    {otpVerified && (
+                      <button
+                        type="button"
+                        onClick={youAreVerified}
+                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1"
+                      >
+                        <span>Verified</span>
+                        <CheckCircle className="h-4 w-4" />
+                      </button>
+                    )}
+                  </div>
+                </div>
+    
+                {otpSent && (
+                  <div className="space-y-1">
+                    <label htmlFor="otp" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
+                      Verification Code
+                    </label>
+                    <div className="flex gap-2">
+                      <input
+                        id="otp"
+                        value={otp}
+                        onChange={(e) => setOtp(e.target.value)}
+                        className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 text-center tracking-widest"
+                        placeholder="Enter OTP"
+                        type="text"
+                      />
+                      <button
+                        type="button"
+                        onClick={verifyOtp}
+                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200"
+                      >
+                        Verify
+                      </button>
                     </div>
-                    
-                    <div className="text-center mb-8">
-                        <h3 className="text-2xl font-bold text-gray-800 mb-2">
-                            Create your account
-                        </h3>
-                        <p className="text-gray-500 text-sm">
-                            Fill in your details to join our community
-                        </p>
-                    </div>
-                    
-                    <form onSubmit={handleSignup} className="space-y-5">
-                        <div className="space-y-1">
-                            <label htmlFor="username" className="text-sm font-medium text-gray-700 block pl-1">
-                                Username
-                            </label>
-                            <input
-                                id="username"
-                                value={username}
-                                onChange={(e) => setUsername(e.target.value)}
-                                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
-                                placeholder="Choose a username"
-                                required
-                                autoComplete="username"
-                            />
-                        </div>
-
-                        <div className="space-y-1">
-                            <label htmlFor="email" className="text-sm font-medium text-gray-700 block pl-1">
-                                Email Address
-                            </label>
-                            <div className="relative">
-                                <input
-                                    id="email"
-                                    value={email}
-                                    onChange={(e) => setEmail(e.target.value)}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
-                                    placeholder="Email Address"
-                                    type="email"
-                                    required
-                                    autoComplete="email"
-                                    disabled={otpVerified}
-                                />
-                                {!otpSent && !otpVerified && (
-                                    <button
-                                        type="button"
-                                        onClick={sendOtp}
-                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-cyan-500 hover:bg-cyan-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200"
-                                        disabled={loadingOtp}
-                                    >
-                                        {loadingOtp ? (
-                                            <Loader2 className="h-4 w-4 animate-spin" />
-                                        ) : "Send OTP"}
-                                    </button>
-                                )}
-                                {otpVerified && (
-                                    <button
-                                        type="button"
-                                        onClick={youAreVerified}
-                                        className="absolute right-2 top-1/2 transform -translate-y-1/2 bg-green-500 hover:bg-green-600 text-white px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 flex items-center gap-1"
-                                    >
-                                        <span>Verified</span>
-                                        <CheckCircle className="h-4 w-4" />
-                                    </button>
-                                )}
-                            </div>
-                        </div>
-
-                        {otpSent && (
-                            <div className="space-y-1">
-                                <label htmlFor="otp" className="text-sm font-medium text-gray-700 block pl-1">
-                                    Verification Code
-                                </label>
-                                <div className="flex gap-2">
-                                    <input
-                                        id="otp"
-                                        value={otp}
-                                        onChange={(e) => setOtp(e.target.value)}
-                                        className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 text-center tracking-widest"
-                                        placeholder="Enter OTP"
-                                        type="text"
-                                    />
-                                    <button
-                                        type="button"
-                                        onClick={verifyOtp}
-                                        className="bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-lg font-medium transition-all duration-200"
-                                    >
-                                        Verify
-                                    </button>
-                                </div>
-                            </div>
-                        )}
-
-                        <div className="space-y-1">
-                            <label htmlFor="password" className="text-sm font-medium text-gray-700 block pl-1">
-                                Password
-                            </label>
-                            <div className="relative">
-                                <input
-                                    id="password"
-                                    value={password}
-                                    onChange={(e) => setPassword(e.target.value)}
-                                    className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
-                                    placeholder="Create a password"
-                                    type={showPassword ? "text" : "password"}
-                                    minLength={6}
-                                    required
-                                    autoComplete="new-password"
-                                />
-                                <button
-                                    type="button"
-                                    onClick={() => setShowPassword(!showPassword)}
-                                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-                                >
-                                    {showPassword ? (
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" />
-                                        </svg>
-                                    ) : (
-                                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-                                        </svg>
-                                    )}
-                                </button>
-                            </div>
-                        </div>
+                  </div>
+                )}
+    
+                <div className="space-y-1">
+                  <label htmlFor="password" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
+                    Password
+                  </label>
+                  <div className="relative">
+                    <input
+                      id="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 dark:bg-gray-800 dark:text-white focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                      placeholder="Create a password"
+                      type={showPassword ? "text" : "password"}
+                      minLength={6}
+                      required
+                      autoComplete="new-password"
+                    />
+                  </div>
+                </div>
 
                         <div className="pt-2">
                             <button 

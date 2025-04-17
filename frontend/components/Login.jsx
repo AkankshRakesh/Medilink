@@ -64,6 +64,7 @@ export default function Login() {
             toast.error('OTP verification failed.');
         }
     }
+
     async function resetPassword(event) {
         event.preventDefault()
     
@@ -79,7 +80,6 @@ export default function Login() {
     
         setResettingPassword(true)
         try {
-          // Replace with your actual reset password endpoint
           const response = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND}/auth/resetPassword.php`, {
             email,
             newPassword,
@@ -99,6 +99,7 @@ export default function Login() {
           setResettingPassword(false)
         }
       }
+
     function youAreVerified() {
         toast.info('You are verified! Please proceed to login.');
     }
@@ -146,9 +147,9 @@ export default function Login() {
 
     return (
         (!forgotPass ? (
-            <div className="h-screen w-full bg-white rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
+            <div className="h-screen w-full bg-white dark:bg-gray-800 rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
                 {/* Left Column - Info Section */}
-                <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
+                <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 dark:from-cyan-600 dark:to-blue-600 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
                     <div>
                     
                     <div className="mb-4 md:mb-12">
@@ -199,22 +200,22 @@ export default function Login() {
                 </div>
                 
                 {/* Right Column - Form Section */}
-                <div className="p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center bg-white">
+                <div className="p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center bg-white dark:bg-gray-900">
                 
                     <div className="mx-auto">
                         
                         <div className="text-center mb-8">
-                            <h3 className="text-2xl font-bold text-gray-800 mb-2">
+                            <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">
                                 Welcome back
                             </h3>
-                            <p className="text-gray-500 text-sm">
+                            <p className="text-gray-500 dark:text-gray-300 text-sm">
                                 Log in to your account and we'll get you to see our counsellors
                             </p>
                         </div>
                         
                         <form onSubmit={handleSubmit} className="space-y-5">
                             <div className="space-y-1">
-                                <label htmlFor="email" className="text-sm font-medium text-gray-700 block pl-1">
+                                <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
                                     Email Address
                                 </label>
                                 <div className="relative">
@@ -222,7 +223,7 @@ export default function Login() {
                                         id="email"
                                         value={email}
                                         onChange={(e) => setEmail(e.target.value)}
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 dark:bg-gray-800 dark:text-white"
                                         placeholder="Email Address"
                                         type="email"
                                         required
@@ -256,7 +257,7 @@ export default function Login() {
 
                             {otpSent && (
                                 <div className="space-y-1">
-                                    <label htmlFor="otp" className="text-sm font-medium text-gray-700 block pl-1">
+                                    <label htmlFor="otp" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
                                         Verification Code
                                     </label>
                                     <div className="flex gap-2">
@@ -264,7 +265,7 @@ export default function Login() {
                                             id="otp"
                                             value={otp}
                                             onChange={(e) => setOtp(e.target.value)}
-                                            className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 text-center tracking-widest"
+                                            className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 text-center tracking-widest dark:bg-gray-800 dark:text-white"
                                             placeholder="Enter OTP"
                                             type="text"
                                         />
@@ -281,10 +282,10 @@ export default function Login() {
 
                             <div className="space-y-1">
                                 <div className="flex justify-between items-center pl-1">
-                                    <label htmlFor="password" className="text-sm font-medium text-gray-700">
+                                    <label htmlFor="password" className="text-sm font-medium text-gray-700 dark:text-gray-300">
                                         Password
                                     </label>
-                                    <p onClick={() => setForgotPass(!forgotPass)} className="text-sm text-cyan-600 hover:text-cyan-700 cursor-pointer">
+                                    <p onClick={() => setForgotPass(!forgotPass)} className="text-sm text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 cursor-pointer">
                                         Forgot password?
                                     </p>
                                 </div>
@@ -293,7 +294,7 @@ export default function Login() {
                                         id="password"
                                         value={password}
                                         onChange={(e) => setPassword(e.target.value)}
-                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                        className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 dark:bg-gray-800 dark:text-white"
                                         placeholder="Password"
                                         type={showPassword ? "text" : "password"}
                                         minLength={6}
@@ -303,7 +304,7 @@ export default function Login() {
                                     <button
                                         type="button"
                                         onClick={() => setShowPassword(!showPassword)}
-                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                        className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                                     >
                                         {showPassword ? (
                                             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -335,9 +336,9 @@ export default function Login() {
                         </form>
                         
                             <div>
-                            <p className='text-center mt-5 text-gray-500'>
+                            <p className='text-center mt-5 text-gray-500 dark:text-gray-400'>
                                 Don't have an account? 
-                                <button className='text-cyan-600 hover:text-cyan-700 ml-2' onClick={() => router.push('/signup')}>
+                                <button className='text-cyan-600 hover:text-cyan-700 dark:text-cyan-400 dark:hover:text-cyan-300 ml-2' onClick={() => router.push('/signup')}>
                                     Sign up
                                 </button>
                             </p>
@@ -346,9 +347,9 @@ export default function Login() {
                 </div>
             </div>
                                 ) : 
-                            <div className="h-screen w-full bg-white rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
+                            <div className="h-screen w-full bg-white dark:bg-gray-900 rounded-2xl shadow-lg md:overflow-hidden flex flex-col md:flex-row">
                                   {/* Left Column - Info Section */}
-                                  <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
+                                  <div className="bg-gradient-to-b mt-5 from-cyan-500 to-blue-500 dark:from-cyan-600 dark:to-blue-600 text-white p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center">
                                     <div>
                                       <div className="mb-4 md:mb-12">
                                         <h2 className={`${fugaz.className} text-3xl md:text-4xl font-bold mb-6`}>Expert advice from top doctors</h2>
@@ -396,24 +397,24 @@ export default function Login() {
                                   </div>
                             
                                   {/* Right Column - Form Section */}
-                                  <div className="p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center bg-white">
+                                  <div className="p-8 md:p-12 md:w-7/12 flex flex-col justify-center items-center bg-white dark:bg-gray-900">
                                     <div className="mx-auto w-full max-w-md">
                                       <button
                                         onClick={() => setForgotPass(!forgotPass)}
-                                        className="flex items-center text-gray-600 hover:text-cyan-600 mb-6 transition-colors"
+                                        className="flex items-center text-gray-600 hover:text-cyan-600 dark:text-gray-300 dark:hover:text-cyan-400 mb-6 transition-colors"
                                       >
                                         <ArrowLeft className="h-4 w-4 mr-1" />
                                         <span>Back to login</span>
                                       </button>
                             
                                       <div className="text-center mb-8">
-                                        <h3 className="text-2xl font-bold text-gray-800 mb-2">Forgot your password?</h3>
-                                        <p className="text-gray-500 text-sm">No worries, we'll help you reset it</p>
+                                        <h3 className="text-2xl font-bold text-gray-800 dark:text-white mb-2">Forgot your password?</h3>
+                                        <p className="text-gray-500 dark:text-gray-300 text-sm">No worries, we'll help you reset it</p>
                                       </div>
                             
                                       <form onSubmit={resetPassword} className="space-y-5">
                                         <div className="space-y-1">
-                                          <label htmlFor="email" className="text-sm font-medium text-gray-700 block pl-1">
+                                          <label htmlFor="email" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
                                             Email Address
                                           </label>
                                           <div className="relative">
@@ -421,7 +422,7 @@ export default function Login() {
                                               id="email"
                                               value={email}
                                               onChange={(e) => setEmail(e.target.value)}
-                                              className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                              className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 dark:bg-gray-800 dark:text-white"
                                               placeholder="Email Address"
                                               type="email"
                                               required
@@ -452,7 +453,7 @@ export default function Login() {
                             
                                         {otpSent && !otpVerified && (
                                           <div className="space-y-1">
-                                            <label htmlFor="otp" className="text-sm font-medium text-gray-700 block pl-1">
+                                            <label htmlFor="otp" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
                                               Verification Code
                                             </label>
                                             <div className="flex gap-2">
@@ -460,7 +461,7 @@ export default function Login() {
                                                 id="otp"
                                                 value={otp}
                                                 onChange={(e) => setOtp(e.target.value)}
-                                                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 text-center tracking-widest"
+                                                className="flex-1 px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 text-center tracking-widest dark:bg-gray-800 dark:text-white"
                                                 placeholder="Enter OTP"
                                                 type="text"
                                               />
@@ -478,7 +479,7 @@ export default function Login() {
                                         {otpVerified && (
                                           <>
                                             <div className="space-y-1">
-                                              <label htmlFor="newPassword" className="text-sm font-medium text-gray-700 block pl-1">
+                                              <label htmlFor="newPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
                                                 New Password
                                               </label>
                                               <div className="relative">
@@ -486,7 +487,7 @@ export default function Login() {
                                                   id="newPassword"
                                                   value={newPassword}
                                                   onChange={(e) => setNewPassword(e.target.value)}
-                                                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 dark:bg-gray-800 dark:text-white"
                                                   placeholder="New Password"
                                                   type={showPassword ? "text" : "password"}
                                                   minLength={6}
@@ -495,7 +496,7 @@ export default function Login() {
                                                 <button
                                                   type="button"
                                                   onClick={() => setShowPassword(!showPassword)}
-                                                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                                                 >
                                                   {showPassword ? (
                                                     <svg
@@ -539,7 +540,7 @@ export default function Login() {
                                             </div>
                             
                                             <div className="space-y-1">
-                                              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 block pl-1">
+                                              <label htmlFor="confirmPassword" className="text-sm font-medium text-gray-700 dark:text-gray-300 block pl-1">
                                                 Confirm Password
                                               </label>
                                               <div className="relative">
@@ -547,7 +548,7 @@ export default function Login() {
                                                   id="confirmPassword"
                                                   value={confirmPassword}
                                                   onChange={(e) => setConfirmPassword(e.target.value)}
-                                                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200"
+                                                  className="w-full px-4 py-3 rounded-lg border border-gray-300 dark:border-gray-600 focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 outline-none transition-all duration-200 dark:bg-gray-800 dark:text-white"
                                                   placeholder="Confirm Password"
                                                   type={showConfirmPassword ? "text" : "password"}
                                                   minLength={6}
@@ -556,7 +557,7 @@ export default function Login() {
                                                 <button
                                                   type="button"
                                                   onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                                                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                                                  className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-300"
                                                 >
                                                   {showConfirmPassword ? (
                                                     <svg
@@ -603,7 +604,7 @@ export default function Login() {
                             
                                         <div className="pt-2">
                                           {!otpVerified ? (
-                                            <p className="text-sm text-gray-500 text-center">Please verify your email to continue</p>
+                                            <p className="text-sm text-gray-500 dark:text-gray-400 text-center">Please verify your email to continue</p>
                                           ) : (
                                             <button
                                               type="submit"
@@ -624,7 +625,6 @@ export default function Login() {
                                     </div>
                                   </div>
                                 </div>
-                            
                             )
     );
 }

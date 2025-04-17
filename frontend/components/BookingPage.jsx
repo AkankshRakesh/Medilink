@@ -445,49 +445,49 @@ function BookingPage() {
 
   if (loading) {
     return (
-      <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen pt-6">
+      <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen pt-6">
         <div className="container mx-auto py-6 px-4 md:px-6">
           <div className="flex items-center mb-8">
-            <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
-              <Calendar className="h-5 w-5 text-primary" />
+            <div className="h-10 w-10 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mr-3">
+              <Calendar className="h-5 w-5 text-primary dark:text-gray-300" />
             </div>
-            <h1 className="text-2xl md:text-3xl font-bold">Book Your Appointment</h1>
+            <h1 className="text-2xl md:text-3xl font-bold dark:text-white">Book Your Appointment</h1>
           </div>
 
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
             <div className="lg:col-span-2 space-y-6">
-              <Card className="overflow-hidden border-none shadow-md">
-                <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent">
-                  <div className="h-7 w-48 bg-gray-200 rounded-md animate-pulse"></div>
+              <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800 dark:border-gray-700">
+                <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent dark:from-primary/10 dark:to-primary/5">
+                  <div className="h-7 w-48 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="flex flex-wrap gap-2">
                     {[1, 2, 3, 4, 5, 6].map((i) => (
-                      <div key={i} className="h-8 w-24 bg-gray-200 rounded-md animate-pulse"></div>
+                      <div key={i} className="h-8 w-24 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
-              <Card className="overflow-hidden border-none shadow-md">
-                <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent">
-                  <div className="h-7 w-48 bg-gray-200 rounded-md animate-pulse"></div>
+              <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800 dark:border-gray-700">
+                <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent dark:from-primary/10 dark:to-primary/5">
+                  <div className="h-7 w-48 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse"></div>
                 </CardHeader>
                 <CardContent className="p-6">
                   <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                     {[1, 2, 3].map((i) => (
-                      <div key={i} className="h-24 bg-gray-200 rounded-lg animate-pulse"></div>
+                      <div key={i} className="h-24 bg-gray-200 dark:bg-gray-700 rounded-lg animate-pulse"></div>
                     ))}
                   </div>
                 </CardContent>
               </Card>
             </div>
             <div className="lg:col-span-1">
-              <Card className="sticky top-6 overflow-hidden border-none shadow-md">
+              <Card className="sticky top-6 overflow-hidden border-none shadow-md dark:bg-gray-800 dark:border-gray-700">
                 <CardContent className="pt-6">
                   <div className="flex flex-col items-center mb-6">
-                    <div className="h-24 w-24 rounded-full bg-gray-200 animate-pulse mb-4"></div>
-                    <div className="h-6 w-48 bg-gray-200 rounded-md animate-pulse mb-2"></div>
-                    <div className="h-4 w-32 bg-gray-200 rounded-md animate-pulse mb-2"></div>
+                    <div className="h-24 w-24 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse mb-4"></div>
+                    <div className="h-6 w-48 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse mb-2"></div>
+                    <div className="h-4 w-32 bg-gray-200 dark:bg-gray-700 rounded-md animate-pulse mb-2"></div>
                   </div>
                 </CardContent>
               </Card>
@@ -499,25 +499,25 @@ function BookingPage() {
   }
 
   return (
-    <div className="bg-gradient-to-b from-gray-50 to-white min-h-screen pt-6">
+    <div className="bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800 min-h-screen pt-6">
       <div className="container mx-auto py-6 px-4 md:px-6">
         <div className="flex items-center mb-8">
-          <div className="h-10 w-10 bg-primary/10 rounded-full flex items-center justify-center mr-3">
-            <Calendar className="h-5 w-5 text-primary" />
+          <div className="h-10 w-10 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mr-3">
+            <Calendar className="h-5 w-5 text-primary dark:text-primary-foreground" />
           </div>
-          <h1 className="text-2xl md:text-3xl font-bold">Book Your Appointment</h1>
+          <h1 className="text-2xl md:text-3xl font-bold dark:text-white">Book Your Appointment</h1>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-2 space-y-6">
             {/* Category selection */}
-            <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent">
-                <CardTitle className="flex items-center">
-                  <MapPin className="h-5 w-5 mr-2 text-primary" />
+            <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800 dark:border-gray-700">
+              <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent dark:from-primary/10 dark:to-primary/5">
+                <CardTitle className="flex items-center dark:text-white">
+                  <MapPin className="h-5 w-5 mr-2 text-primary dark:text-gray-300" />
                   Medical Specialties
                 </CardTitle>
-                <CardDescription>Select a specialty to find the right doctor for your needs</CardDescription>
+                <CardDescription className="dark:text-gray-300">Select a specialty to find the right doctor for your needs</CardDescription>
               </CardHeader>
               <CardContent className="p-6">
                 <div className="flex flex-wrap gap-2">
@@ -527,8 +527,8 @@ function BookingPage() {
                       variant="outline"
                       className={`px-3 py-1.5 cursor-pointer transition-all ${
                         selectedSpecialty === cat
-                          ? "bg-primary text-primary-foreground hover:bg-primary/90"
-                          : "hover:bg-primary/10"
+                          ? "bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary/25 dark:text-white dark:hover:bg-primary/10"
+                          : "hover:bg-primary/10 dark:hover:bg-primary/20"
                       }`}
                       onClick={() => handleSpecialtyClick(cat)}
                     >
@@ -539,7 +539,7 @@ function BookingPage() {
                     <Button
                       variant="ghost"
                       size="sm"
-                      className="text-primary hover:text-primary/80 hover:bg-primary/5"
+                      className="text-primary hover:text-primary/80 hover:bg-primary/5 dark:text-gray-300 dark:hover:bg-primary/20"
                       onClick={() => setShowAllCategories(!showAllCategories)}
                     >
                       {showAllCategories ? "Show less" : `+${category.length - visibleCategories} more`}
@@ -549,13 +549,13 @@ function BookingPage() {
               </CardContent>
             </Card>
 
-            <Card className="overflow-hidden border-none shadow-md">
-              <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent">
-                <CardTitle className="flex items-center">
-                  <User className="h-5 w-5 mr-2 text-primary" />
+            <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800 dark:border-gray-700">
+              <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent dark:from-primary/10 dark:to-primary/5">
+                <CardTitle className="flex items-center dark:text-white">
+                  <User className="h-5 w-5 mr-2 text-primary dark:text-gray-300" />
                   Available Doctors
                 </CardTitle>
-                <CardDescription>
+                <CardDescription className="dark:text-gray-300">
                   {selectedSpecialty
                     ? `Showing doctors specializing in ${selectedSpecialty}`
                     : "Select a doctor for your appointment"}
@@ -565,21 +565,23 @@ function BookingPage() {
                 {loadingDoctors ? (
                   <div className="flex flex-col items-center justify-center py-12">
                     <LoadingSpinner size="lg" />
-                    <p className="mt-4 text-muted-foreground">Finding the best doctors for you...</p>
+                    <p className="mt-4 text-muted-foreground dark:text-gray-400">Finding the best doctors for you...</p>
                   </div>
                 ) : !doctorDetails ? (
                   <div className="text-center py-8">
-                    <div className="mb-6 mx-auto w-20 h-20 rounded-full bg-primary/5 flex items-center justify-center">
-                      <User className="h-10 w-10 text-primary/60" />
+                    <div className="mb-6 mx-auto w-20 h-20 rounded-full bg-primary/5 dark:bg-primary/10 flex items-center justify-center">
+                      <User className="h-10 w-10 text-primary/60 dark:text-primary-foreground/60" />
                     </div>
-                    <p className="text-lg font-medium mb-2">No doctors available</p>
-                    <p className="text-muted-foreground mb-6 max-w-md mx-auto">
+                    <p className="text-lg font-medium mb-2 dark:text-white">No doctors available</p>
+                    <p className="text-muted-foreground dark:text-gray-400 mb-6 max-w-md mx-auto">
                       {selectedSpecialty
                         ? `We couldn't find any doctors for ${selectedSpecialty} at the moment`
                         : "Please select a specialty to see available doctors"}
                     </p>
                     <Link href="/doctors">
-                      <Button className="bg-primary hover:bg-primary/90">Browse all doctors</Button>
+                      <Button className="bg-primary hover:bg-primary/90 dark:bg-primary dark:hover:bg-primary/90 dark:text-white">
+                        Browse all doctors
+                      </Button>
                     </Link>
                   </div>
                 ) : (
@@ -589,17 +591,17 @@ function BookingPage() {
                       <div
                         className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
                           doctorDetails?.id === firstDoctorChoice.id
-                            ? "border-2 border-primary bg-primary/5"
-                            : "border border-gray-100 shadow-sm hover:shadow-md cursor-pointer"
+                            ? "border-2 border-primary bg-primary/5 dark:bg-primary/10"
+                            : "border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md cursor-pointer dark:bg-gray-700"
                         }`}
                         onClick={() => handleDoctorSelect(firstDoctorChoice)}
                       >
-                        <Avatar className="h-16 w-16 border-2 border-primary/10">
+                        <Avatar className="h-16 w-16 border-2 border-primary/10 dark:border-primary/20">
                           <AvatarImage
                             src={firstDoctorChoice.picture || "/placeholder.svg"}
                             alt={firstDoctorChoice.name}
                           />
-                          <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                          <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-foreground font-bold">
                             {firstDoctorChoice.name
                               ?.split(" ")
                               .map((n) => n[0])
@@ -610,22 +612,22 @@ function BookingPage() {
                         </Avatar>
                         <div className="flex-1">
                           <div className="flex items-center justify-between">
-                            <p className="font-semibold text-lg text-foreground">{firstDoctorChoice.name}</p>
+                            <p className="font-semibold text-lg text-foreground dark:text-white">{firstDoctorChoice.name}</p>
                           </div>
-                          <p className="text-sm text-muted-foreground">{firstDoctorChoice.specialization}</p>
+                          <p className="text-sm text-muted-foreground dark:text-gray-400">{firstDoctorChoice.specialization}</p>
                           <div className="flex items-center mt-1.5">
                             {firstDoctorChoice.rating != 0 ? (
-                              <div className="flex items-center bg-yellow-50 px-2 py-0.5 rounded-full">
+                              <div className="flex items-center bg-yellow-50 dark:bg-yellow-900/30 px-2 py-0.5 rounded-full">
                                 <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
-                                <span className="text-sm font-medium text-yellow-700">{firstDoctorChoice.rating}</span>
+                                <span className="text-sm font-medium text-yellow-700 dark:text-yellow-400">{firstDoctorChoice.rating}</span>
                               </div>
                             ) : (
-                              <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                              <span className="text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
                                 Newly joined
                               </span>
                             )}
-                            <span className="mx-2 text-gray-300">•</span>
-                            <span className="text-sm text-muted-foreground">₹{firstDoctorChoice.fee}</span>
+                            <span className="mx-2 text-gray-300 dark:text-gray-600">•</span>
+                            <span className="text-sm text-muted-foreground dark:text-gray-400">₹{firstDoctorChoice.fee}</span>
                           </div>
                         </div>
                       </div>
@@ -638,17 +640,17 @@ function BookingPage() {
                           <div
                             className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
                               doctorDetails?.id === secondDoctorChoice.id
-                                ? "border-2 border-primary bg-primary/5"
-                                : "border border-gray-100 shadow-sm hover:shadow-md cursor-pointer"
+                                ? "border-2 border-primary bg-primary/5 dark:bg-primary/10"
+                                : "border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md cursor-pointer dark:bg-gray-700"
                             }`}
                             onClick={() => handleDoctorSelect(secondDoctorChoice)}
                           >
-                            <Avatar className="h-16 w-16 border-2 border-primary/10">
+                            <Avatar className="h-16 w-16 border-2 border-primary/10 dark:border-primary/20">
                               <AvatarImage
                                 src={secondDoctorChoice.picture || "/placeholder.svg"}
                                 alt={secondDoctorChoice.name}
                               />
-                              <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                              <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-foreground font-bold">
                                 {secondDoctorChoice.name
                                   ?.split(" ")
                                   .map((n) => n[0])
@@ -659,24 +661,24 @@ function BookingPage() {
                             </Avatar>
                             <div className="flex-1">
                               <div className="flex items-center justify-between">
-                                <p className="font-semibold text-lg text-foreground">{secondDoctorChoice.name}</p>
+                                <p className="font-semibold text-lg text-foreground dark:text-white">{secondDoctorChoice.name}</p>
                               </div>
-                              <p className="text-sm text-muted-foreground">{secondDoctorChoice.specialization}</p>
+                              <p className="text-sm text-muted-foreground dark:text-gray-400">{secondDoctorChoice.specialization}</p>
                               <div className="flex items-center mt-1.5">
                                 {secondDoctorChoice.rating != 0 ? (
-                                  <div className="flex items-center bg-yellow-50 px-2 py-0.5 rounded-full">
+                                  <div className="flex items-center bg-yellow-50 dark:bg-yellow-900/30 px-2 py-0.5 rounded-full">
                                     <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
-                                    <span className="text-sm font-medium text-yellow-700">
+                                    <span className="text-sm font-medium text-yellow-700 dark:text-yellow-400">
                                       {secondDoctorChoice.rating}
                                     </span>
                                   </div>
                                 ) : (
-                                  <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                                  <span className="text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
                                     Newly joined
                                   </span>
                                 )}
-                                <span className="mx-2 text-gray-300">•</span>
-                                <span className="text-sm text-muted-foreground">₹{secondDoctorChoice.fee}</span>
+                                <span className="mx-2 text-gray-300 dark:text-gray-600">•</span>
+                                <span className="text-sm text-muted-foreground dark:text-gray-400">₹{secondDoctorChoice.fee}</span>
                               </div>
                             </div>
                           </div>
@@ -688,17 +690,17 @@ function BookingPage() {
                             <div
                               className={`flex items-center gap-4 p-4 rounded-xl transition-all ${
                                 doctorDetails?.id === thirdDoctorChoice.id
-                                  ? "border-2 border-primary bg-primary/5"
-                                  : "border border-gray-100 shadow-sm hover:shadow-md cursor-pointer"
+                                  ? "border-2 border-primary bg-primary/5 dark:bg-primary/10"
+                                  : "border border-gray-100 dark:border-gray-700 shadow-sm hover:shadow-md cursor-pointer dark:bg-gray-700"
                               }`}
                               onClick={() => handleDoctorSelect(thirdDoctorChoice)}
                             >
-                              <Avatar className="h-16 w-16 border-2 border-primary/10">
+                              <Avatar className="h-16 w-16 border-2 border-primary/10 dark:border-primary/20">
                                 <AvatarImage
                                   src={thirdDoctorChoice.picture || "/placeholder.svg"}
                                   alt={thirdDoctorChoice.name}
                                 />
-                                <AvatarFallback className="bg-primary/10 text-primary font-bold">
+                                <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-foreground font-bold">
                                   {thirdDoctorChoice.name
                                     ?.split(" ")
                                     .map((n) => n[0])
@@ -709,24 +711,24 @@ function BookingPage() {
                               </Avatar>
                               <div className="flex-1">
                                 <div className="flex items-center justify-between">
-                                  <p className="font-semibold text-lg text-foreground">{thirdDoctorChoice.name}</p>
+                                  <p className="font-semibold text-lg text-foreground dark:text-white">{thirdDoctorChoice.name}</p>
                                 </div>
-                                <p className="text-sm text-muted-foreground">{thirdDoctorChoice.specialization}</p>
+                                <p className="text-sm text-muted-foreground dark:text-gray-400">{thirdDoctorChoice.specialization}</p>
                                 <div className="flex items-center mt-1.5">
                                   {thirdDoctorChoice.rating != 0 ? (
-                                    <div className="flex items-center bg-yellow-50 px-2 py-0.5 rounded-full">
+                                    <div className="flex items-center bg-yellow-50 dark:bg-yellow-900/30 px-2 py-0.5 rounded-full">
                                       <Star className="h-3.5 w-3.5 text-yellow-500 fill-yellow-500 mr-1" />
-                                      <span className="text-sm font-medium text-yellow-700">
+                                      <span className="text-sm font-medium text-yellow-700 dark:text-yellow-400">
                                         {thirdDoctorChoice.rating}
                                       </span>
                                     </div>
                                   ) : (
-                                    <span className="text-xs font-medium text-green-600 bg-green-50 px-2 py-0.5 rounded-full">
+                                    <span className="text-xs font-medium text-green-600 dark:text-green-400 bg-green-50 dark:bg-green-900/30 px-2 py-0.5 rounded-full">
                                       Newly joined
                                     </span>
                                   )}
-                                  <span className="mx-2 text-gray-300">•</span>
-                                  <span className="text-sm text-muted-foreground">₹{thirdDoctorChoice.fee}</span>
+                                  <span className="mx-2 text-gray-300 dark:text-gray-600">•</span>
+                                  <span className="text-sm text-muted-foreground dark:text-gray-400">₹{thirdDoctorChoice.fee}</span>
                                 </div>
                               </div>
                             </div>
@@ -740,7 +742,7 @@ function BookingPage() {
                         <Button
                           variant="ghost"
                           size="sm"
-                          className="text-primary hover:text-primary/80 hover:bg-primary/5"
+                          className="text-primary hover:text-primary/80 hover:bg-primary/5 dark:text-gray-300 dark:hover:bg-primary/20"
                           onClick={() => setShowMoreDoctors(!showMoreDoctors)}
                         >
                           {showMoreDoctors ? (
@@ -765,21 +767,21 @@ function BookingPage() {
             {!doctorDetails ? (
               <></>
             ) : (
-              <Card className="overflow-hidden border-none shadow-md">
-                <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent">
+              <Card className="overflow-hidden border-none shadow-md dark:bg-gray-800 dark:border-gray-700">
+                <CardHeader className="pb-3 bg-gradient-to-r from-primary/5 to-transparent dark:from-primary/10 dark:to-primary/5">
                   <div className="flex justify-between items-center">
                     <div>
-                      <CardTitle className="flex items-center">
-                        <CalendarSearch className="h-5 w-5 mr-2 text-primary" />
+                      <CardTitle className="flex items-center dark:text-white">
+                        <CalendarSearch className="h-5 w-5 mr-2 text-primary dark:text-gray-300" />
                         Choose Date & Time
                       </CardTitle>
-                      <CardDescription className="hidden md:block">
+                      <CardDescription className="hidden md:block dark:text-gray-300">
                         Select when you'd like to meet with {doctorDetails.name}
                       </CardDescription>
                     </div>
-                    <div className=" hidden md:flex items-center text-sm bg-primary/5 px-3 py-1 rounded-full">
-                      <Calendar className="h-4 w-4 mr-1.5 text-primary" />
-                      <span className="font-medium">{selectedDate}</span>
+                    <div className="hidden md:flex items-center text-sm bg-primary/5 dark:bg-primary/10 px-3 py-1 rounded-full">
+                      <Calendar className="h-4 w-4 mr-1.5 text-primary dark:text-gray-300" />
+                      <span className="font-medium dark:text-white">{selectedDate}</span>
                     </div>
                   </div>
                 </CardHeader>
@@ -792,8 +794,8 @@ function BookingPage() {
                           onClick={() => setSelectedDate(fullDate)}
                           className={`min-w-[4.5rem] h-20 flex flex-col items-center justify-center rounded-xl transition-all ${
                             fullDate === selectedDate
-                              ? "bg-primary text-primary-foreground shadow-md"
-                              : "bg-background border border-input hover:bg-accent hover:text-accent-foreground"
+                              ? "bg-primary text-primary-foreground hover:bg-primary/90 dark:bg-primary/25 dark:text-white dark:hover:bg-primary/10"
+                              : "bg-background border border-input hover:bg-accent hover:text-accent-foreground dark:bg-gray-700 dark:border-gray-600 dark:hover:bg-gray-600"
                           }`}
                         >
                           <span className="text-sm font-medium">{day}</span>
@@ -802,40 +804,40 @@ function BookingPage() {
                         </button>
 
                         {/* Add separator between dates except after last */}
-                        {index < dates.length - 1 && <div className="h-px w-4 bg-gray-400 mx-1 flex-shrink-0" />}
+                        {index < dates.length - 1 && <div className="h-px w-4 bg-gray-400 dark:bg-gray-600 mx-1 flex-shrink-0" />}
                       </React.Fragment>
                     ))}
                   </div>
 
                   <div>
                     <div className="flex items-center mb-4">
-                      <Clock3 className="h-4 w-4 mr-2 text-primary" />
-                      <h3 className="text-sm font-medium">Available Time Slots</h3>
+                      <Clock3 className="h-4 w-4 mr-2 text-primary dark:text-gray-300" />
+                      <h3 className="text-sm font-medium dark:text-white">Available Time Slots</h3>
                     </div>
 
                     {loadingTimes ? (
                       <div className="flex flex-col items-center justify-center py-8">
                         <LoadingSpinner size="md" />
-                        <p className="mt-3 text-sm text-muted-foreground">Loading available times...</p>
+                        <p className="mt-3 text-sm text-muted-foreground dark:text-gray-400">Loading available times...</p>
                       </div>
                     ) : (
                       <Tabs defaultValue="morning" className="w-full">
-                        <TabsList className="grid w-full grid-cols-3 mb-4">
+                        <TabsList className="grid w-full grid-cols-3 mb-4 bg-gray-100 dark:bg-gray-700">
                           <TabsTrigger
                             value="morning"
-                            className="data-[state=active]:bg-white data-[state=active]:text-primary"
+                            className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-800 dark:data-[state=active]:text-gray-300"
                           >
                             Morning
                           </TabsTrigger>
                           <TabsTrigger
                             value="afternoon"
-                            className="data-[state=active]:bg-white data-[state=active]:text-primary"
+                            className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-800 dark:data-[state=active]:text-gray-300"
                           >
                             Afternoon
                           </TabsTrigger>
                           <TabsTrigger
                             value="evening"
-                            className="data-[state=active]:bg-white data-[state=active]:text-primary"
+                            className="data-[state=active]:bg-white data-[state=active]:text-primary dark:data-[state=active]:bg-gray-800 dark:data-[state=active]:text-gray-300"
                           >
                             Evening
                           </TabsTrigger>
@@ -858,20 +860,20 @@ function BookingPage() {
                                     onClick={() => !slot.booked && !isPastTime && setSelectedTime(slot.time)}
                                     className={`p-2 text-sm rounded-md border transition-all relative ${
                                       slot.time === selectedTime
-                                        ? "bg-primary/10 border-primary text-primary font-medium shadow-sm"
+                                        ? "bg-primary/10 border-primary text-primary font-medium shadow-sm dark:bg-primary/20 dark:border-primary/50 dark:text-primary-foreground"
                                         : slot.booked || isPastTime
-                                          ? "bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed"
-                                          : "border-input text-foreground hover:bg-accent hover:border-primary/30"
+                                          ? "bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-500"
+                                          : "border-input text-foreground hover:bg-accent hover:border-primary/30 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-primary/50"
                                     }`}
                                     disabled={slot.booked || isPastTime}
                                   >
                                     {formattedTime}
                                     {slot.booked && (
                                       <>
-                                        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full dark:bg-red-900/30 dark:text-red-400">
                                           Booked
                                         </span>
-                                        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full dark:bg-red-900/30 dark:text-red-400">
                                           ✓
                                         </span>
                                       </>
@@ -881,9 +883,9 @@ function BookingPage() {
                               })}
                             </div>
                           ) : (
-                            <div className="text-center py-8 bg-gray-50 rounded-lg">
-                              <Clock className="h-10 w-10 text-muted-foreground mx-auto mb-2 opacity-40" />
-                              <p className="text-muted-foreground">No morning slots available</p>
+                            <div className="text-center py-8 bg-gray-50 rounded-lg dark:bg-gray-700">
+                              <Clock className="h-10 w-10 text-muted-foreground mx-auto mb-2 opacity-40 dark:text-gray-400" />
+                              <p className="text-muted-foreground dark:text-gray-400">No morning slots available</p>
                             </div>
                           )}
                         </TabsContent>
@@ -905,20 +907,20 @@ function BookingPage() {
                                     onClick={() => !slot.booked && !isPastTime && setSelectedTime(slot.time)}
                                     className={`p-2 text-sm rounded-md border transition-all relative ${
                                       slot.time === selectedTime
-                                        ? "bg-primary/10 border-primary text-primary font-medium shadow-sm"
+                                        ? "bg-primary/10 border-primary text-primary font-medium shadow-sm dark:bg-primary/20 dark:border-primary/50 dark:text-primary-foreground"
                                         : slot.booked || isPastTime
-                                          ? "bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed"
-                                          : "border-input text-foreground hover:bg-accent hover:border-primary/30"
+                                          ? "bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-500"
+                                          : "border-input text-foreground hover:bg-accent hover:border-primary/30 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-primary/50"
                                     }`}
                                     disabled={slot.booked || isPastTime}
                                   >
                                     {formattedTime}
                                     {slot.booked && (
                                       <>
-                                        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full dark:bg-red-900/30 dark:text-red-400">
                                           Booked
                                         </span>
-                                        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full dark:bg-red-900/30 dark:text-red-400">
                                           ✓
                                         </span>
                                       </>
@@ -928,9 +930,9 @@ function BookingPage() {
                               })}
                             </div>
                           ) : (
-                            <div className="text-center py-8 bg-gray-50 rounded-lg">
-                              <Clock className="h-10 w-10 text-muted-foreground mx-auto mb-2 opacity-40" />
-                              <p className="text-muted-foreground">No afternoon slots available</p>
+                            <div className="text-center py-8 bg-gray-50 rounded-lg dark:bg-gray-700">
+                              <Clock className="h-10 w-10 text-muted-foreground mx-auto mb-2 opacity-40 dark:text-gray-400" />
+                              <p className="text-muted-foreground dark:text-gray-400">No afternoon slots available</p>
                             </div>
                           )}
                         </TabsContent>
@@ -952,20 +954,20 @@ function BookingPage() {
                                     onClick={() => !slot.booked && !isPastTime && setSelectedTime(slot.time)}
                                     className={`p-2 text-sm rounded-md border transition-all relative ${
                                       slot.time === selectedTime
-                                        ? "bg-primary/10 border-primary text-primary font-medium shadow-sm"
+                                        ? "bg-primary/10 border-primary text-primary font-medium shadow-sm dark:bg-primary/20 dark:border-primary/50 dark:text-primary-foreground"
                                         : slot.booked || isPastTime
-                                          ? "bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed"
-                                          : "border-input text-foreground hover:bg-accent hover:border-primary/30"
+                                          ? "bg-gray-50 border-gray-200 text-gray-400 cursor-not-allowed dark:bg-gray-700 dark:border-gray-600 dark:text-gray-500"
+                                          : "border-input text-foreground hover:bg-accent hover:border-primary/30 dark:border-gray-600 dark:hover:bg-gray-700 dark:hover:border-primary/50"
                                     }`}
                                     disabled={slot.booked || isPastTime}
                                   >
                                     {formattedTime}
                                     {slot.booked && (
                                       <>
-                                        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                        <span className="absolute hidden md:block -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full dark:bg-red-900/30 dark:text-red-400">
                                           Booked
                                         </span>
-                                        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full">
+                                        <span className="absolute md:hidden -top-1 -right-1 bg-red-100 text-red-800 text-xs px-1 rounded-full dark:bg-red-900/30 dark:text-red-400">
                                           ✓
                                         </span>
                                       </>
@@ -975,9 +977,9 @@ function BookingPage() {
                               })}
                             </div>
                           ) : (
-                            <div className="text-center py-8 bg-gray-50 rounded-lg">
-                              <Clock className="h-10 w-10 text-muted-foreground mx-auto mb-2 opacity-40" />
-                              <p className="text-muted-foreground">No evening slots available</p>
+                            <div className="text-center py-8 bg-gray-50 rounded-lg dark:bg-gray-700">
+                              <Clock className="h-10 w-10 text-muted-foreground mx-auto mb-2 opacity-40 dark:text-gray-400" />
+                              <p className="text-muted-foreground dark:text-gray-400">No evening slots available</p>
                             </div>
                           )}
                         </TabsContent>
@@ -985,14 +987,14 @@ function BookingPage() {
                     )}
                   </div>
 
-                  <div className="bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-200 rounded-xl p-5 mt-6">
+                  <div className="bg-gradient-to-r from-amber-50 to-amber-100/50 border border-amber-200 rounded-xl p-5 mt-6 dark:from-amber-900/30 dark:to-amber-800/30 dark:border-amber-800">
                     <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
                       <div>
                         <div className="flex items-center mb-1">
-                          <Shield className="h-4 w-4 text-amber-600 mr-1.5" />
-                          <p className="text-sm font-medium text-amber-800">Appointment Summary</p>
+                          <Shield className="h-4 w-4 text-amber-600 dark:text-amber-400 mr-1.5" />
+                          <p className="text-sm font-medium text-amber-800 dark:text-amber-200">Appointment Summary</p>
                         </div>
-                        <p className="font-medium text-gray-800">
+                        <p className="font-medium text-gray-800 dark:text-white">
                           {selectedDate
                             ? new Date(selectedDate).toLocaleDateString("en-US", {
                                 weekday: "long",
@@ -1007,7 +1009,7 @@ function BookingPage() {
                       <Button
                         onClick={bookAppointment}
                         disabled={!selectedTime || processingPayment}
-                        className="bg-green-600 hover:bg-green-700 text-white shadow-sm"
+                        className="bg-green-600 hover:bg-green-700 text-white shadow-sm dark:bg-green-700 dark:hover:bg-green-800"
                       >
                         {processingPayment ? (
                           <div className="flex items-center">
@@ -1027,29 +1029,29 @@ function BookingPage() {
 
           {/* Doctor profile section */}
           <div className="lg:col-span-1">
-            <Card className="sticky top-6 overflow-hidden border-none shadow-md">
+            <Card className="sticky top-6 overflow-hidden border-none shadow-md dark:bg-gray-800 dark:border-gray-700">
               <CardContent className="pt-6">
                 <div className={`flex flex-col items-center ${!doctorDetails ? "" : "mb-6"}`}>
                   {doctorDetails ? (
                     <>
                       <div className="relative mb-4">
-                        <Avatar className="h-28 w-28 border-4 border-primary/10">
+                        <Avatar className="h-28 w-28 border-4 border-primary/10 dark:border-primary/20">
                           <AvatarImage src={doctorDetails.picture || "/placeholder.svg"} alt={doctorDetails.name} />
-                          <AvatarFallback className="bg-primary/10 text-primary text-2xl font-bold">
+                          <AvatarFallback className="bg-primary/10 dark:bg-primary/20 text-primary dark:text-primary-foreground text-2xl font-bold">
                             {doctorDetails.name.charAt(0)}
                           </AvatarFallback>
                         </Avatar>
                         {doctorDetails.rating != 0 && (
-                          <div className="absolute -bottom-2 -right-2 bg-white rounded-full shadow-md px-2 py-1 flex items-center">
+                          <div className="absolute -bottom-2 -right-2 bg-white rounded-full shadow-md px-2 py-1 flex items-center dark:bg-gray-800">
                             <Star className="h-4 w-4 text-yellow-500 fill-yellow-500 mr-1" />
-                            <span className="text-sm font-medium">{doctorDetails.rating}</span>
+                            <span className="text-sm font-medium dark:text-yellow-400">{doctorDetails.rating}</span>
                           </div>
                         )}
                       </div>
-                      <h2 className="text-xl font-bold text-center">{doctorDetails.name}</h2>
-                      <p className="text-muted-foreground mb-1">{doctorDetails.specialization}</p>
+                      <h2 className="text-xl font-bold text-center dark:text-white">{doctorDetails.name}</h2>
+                      <p className="text-muted-foreground mb-1 dark:text-gray-400">{doctorDetails.specialization}</p>
 
-                      <Badge variant="outline" className="bg-primary/5 text-primary mb-4">
+                      <Badge variant="outline" className="bg-primary/5 text-primary mb-4 dark:bg-primary/20 dark:text-primary-foreground">
                         ₹{doctorDetails.fee} per consultation
                       </Badge>
 
@@ -1057,51 +1059,51 @@ function BookingPage() {
                         <Button
                           size="icon"
                           variant="outline"
-                          className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10"
+                          className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10 dark:bg-primary/10 dark:border-primary/20 dark:hover:bg-primary/20"
                         >
-                          <Mail className="h-4 w-4 text-primary" />
+                          <Mail className="h-4 w-4 text-primary dark:text-primary-foreground" />
                           <span className="sr-only">Email</span>
                         </Button>
                         <Button
                           size="icon"
                           variant="outline"
-                          className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10"
+                          className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10 dark:bg-primary/10 dark:border-primary/20 dark:hover:bg-primary/20"
                         >
-                          <PhoneCall className="h-4 w-4 text-primary" />
+                          <PhoneCall className="h-4 w-4 text-primary dark:text-primary-foreground" />
                           <span className="sr-only">Call</span>
                         </Button>
                         <Button
                           size="icon"
                           variant="outline"
-                          className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10"
+                          className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10 dark:bg-primary/10 dark:border-primary/20 dark:hover:bg-primary/20"
                         >
-                          <Smartphone className="h-4 w-4 text-primary" />
+                          <Smartphone className="h-4 w-4 text-primary dark:text-primary-foreground" />
                           <span className="sr-only">Message</span>
                         </Button>
                       </div>
 
-                      <Separator className="my-4" />
+                      <Separator className="my-4 dark:bg-gray-700" />
 
                       <div className="w-full">
-                        <h3 className="text-lg font-semibold mb-3">About Doctor</h3>
-                        <p className="text-sm text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed">
+                        <h3 className="text-lg font-semibold mb-3 dark:text-white">About Doctor</h3>
+                        <p className="text-sm text-muted-foreground bg-muted/50 p-4 rounded-lg leading-relaxed dark:bg-gray-700 dark:text-gray-300">
                           {doctorDetails.biography || "No biography available for this doctor."}
                         </p>
                       </div>
                     </>
                   ) : (
                     <div className="text-center py-8 space-y-4">
-                      <div className="mx-auto w-24 h-24 rounded-full bg-primary/5 flex items-center justify-center">
-                        <User className="h-12 w-12 text-primary/40" />
+                      <div className="mx-auto w-24 h-24 rounded-full bg-primary/5 dark:bg-primary/10 flex items-center justify-center">
+                        <User className="h-12 w-12 text-primary/60 dark:text-primary-foreground/60" />
                       </div>
                       <div>
-                        <h3 className="text-lg font-medium mb-2">Doctor Profile</h3>
-                        <p className="text-sm text-muted-foreground mb-6">
+                        <h3 className="text-lg font-medium mb-2 dark:text-white">Doctor Profile</h3>
+                        <p className="text-sm text-muted-foreground mb-6 dark:text-gray-400">
                           Select a doctor to view their complete profile and availability
                         </p>
                       </div>
                       <Link href="/doctors">
-                        <Button variant="outline" className="w-full">
+                        <Button variant="outline" className="w-full dark:border-gray-600 dark:text-white dark:hover:bg-gray-700">
                           Browse all doctors
                         </Button>
                       </Link>

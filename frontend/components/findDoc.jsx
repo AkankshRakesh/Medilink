@@ -19,7 +19,7 @@ export default function FindDoc() {
   const [selectedExperience, setExperience] = useState("")
   const [selectedSpecialty, setSpecialty] = useState("")
   const [selectedFees, setFees] = useState("")
-  const [specialties, setSpecialties] = useState([]) // Change to state
+  const [specialties, setSpecialties] = useState([])
   const router = useRouter()
 
   const experienceRanges = [
@@ -52,8 +52,6 @@ export default function FindDoc() {
     if (selectedSpecialty) params.append("spec", selectedSpecialty)
     if (selectedExperience) params.append("exp", selectedExperience)
     if (selectedFees) params.append("fee", selectedFees)
-
-    // Navigate to doctors page with filters
     router.push(`/doctors?${params.toString()}`)
   }
 
@@ -66,22 +64,23 @@ export default function FindDoc() {
             key: spec,
             label: spec,
           }))
-          setSpecialties(formattedSpecialties) // Update state
+          setSpecialties(formattedSpecialties)
         } else {
           toast.error("Failed to fetch specializations")
         }
       })
       .catch((err) => {
-        console.error("Fetch error:", err);
+        console.error("Fetch error:", err)
         toast.error("Failed to fetch specializations")
       })
   }, [])
+
   return (
-    <div className="bg-gradient-to-br from-white to-blue-50 p-6 md:p-8 lg:p-10 rounded-xl shadow-lg mx-4 md:mx-6 -mt-8 mb-8 relative z-10 border border-blue-100/50 transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)]">
+    <div className="bg-gradient-to-br from-white to-blue-50 dark:from-gray-900 dark:to-gray-800 p-6 md:p-8 lg:p-10 rounded-xl shadow-lg mx-4 md:mx-6 -mt-8 mb-8 relative z-10 border border-blue-100/50 dark:border-gray-700 transition-shadow duration-300 ease-in-out hover:shadow-[0_0_20px_8px_rgba(59,130,246,0.5)]">
 
       <div className="flex flex-col md:flex-row items-end justify-between gap-4 mb-8">
-        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 flex items-center gap-3">
-          <span className="bg-blue-500/10 p-2 rounded-full">
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white flex items-center gap-3">
+          <span className="bg-blue-500/10 dark:bg-blue-900 p-2 rounded-full">
             <Stethoscope className="w-6 h-6 md:w-7 md:h-7 text-blue-600" />
           </span>
           <span>
@@ -89,7 +88,7 @@ export default function FindDoc() {
           </span>
         </h1>
 
-        <p className="text-sm md:text-base lg:text-xl text-gray-600 font-medium">
+        <p className="text-sm md:text-base lg:text-xl text-gray-600 dark:text-gray-300 font-medium">
           <span className="text-blue-600 font-semibold">Minutes Matter!</span> Just 3 steps away from your consultation
         </p>
       </div>
@@ -97,7 +96,7 @@ export default function FindDoc() {
       <form onSubmit={handleSubmit} className="flex flex-col md:flex-row gap-4 md:gap-6 items-end">
         {/* Speciality Dropdown */}
         <div className="flex flex-col w-full md:w-1/3">
-          <label className="font-medium text-gray-700 flex items-center mb-2 gap-1 text-sm">
+          <label className="font-medium text-gray-700 dark:text-gray-300 flex items-center mb-2 gap-1 text-sm">
             Speciality <span className="text-red-500">*</span>
           </label>
           <DropdownMenu>
@@ -105,16 +104,16 @@ export default function FindDoc() {
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all",
-                  selectedSpecialty && "border-blue-300 bg-blue-50/50 text-blue-700 font-medium",
+                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-200 transition-all",
+                  selectedSpecialty && "border-blue-300 bg-blue-50/50 text-blue-700 dark:text-blue-300 font-medium",
                 )}
               >
-                <span className="truncate">{selectedSpecialtyLabel || "Choose Speciality"}</span>
-                <ChevronDown className="h-4 w-4 opacity-50" />
+                <span className="truncate dark:text-gray-300">{selectedSpecialtyLabel || "Choose Speciality"}</span>
+                <ChevronDown className="h-4 w-4 opacity-50 dark:text-gray-300" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95">
-              <DropdownMenuLabel className="text-blue-600">Specialities</DropdownMenuLabel>
+            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95 dark:bg-gray-800 dark:border-gray-700">
+              <DropdownMenuLabel className="text-blue-600 dark:text-blue-300">Specialities</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {specialties.map((spec) => (
                 <DropdownMenuItem
@@ -122,11 +121,11 @@ export default function FindDoc() {
                   onClick={() => setSpecialty(spec.key)}
                   className={cn(
                     "flex items-center justify-between py-2 px-3 cursor-pointer rounded-md",
-                    selectedSpecialty === spec.key && "bg-blue-50 text-blue-700 font-medium",
+                    selectedSpecialty === spec.key && "bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium",
                   )}
                 >
                   {spec.label}
-                  {selectedSpecialty === spec.key && <Check className="h-4 w-4 text-blue-600" />}
+                  {selectedSpecialty === spec.key && <Check className="h-4 w-4 text-blue-600 dark:text-blue-300" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -135,7 +134,7 @@ export default function FindDoc() {
 
         {/* Experience Dropdown */}
         <div className="flex flex-col w-full md:w-1/3">
-          <label className="font-medium text-gray-700 flex items-center gap-1 mb-2 text-sm">
+          <label className="font-medium text-gray-700 dark:text-gray-300 flex items-center gap-1 mb-2 text-sm">
             Experience <span className="text-red-500">*</span>
           </label>
           <DropdownMenu>
@@ -143,16 +142,16 @@ export default function FindDoc() {
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all",
-                  selectedExperience && "border-blue-300 bg-blue-50/50 text-blue-700 font-medium ",
+                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-200 transition-all",
+                  selectedExperience && "border-blue-300 bg-blue-50/50 text-blue-700 dark:text-blue-300 font-medium",
                 )}
               >
-                <span className="truncate">{selectedExperienceLabel || "Choose Experience"}</span>
-                <ChevronDown className="h-4 w-4 opacity-50" />
+                <span className="truncate dark:text-gray-300">{selectedExperienceLabel || "Choose Experience"}</span>
+                <ChevronDown className="h-4 w-4 opacity-50 dark:text-gray-300" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95">
-              <DropdownMenuLabel className="text-blue-600">Experience Range</DropdownMenuLabel>
+            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95 dark:bg-gray-800 dark:border-gray-700">
+              <DropdownMenuLabel className="text-blue-600 dark:text-blue-300">Experience Range</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {experienceRanges.map((exp) => (
                 <DropdownMenuItem
@@ -160,11 +159,11 @@ export default function FindDoc() {
                   onClick={() => setExperience(exp.key)}
                   className={cn(
                     "flex items-center justify-between py-2 px-3 cursor-pointer rounded-md",
-                    selectedExperience === exp.key && "bg-blue-50 text-blue-700 font-medium",
+                    selectedExperience === exp.key && "bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium",
                   )}
                 >
                   {exp.label}
-                  {selectedExperience === exp.key && <Check className="h-4 w-4 text-blue-600" />}
+                  {selectedExperience === exp.key && <Check className="h-4 w-4 text-blue-600 dark:text-blue-300" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -173,7 +172,7 @@ export default function FindDoc() {
 
         {/* Fees Dropdown */}
         <div className="flex flex-col w-full md:w-1/3">
-          <label className="font-medium text-gray-700 flex items-center mb-2 gap-1 text-sm">
+          <label className="font-medium text-gray-700 dark:text-gray-300 flex items-center mb-2 gap-1 text-sm">
             Fees Range <span className="text-red-500">*</span>
           </label>
           <DropdownMenu>
@@ -181,16 +180,16 @@ export default function FindDoc() {
               <Button
                 variant="outline"
                 className={cn(
-                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 hover:bg-blue-50 hover:border-blue-200 transition-all",
-                  selectedFees && "border-blue-300 bg-blue-50/50 text-blue-700 font-medium",
+                  "w-full justify-between text-left h-12 px-4 rounded-lg border-gray-200 dark:border-gray-700 hover:bg-blue-50 dark:hover:bg-blue-900/30 hover:border-blue-200 transition-all",
+                  selectedFees && "border-blue-300 bg-blue-50/50 text-blue-700 dark:text-blue-300 font-medium",
                 )}
               >
-                <span className="truncate">{selectedFeesLabel || "Choose Fees Range"}</span>
-                <ChevronDown className="h-4 w-4 opacity-50" />
+                <span className="truncate dark:text-gray-300">{selectedFeesLabel || "Choose Fees Range"}</span>
+                <ChevronDown className="h-4 w-4 opacity-50 dark:text-gray-300" />
               </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95">
-              <DropdownMenuLabel className="text-blue-600">Fees Range</DropdownMenuLabel>
+            <DropdownMenuContent className="w-full min-w-[240px] p-1 animate-in fade-in-80 zoom-in-95 dark:bg-gray-800 dark:border-gray-700">
+              <DropdownMenuLabel className="text-blue-600 dark:text-blue-300">Fees Range</DropdownMenuLabel>
               <DropdownMenuSeparator />
               {feesRanges.map((fee) => (
                 <DropdownMenuItem
@@ -198,11 +197,11 @@ export default function FindDoc() {
                   onClick={() => setFees(fee.key)}
                   className={cn(
                     "flex items-center justify-between py-2 px-3 cursor-pointer rounded-md",
-                    selectedFees === fee.key && "bg-blue-50 text-blue-700 font-medium",
+                    selectedFees === fee.key && "bg-blue-50 dark:bg-blue-900 text-blue-700 dark:text-blue-300 font-medium",
                   )}
                 >
                   {fee.label}
-                  {selectedFees === fee.key && <Check className="h-4 w-4 text-blue-600" />}
+                  {selectedFees === fee.key && <Check className="h-4 w-4 text-blue-600 dark:text-blue-300" />}
                 </DropdownMenuItem>
               ))}
             </DropdownMenuContent>
@@ -222,4 +221,3 @@ export default function FindDoc() {
     </div>
   )
 }
-

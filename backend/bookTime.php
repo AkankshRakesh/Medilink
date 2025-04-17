@@ -60,29 +60,97 @@ try {
         $formattedDateTime = $dateTime->format('F j, Y \a\t g:i A');
         
         $patientSubject = "Your Appointment with {$data['doctorName']}";
-        $patientBody = "
-            <h2>Appointment Confirmation</h2>
-            <p>Dear {$patient['username']},</p>
-            <p>Your appointment with {$data['doctorName']} has been confirmed for:</p>
-            <p><strong>{$formattedDateTime}</strong></p>
-            <p>Meeting Link: <a href='{$data['meetLink']}'>{$data['meetLink']}</a></p>
-            <p>Please join the meeting on time.</p>
-            <br>
-            <p>Best regards,</p>
-            <p>Medilink Team</p>
-        ";
+        $patientBody = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; }
+    .email-container { background-color: #fff; border-radius: 8px; padding: 30px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+    .header { text-align: center; color: #d42755; font-size: 22px; font-weight: bold; }
+    .content { margin-top: 20px; font-size: 16px; color: #333; }
+    .content strong { color: #d42755; }
+    .footer { margin-top: 30px; text-align: center; color: #888; font-size: 12px; }
+    .link-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007BFF; /* Bootstrap-like blue */
+  color: #ffffff !important;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 6px;
+  border: none;
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">Appointment Confirmation</div>
+    <div class="content">
+      <p>Dear {$patient['username']},</p>
+      <p>Your appointment with <strong>{$data['doctorName']}</strong> has been confirmed for:</p>
+      <p><strong>{$formattedDateTime}</strong></p>
+      <p>You can join the consultation via the following link:</p>
+      <p><a class="link-btn" href="{$data['meetLink']}">Join Meeting</a></p>
+      <p>Please be on time and ensure you have a stable internet connection.</p>
+      <p>If you have any issues, contact us via your Medilink dashboard.</p>
+    </div>
+    <div class="footer">&copy; 2025 Medilink. All rights reserved.</div>
+  </div>
+</body>
+</html>
+HTML;
+
         
         $doctorSubject = "New Appointment with {$patient['username']}";
-        $doctorBody = "
-            <h2>New Appointment Scheduled</h2>
-            <p>Dear {$data['doctorName']},</p>
-            <p>You have a new appointment with {$patient['username']} scheduled for:</p>
-            <p><strong>{$formattedDateTime}</strong></p>
-            <p>Meeting Link: <a href='{$data['meetLink']}'>{$data['meetLink']}</a></p>
-            <br>
-            <p>Best regards,</p>
-            <p>Medilink Team</p>
-        ";
+        $doctorBody = <<<HTML
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body { font-family: Arial, sans-serif; background-color: #f9f9f9; padding: 20px; }
+    .email-container { background-color: #fff; border-radius: 8px; padding: 30px; max-width: 600px; margin: auto; box-shadow: 0 0 10px rgba(0,0,0,0.05); }
+    .header { text-align: center; color: #0a3d62; font-size: 22px; font-weight: bold; }
+    .content { margin-top: 20px; font-size: 16px; color: #333; }
+    .content strong { color: #0a3d62; }
+    .footer { margin-top: 30px; text-align: center; color: #888; font-size: 12px; }
+    .link-btn {
+  display: inline-block;
+  padding: 10px 20px;
+  background-color: #007BFF; /* Bootstrap-like blue */
+  color: #ffffff !important;
+  font-size: 16px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: 6px;
+  border: none;
+}
+
+
+  </style>
+</head>
+<body>
+  <div class="email-container">
+    <div class="header">New Appointment Scheduled</div>
+    <div class="content">
+      <p>Dear <strong>{$data['doctorName']}</strong>,</p>
+      <p>You have a new appointment with <strong>{$patient['username']}</strong> scheduled for:</p>
+      <p><strong>{$formattedDateTime}</strong></p>
+      <p>Meeting Link:</p>
+      <p><a class="link-btn" href="{$data['meetLink']}">Join Meeting</a></p>
+      <p>Please ensure you're prepared and available at the scheduled time.</p>
+    </div>
+    <div class="footer">&copy; 2025 Medilink. All rights reserved.</div>
+  </div>
+</body>
+</html>
+HTML;
+
         
         $mailer = new PHPMailer(true);
         try {

@@ -146,7 +146,7 @@ export default function Doctors() {
 
   return (
     <>
-      <div className="container mx-auto px-4 py-6 max-w-7xl mt-10">
+      <div className="container mx-auto px-4 py-6 max-w-7xl mt-10 text-black dark:text-white">
         <div className="flex flex-col md:flex-row gap-6">
           {/* Filters Section */}
           <div className="w-full md:w-1/4 shrink-0">
@@ -167,8 +167,8 @@ export default function Doctors() {
                 )}
               </Button>
 
-              <div className={`${isFiltersOpen ? "block" : "hidden"} md:block bg-card rounded-lg border shadow-sm`}>
-                <div className="p-4 border-b">
+              <div className={`${isFiltersOpen ? "block" : "hidden"} md:block bg-card dark:bg-slate-800 dark:border-slate-700 rounded-lg border shadow-sm`}>
+              <div className="p-4 border-b dark:border-slate-600">
                   <div className="flex justify-between items-center">
                     <h2 className="font-semibold text-lg">Filters</h2>
                     {hasActiveFilters && (
@@ -209,7 +209,8 @@ export default function Doctors() {
 
           {/* Main Content */}
           <div className="w-full md:w-3/4">
-            <h1 className="text-2xl font-bold mb-6">Consult Doctors Online</h1>
+          <h1 className="text-2xl font-bold mb-6 text-black dark:text-white">Consult Doctors Online</h1>
+
 
             {/* Active Filters */}
             {hasActiveFilters && (
@@ -242,7 +243,8 @@ export default function Doctors() {
                 ))}
               </div>
             ) : filteredDoctors.length === 0 ? (
-              <div className="text-center py-12 bg-muted/50 rounded-lg">
+              <div className="text-center py-12 bg-muted/50 dark:bg-slate-800 rounded-lg">
+
                 <h3 className="text-xl font-medium mb-2">No doctors found</h3>
                 <p className="text-muted-foreground mb-4">Try adjusting your filters to see more results</p>
                 <Button onClick={clearFilters} variant="outline">
@@ -259,11 +261,11 @@ export default function Doctors() {
           </div>
         </div>
       </div>
-    <footer className="bg-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
+      <footer className="bg-slate-800 dark:bg-black py-12 px-4 sm:px-6 lg:px-8 mt-auto">
         <div className="container mx-auto max-w-6xl">
           {/* Social Media */}
           <div className="flex items-center justify-center mb-8">
-            <div className="h-px bg-slate-600 flex-1"></div>
+            <div className="h-px bg-slate-600 dark:bg-gray-700 flex-1"></div>
             <div className="flex space-x-6 px-6">
               <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Facebook">
                 <Facebook size={24} />
@@ -281,41 +283,41 @@ export default function Doctors() {
                 <Mail size={24} />
               </a>
             </div>
-            <div className="h-px bg-slate-600 flex-1"></div>
+            <div className="h-px bg-slate-600 dark:bg-gray-700 flex-1"></div>
           </div>
 
           {/* Logo */}
           <div className="mb-8 text-center">
-            <Link href="/" className={`text-2xl md:text-3xl text-slate-100 ${fugaz.className}`}>
+            <Link href="/" className={`text-2xl md:text-3xl text-slate-100 dark:text-white ${fugaz.className}`}>
               Medilink
             </Link>
           </div>
 
           {/* Copyright */}
-          <div className="flex items-center justify-center text-slate-400 text-sm mb-6">
+          <div className="flex items-center justify-center text-slate-400 dark:text-gray-400 text-sm mb-6">
             <span>Copyright</span>
             <CopyrightIcon size={14} className="mx-1" />
             <span>2025 Medilink, Inc</span>
           </div>
 
           {/* Links */}
-          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-slate-300">
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm text-slate-300 dark:text-gray-400">
             <a href="#" className="hover:text-white transition-colors">
               Legal Terms
             </a>
-            <span className="hidden sm:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-500 dark:text-gray-600">|</span>
             <a href="#" className="hover:text-white transition-colors">
               Privacy Policy
             </a>
-            <span className="hidden sm:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-500 dark:text-gray-600">|</span>
             <a href="#" className="hover:text-white transition-colors">
               Security
             </a>
-            <span className="hidden sm:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-500 dark:text-gray-600">|</span>
             <a href="#" className="hover:text-white transition-colors">
               Website Accessibility
             </a>
-            <span className="hidden sm:inline text-slate-500">|</span>
+            <span className="hidden sm:inline text-slate-500 dark:text-gray-600">|</span>
             <a href="#" className="hover:text-white transition-colors">
               Manage Cookies
             </a>
@@ -356,7 +358,7 @@ const DoctorCard = ({ doctor }) => {
   const ratingPercentage = doctor.rating * 20; // Convert rating (1-5) to percentage (0-100)
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden ">
       <div className="relative h-32 bg-gradient-to-r from-blue-500 to-blue-900">
         <div className="absolute -bottom-12 left-4">
           <div className="h-24 w-24 rounded-full border-4 border-background overflow-hidden bg-muted">
@@ -424,7 +426,7 @@ const DoctorCard = ({ doctor }) => {
         <Button onClick={handleConsultClick} className="px-6" disabled={isLoading}>
           {isLoading ? (
             <div className="flex items-center">
-              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <svg className="animate-spin -ml-1 mr-2 h-4 w-4 text-white dark:text-black" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
               </svg>

@@ -101,7 +101,7 @@ export function BookingList({ bookings, type, onCancelBooking, onRateBooking }) 
           <div className="space-y-4">
             {upcomingBookings.map((booking) => (
               <BookingCard
-                key={`upcoming-${booking.time}`}
+                key={`upcoming-${booking.time}-${booking.doctorId}`}
                 booking={booking}
                 type={type}
                 onCancel={onCancelBooking}
@@ -131,7 +131,7 @@ export function BookingList({ bookings, type, onCancelBooking, onRateBooking }) 
             <div className="space-y-4">
               {pastBookings.map((booking) => (
                 <BookingCard
-                  key={`past-${booking.time}`}
+                  key={`past-${booking.time}-${booking.doctorId}`}
                   booking={booking}
                   type={type}
                   onCancel={onCancelBooking}
@@ -165,7 +165,7 @@ function BookingCard({ booking, type, onCancel, onRate, doctorDetails }) {
   const isPastBooking = new Date(`${booking.date}T${booking.time}`) < new Date()
 
   return (
-    <Card className="hover:shadow-md transition-shadow">
+    <Card className="hover:shadow-md transition-shadow dark:bg-gray-900">
       <CardContent className="pt-6">
         <div className="flex flex-col sm:flex-row justify-between items-start gap-4">
           <div className="flex flex-col sm:flex-row items-start gap-4 w-full">
