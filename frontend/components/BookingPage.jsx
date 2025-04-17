@@ -503,7 +503,7 @@ function BookingPage() {
       <div className="container mx-auto py-6 px-4 md:px-6">
         <div className="flex items-center mb-8">
           <div className="h-10 w-10 bg-primary/10 dark:bg-primary/20 rounded-full flex items-center justify-center mr-3">
-            <Calendar className="h-5 w-5 text-primary dark:text-primary-foreground" />
+            <Calendar className="h-5 w-5 text-primary dark:text-gray-300" />
           </div>
           <h1 className="text-2xl md:text-3xl font-bold dark:text-white">Book Your Appointment</h1>
         </div>

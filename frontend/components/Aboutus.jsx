@@ -80,14 +80,14 @@ export const Aboutus = () => {
   }
 
   return (
-    <div className="flex flex-col min-h-screen">
+    <div className="flex flex-col min-h-screen dark:bg-gray-900">
       {/* Hero Section */}
-      <section className="bg-gradient-to-b from-[#f0f2fd] to-[#e8ecff] py-12 md:py-20 px-4 sm:px-6 lg:px-8">
+      <section className="bg-gradient-to-b from-[#f0f2fd] to-[#e8ecff] dark:from-gray-800 dark:to-gray-900 py-12 md:py-20 px-4 sm:px-6 lg:px-8">
         <div className="container mx-auto max-w-7xl">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-12">
             <div className="w-full md:w-3/5 space-y-6">
-              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 tracking-tight">About Us</h1>
-              <p className="text-lg md:text-xl text-slate-700 leading-relaxed max-w-2xl">
+              <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-slate-800 dark:text-white tracking-tight">About Us</h1>
+              <p className="text-lg md:text-xl text-slate-700 dark:text-gray-300 leading-relaxed max-w-2xl">
                 Our platform is designed, not just assembled, to provide a seamless and reassuring healthcare
                 experience—connecting you with the right doctors effortlessly.
               </p>
@@ -106,19 +106,19 @@ export const Aboutus = () => {
       </section>
 
       {/* Mission Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row items-center gap-8 md:gap-16">
             <div className="w-full md:w-1/2">
-              <div className="relative h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden rounded-xl shadow-xl">
+              <div className="relative h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden rounded-xl shadow-xl dark:shadow-gray-800/50">
                 <Image src={pic1} alt="Our mission" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="w-full md:w-1/2 space-y-6">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-800">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white">
                 Our Mission: Making Quality Healthcare Accessible to Millions
               </h2>
-              <p className="text-lg text-slate-700 leading-relaxed">
+              <p className="text-lg text-slate-700 dark:text-gray-300 leading-relaxed">
                 We believe in not just more appointments, but better care. And better care means aligning the well-being
                 of patients with the expertise of doctors—a healthier, happier future for all!
               </p>
@@ -128,17 +128,17 @@ export const Aboutus = () => {
       </section>
 
       {/* Story Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white">
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-white dark:bg-gray-900">
         <div className="container mx-auto max-w-6xl">
           <div className="flex flex-col md:flex-row-reverse items-center gap-8 md:gap-16">
             <div className="w-full md:w-1/2">
-              <div className="relative h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden rounded-xl shadow-xl">
+              <div className="relative h-64 sm:h-72 md:h-80 lg:h-96 overflow-hidden rounded-xl shadow-xl dark:shadow-gray-800/50">
                 <Image src={pic2} alt="Our story" className="w-full h-full object-cover" />
               </div>
             </div>
             <div className="w-full md:w-1/2 space-y-6">
-              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-800">Our Story</h2>
-              <div className="space-y-4 text-lg text-slate-700 leading-relaxed">
+              <h2 className="text-2xl md:text-3xl lg:text-4xl font-bold text-slate-800 dark:text-white">Our Story</h2>
+              <div className="space-y-4 text-lg text-slate-700 dark:text-gray-300 leading-relaxed">
                 <p>
                   In a world where accessing quality healthcare often feels complicated and time-consuming, we saw the
                   need for a better way. Patients weren't looking for long waits or confusing processes—they wanted
@@ -156,39 +156,39 @@ export const Aboutus = () => {
       </section>
 
       {/* Numbers Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#f0f2fd] to-[#e8ecff]">
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#f0f2fd] to-[#e8ecff] dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-slate-800 mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-slate-800 dark:text-white mb-12 md:mb-16">
             Medilink By The Numbers
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Card 1 */}
-            <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-gray-800/50 transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
                   <Image src={pic3} alt="Global offices" className="max-h-full max-w-full" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">15 Global Offices</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white text-center">15 Global Offices</h3>
               </div>
             </div>
 
             {/* Card 2 */}
-            <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-gray-800/50 transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
                   <Image src={pic4} alt="Doctors" className="max-h-full max-w-full" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">20,000+ Doctors</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white text-center">20,000+ Doctors</h3>
               </div>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-gray-800/50 transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
                   <Image src={pic5} alt="Customers" className="max-h-full max-w-full" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">Over 10,000 Customers</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white text-center">Over 10,000 Customers</h3>
               </div>
             </div>
           </div>
@@ -196,25 +196,25 @@ export const Aboutus = () => {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8">
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 dark:bg-gray-900">
         <div className="container mx-auto max-w-6xl">
           <div className="flex items-center justify-center">
             <div className="flex items-center w-full max-w-4xl">
               {/* Left Arrow (Desktop) */}
               <button
-                className="hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors mr-6"
+                className="hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-slate-100 dark:bg-gray-700 hover:bg-slate-200 dark:hover:bg-gray-600 transition-colors mr-6"
                 onClick={prevReview}
                 aria-label="Previous testimonial"
               >
-                <ArrowLeftCircleIcon size={28} className="text-slate-600" />
+                <ArrowLeftCircleIcon size={28} className="text-slate-600 dark:text-gray-300" />
               </button>
 
               {/* Testimonial Card */}
               <div
-                className="flex-1 flex flex-col items-center bg-white rounded-xl shadow-xl p-6 md:p-10 relative"
+                className="flex-1 flex flex-col items-center bg-white dark:bg-gray-800 rounded-xl shadow-xl dark:shadow-gray-800/50 p-6 md:p-10 relative"
                 style={{ borderTop: `6px solid ${testimonials[index].color}` }}
               >
-                <div className="absolute -top-12 w-24 h-24 rounded-full border-4 border-white shadow-lg overflow-hidden">
+                <div className="absolute -top-12 w-24 h-24 rounded-full border-4 border-white dark:border-gray-800 shadow-lg overflow-hidden">
                   <img
                     src={testimonials[index].img || "/placeholder.svg"}
                     alt={testimonials[index].name}
@@ -223,11 +223,11 @@ export const Aboutus = () => {
                 </div>
 
                 <div className="mt-14 mb-6 text-center">
-                  <p className="text-lg md:text-xl text-slate-700 italic">"{testimonials[index].review}"</p>
+                  <p className="text-lg md:text-xl text-slate-700 dark:text-gray-300 italic">"{testimonials[index].review}"</p>
                 </div>
 
-                <div className="w-full pt-6 border-t border-slate-200 text-center">
-                  <p className="text-lg font-semibold text-slate-800 uppercase tracking-wide">
+                <div className="w-full pt-6 border-t border-slate-200 dark:border-gray-700 text-center">
+                  <p className="text-lg font-semibold text-slate-800 dark:text-white uppercase tracking-wide">
                     {testimonials[index].name}
                   </p>
                 </div>
@@ -235,29 +235,29 @@ export const Aboutus = () => {
                 {/* Mobile Navigation */}
                 <div className="flex items-center justify-center gap-4 mt-6 md:hidden">
                   <button
-                    className="flex items-center justify-center h-10 w-10 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
+                    className="flex items-center justify-center h-10 w-10 rounded-full bg-slate-100 dark:bg-gray-700 hover:bg-slate-200 dark:hover:bg-gray-600 transition-colors"
                     onClick={prevReview}
                     aria-label="Previous testimonial"
                   >
-                    <ArrowLeftCircleIcon size={24} className="text-slate-600" />
+                    <ArrowLeftCircleIcon size={24} className="text-slate-600 dark:text-gray-300" />
                   </button>
                   <button
-                    className="flex items-center justify-center h-10 w-10 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors"
+                    className="flex items-center justify-center h-10 w-10 rounded-full bg-slate-100 dark:bg-gray-700 hover:bg-slate-200 dark:hover:bg-gray-600 transition-colors"
                     onClick={nextReview}
                     aria-label="Next testimonial"
                   >
-                    <ArrowRightCircleIcon size={24} className="text-slate-600" />
+                    <ArrowRightCircleIcon size={24} className="text-slate-600 dark:text-gray-300" />
                   </button>
                 </div>
               </div>
 
               {/* Right Arrow (Desktop) */}
               <button
-                className="hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-slate-100 hover:bg-slate-200 transition-colors ml-6"
+                className="hidden md:flex items-center justify-center h-12 w-12 rounded-full bg-slate-100 dark:bg-gray-700 hover:bg-slate-200 dark:hover:bg-gray-600 transition-colors ml-6"
                 onClick={nextReview}
                 aria-label="Next testimonial"
               >
-                <ArrowRightCircleIcon size={28} className="text-slate-600" />
+                <ArrowRightCircleIcon size={28} className="text-slate-600 dark:text-gray-300" />
               </button>
             </div>
           </div>
@@ -265,39 +265,39 @@ export const Aboutus = () => {
       </section>
 
       {/* Growing Together Section */}
-      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#f0f2fd] to-[#e8ecff]">
+      <section className="py-16 md:py-24 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#f0f2fd] to-[#e8ecff] dark:from-gray-800 dark:to-gray-900">
         <div className="container mx-auto max-w-6xl">
-          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-slate-800 mb-12 md:mb-16">
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-center text-slate-800 dark:text-white mb-12 md:mb-16">
             Growing Better Together
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
             {/* Card 1 */}
-            <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-gray-800/50 transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
                   <Image src={pic6} alt="Sustainability" className="max-h-full max-w-full" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">Sustainability</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white text-center">Sustainability</h3>
               </div>
             </div>
 
             {/* Card 2 */}
-            <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-gray-800/50 transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
                   <Image src={pic7} alt="Wellness" className="max-h-full max-w-full" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">Wellness</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white text-center">Wellness</h3>
               </div>
             </div>
 
             {/* Card 3 */}
-            <div className="bg-white rounded-2xl shadow-xl transition-transform hover:scale-105 duration-300 overflow-hidden">
+            <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl dark:shadow-gray-800/50 transition-transform hover:scale-105 duration-300 overflow-hidden">
               <div className="p-6 flex flex-col items-center">
                 <div className="h-40 w-40 flex items-center justify-center mb-6">
                   <Image src={pic8} alt="Compassionate Care" className="max-h-full max-w-full" />
                 </div>
-                <h3 className="text-xl md:text-2xl font-bold text-slate-800 text-center">Compassionate Care</h3>
+                <h3 className="text-xl md:text-2xl font-bold text-slate-800 dark:text-white text-center">Compassionate Care</h3>
               </div>
             </div>
           </div>
@@ -305,11 +305,11 @@ export const Aboutus = () => {
       </section>
 
       {/* Footer */}
-      <footer className="bg-slate-800 py-12 px-4 sm:px-6 lg:px-8 mt-auto">
+      <footer className="bg-slate-800 dark:bg-black py-12 px-4 sm:px-6 lg:px-8 mt-auto">
         <div className="container mx-auto max-w-6xl">
           {/* Social Media */}
           <div className="flex items-center justify-center mb-8">
-            <div className="h-px bg-slate-600 flex-1"></div>
+            <div className="h-px bg-slate-600 dark:bg-gray-700 flex-1"></div>
             <div className="flex space-x-6 px-6">
               <a href="#" className="text-slate-300 hover:text-white transition-colors" aria-label="Facebook">
                 <Facebook size={24} />
@@ -327,7 +327,7 @@ export const Aboutus = () => {
                 <Mail size={24} />
               </a>
             </div>
-            <div className="h-px bg-slate-600 flex-1"></div>
+            <div className="h-px bg-slate-600 dark:bg-gray-700 flex-1"></div>
           </div>
 
           {/* Logo */}
@@ -371,4 +371,3 @@ export const Aboutus = () => {
     </div>
   )
 }
-
