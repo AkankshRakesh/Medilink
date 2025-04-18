@@ -1051,7 +1051,7 @@ function BookingPage() {
                       <h2 className="text-xl font-bold text-center dark:text-white">{doctorDetails.name}</h2>
                       <p className="text-muted-foreground mb-1 dark:text-gray-400">{doctorDetails.specialization}</p>
 
-                      <Badge variant="outline" className="bg-primary/5 text-primary mb-4 dark:bg-primary/20 dark:text-primary-foreground">
+                      <Badge variant="outline" className="bg-primary/5 text-primary mb-4 dark:bg-primary/20 dark:text-gray-400">
                         ₹{doctorDetails.fee} per consultation
                       </Badge>
 
@@ -1061,7 +1061,7 @@ function BookingPage() {
                           variant="outline"
                           className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10 dark:bg-primary/10 dark:border-primary/20 dark:hover:bg-primary/20"
                         >
-                          <Mail className="h-4 w-4 text-primary dark:text-primary-foreground" />
+                          <Mail className="h-4 w-4 text-primary dark:text-gray-400" />
                           <span className="sr-only">Email</span>
                         </Button>
                         <Button
@@ -1069,7 +1069,7 @@ function BookingPage() {
                           variant="outline"
                           className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10 dark:bg-primary/10 dark:border-primary/20 dark:hover:bg-primary/20"
                         >
-                          <PhoneCall className="h-4 w-4 text-primary dark:text-primary-foreground" />
+                          <PhoneCall className="h-4 w-4 text-primary dark:text-gray-400" />
                           <span className="sr-only">Call</span>
                         </Button>
                         <Button
@@ -1077,7 +1077,7 @@ function BookingPage() {
                           variant="outline"
                           className="rounded-full h-10 w-10 bg-primary/5 border-primary/10 hover:bg-primary/10 dark:bg-primary/10 dark:border-primary/20 dark:hover:bg-primary/20"
                         >
-                          <Smartphone className="h-4 w-4 text-primary dark:text-primary-foreground" />
+                          <Smartphone className="h-4 w-4 text-primary dark:text-gray-400" />
                           <span className="sr-only">Message</span>
                         </Button>
                       </div>
