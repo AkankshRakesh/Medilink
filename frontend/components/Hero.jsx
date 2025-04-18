@@ -10,7 +10,9 @@ import { animate, motion, useMotionValue } from "framer-motion";
 import useMeasure from "react-use-measure";
 import Spline from '@splinetool/react-spline';
 import Image from 'next/image';
-import WorldMap from "@/components/ui/world-map";
+
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
+
 
 const fugaz = Fugaz_One({ subsets: ["latin"], weight: ['400'] });
 const images = [
@@ -61,7 +63,7 @@ export default function Hero() {
     }
 
     return controls?.stop;
-  }, [rerender, xTranslation, duration, width]);
+  }, [rerender, xTranslation, duration, width, mustFinish]);
 
     return (
       <>
@@ -298,6 +300,55 @@ export default function Hero() {
           </div>
         </div>
 
+
+        <div className="relative z-10 text-center mt-16">
+        <h2 className="text-2xl  md:text-3xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 inline-block text-transparent bg-clip-text">
+          Get connected with Doctors across the Globe
+            </h2>
+            <div className="h-1 w-20 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto mt-4 rounded-full"></div>
+          </div>
+          
+
+        <div className="ml-[-5rem] w-full mx-auto mb-0">
+  <ComposableMap
+    className="text-center font-sans text-lg"
+  >
+    <Geographies geography="/features.json">
+      {({ geographies }) =>
+        geographies.map((geo) => (
+          <Geography
+            key={geo.rsmKey}
+            geography={geo}
+            style={{
+              default: {
+                fill: "#2a354d", // Updated to match the theme
+                outline: "none",
+              },
+              hover: {
+                fill: "#4C6FFF", // Blue matching the site's theme
+                outline: "none",
+              },
+              pressed: {
+                fill: "#4C6FFF", // Blue matching the site's theme
+                outline: "none",
+              },
+            }}
+          />
+        ))
+      }
+    </Geographies>
+  </ComposableMap>
+</div>
+
+
+<div className="relative z-10 text-center mt-16">
+        <h2 className="text-2xl  md:text-4xl lg:text-4xl font-bold bg-gradient-to-r from-blue-600 to-indigo-600 inline-block text-transparent bg-clip-text">
+          Get treated from the convenience of your Home
+            </h2>
+            <div className="h-1 w-20 bg-gradient-to-r from-blue-500 to-indigo-500 mx-auto mt-4 rounded-full"></div>
+          </div>
+
+
 <div className="relative py-8 overflow-hidden dark:bg-slate-900">
   <motion.div
     className="flex gap-4"
@@ -317,6 +368,16 @@ export default function Hero() {
     ))}
   </motion.div>
 </div>
+
+
+<div className="text-center mt-10 mb-10">
+            <Link href="/doctors">
+              <button className="px-8 py-3 bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50">
+                Consult a Doctor Now
+              </button>
+            </Link>
+          </div>
+
               
               </div>
 
