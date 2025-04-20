@@ -14,7 +14,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
 $data = json_decode(file_get_contents("php://input"), true);
 $userId = $data['userId'] ?? null;
 $type = $data['type'] ?? 3; // Default to 3 (both) if not specified
-$currentDate = date('Y-m-d');
 $response = [];
 
 if (!$userId) {
@@ -43,31 +42,31 @@ $formatPatientTime = function($row) {
 switch ($type) {
     case 1: // Doctor only
         $stmt = $pdo->prepare("SELECT time, date, meetLink FROM bookings 
-                             WHERE doctorId = ? AND date >= ?
+                             WHERE doctorId = ?
                              ORDER BY date, time");
-        $stmt->execute([$userId, $currentDate]);
+        $stmt->execute([$userId]);
         $response = array_map($formatDoctorTime, $stmt->fetchAll(PDO::FETCH_ASSOC));
         break;
         
     case 2: // Patient only
         $stmt = $pdo->prepare("SELECT time, date, doctorId, meetLink FROM bookings 
-                             WHERE patientId = ? AND date >= ?
+                             WHERE patientId = ?
                              ORDER BY date, time");
-        $stmt->execute([$userId, $currentDate]);
+        $stmt->execute([$userId]);
         $response = array_map($formatPatientTime, $stmt->fetchAll(PDO::FETCH_ASSOC));
         break;
         
     case 3: // Both (default)
         $stmt = $pdo->prepare("SELECT time, date, meetLink FROM bookings 
-                             WHERE doctorId = ? AND date >= ?
+                             WHERE doctorId = ?
                              ORDER BY date, time");
-        $stmt->execute([$userId, $currentDate]);
+        $stmt->execute([$userId]);
         $asDoctor = array_map($formatDoctorTime, $stmt->fetchAll(PDO::FETCH_ASSOC));
         
         $stmt = $pdo->prepare("SELECT time, date, doctorId, meetLink FROM bookings 
-                             WHERE patientId = ? AND date >= ?
+                             WHERE patientId = ?
                              ORDER BY date, time");
-        $stmt->execute([$userId, $currentDate]);
+        $stmt->execute([$userId]);
         $asPatient = array_map($formatPatientTime, $stmt->fetchAll(PDO::FETCH_ASSOC));
         
         $response = [
