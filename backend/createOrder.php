@@ -37,7 +37,7 @@ try {
         }
     }
 
-    $api = new Api("rzp_test_yzGAVhIYZJF0BR", "vOMjfVyGq4SYeLo3HjmsyH0W");
+    $api = new Api("rzp_test_MnV0MbhG8JSwov", "o4t8PDG2vmcrJf6BmMcaaCO4");
 
     $orderData = [
         'receipt' => 'receipt_' . time(),

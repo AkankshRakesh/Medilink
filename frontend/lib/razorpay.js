@@ -76,7 +76,7 @@ export const processPayment = (order) => {
         }
   
         const options = {
-          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_yzGAVhIYZJF0BR",
+          key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID || "rzp_test_MnV0MbhG8JSwov",
           amount: order.amount * 100, 
           currency: "INR",
           name: "Medilink",

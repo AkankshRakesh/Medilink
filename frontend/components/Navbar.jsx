@@ -20,7 +20,6 @@ export default function Navbar() {
   const pathname = usePathname()
   const { theme, setTheme } = useTheme()
 
-  // After mounting, we can safely show the theme toggle
   useEffect(() => {
     setMounted(true)
   }, [])
@@ -113,12 +112,10 @@ export default function Navbar() {
 )}
 
 
-          {/* Logout - Desktop */}
           <div className="hidden lg:block">
             <Logout />
           </div>
 
-          {/* Mobile Menu Button */}
           <button
             className="flex lg:hidden flex-col justify-center items-center w-10 h-10 rounded-md hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
             onClick={() => setIsOpen(!isOpen)}
@@ -143,7 +140,6 @@ export default function Navbar() {
         </div>
       </div>
 
-      {/* Mobile Navigation Menu */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -175,7 +171,6 @@ export default function Navbar() {
                 ))}
 
 
-                {/* Logout - Mobile */}
                 <div className="mt-2 px-3">
                   <Logout />
                 </div>
